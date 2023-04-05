@@ -25,10 +25,11 @@
         private void InitializeComponent() {
             mapa = new GMap.NET.WindowsForms.GMapControl();
             button1 = new Button();
+            labelMostrarLatitude = new Label();
+            labelmostrarLongitude = new Label();
+            btnCarregarFicheiro = new Button();
             labelLatitude = new Label();
             labelLongitude = new Label();
-            textBoxLatitude = new TextBox();
-            textBoxLongitude = new TextBox();
             SuspendLayout();
             // 
             // mapa
@@ -41,8 +42,8 @@
             mapa.LevelsKeepInMemory = 5;
             mapa.Location = new Point(12, 112);
             mapa.MarkersEnabled = true;
-            mapa.MaxZoom = 2;
-            mapa.MinZoom = 2;
+            mapa.MaxZoom = 24;
+            mapa.MinZoom = 0;
             mapa.MouseWheelZoomEnabled = true;
             mapa.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
             mapa.Name = "mapa";
@@ -53,65 +54,83 @@
             mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapa.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapa.ShowTileGridLines = false;
-            mapa.Size = new Size(776, 326);
+            mapa.Size = new Size(1092, 547);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
+            mapa.MouseClick += mapa_MouseClick;
+            mapa.MouseHover += mapa_MouseHover;
             // 
             // button1
             // 
-            button1.Location = new Point(609, 28);
+            button1.BackColor = Color.FromArgb(128, 255, 128);
+            button1.Location = new Point(957, 28);
             button1.Name = "button1";
             button1.Size = new Size(147, 56);
             button1.TabIndex = 2;
             button1.Text = "Carregar Mapa";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+            // 
+            // labelMostrarLatitude
+            // 
+            labelMostrarLatitude.AutoSize = true;
+            labelMostrarLatitude.Location = new Point(20, 24);
+            labelMostrarLatitude.Name = "labelMostrarLatitude";
+            labelMostrarLatitude.Size = new Size(50, 15);
+            labelMostrarLatitude.TabIndex = 3;
+            labelMostrarLatitude.Text = "Latitude";
+            // 
+            // labelmostrarLongitude
+            // 
+            labelmostrarLongitude.AutoSize = true;
+            labelmostrarLongitude.Location = new Point(20, 59);
+            labelmostrarLongitude.Name = "labelmostrarLongitude";
+            labelmostrarLongitude.Size = new Size(61, 15);
+            labelmostrarLongitude.TabIndex = 4;
+            labelmostrarLongitude.Text = "Longitude";
+            // 
+            // btnCarregarFicheiro
+            // 
+            btnCarregarFicheiro.BackColor = Color.FromArgb(128, 255, 255);
+            btnCarregarFicheiro.Location = new Point(795, 28);
+            btnCarregarFicheiro.Name = "btnCarregarFicheiro";
+            btnCarregarFicheiro.Size = new Size(147, 56);
+            btnCarregarFicheiro.TabIndex = 7;
+            btnCarregarFicheiro.Text = "Carregar Ficheiro Excel";
+            btnCarregarFicheiro.UseVisualStyleBackColor = false;
             // 
             // labelLatitude
             // 
             labelLatitude.AutoSize = true;
-            labelLatitude.Location = new Point(20, 24);
+            labelLatitude.Location = new Point(92, 24);
             labelLatitude.Name = "labelLatitude";
-            labelLatitude.Size = new Size(50, 15);
-            labelLatitude.TabIndex = 3;
-            labelLatitude.Text = "Latitude";
+            labelLatitude.Size = new Size(30, 15);
+            labelLatitude.TabIndex = 8;
+            labelLatitude.Text = "xxxº";
             // 
             // labelLongitude
             // 
             labelLongitude.AutoSize = true;
-            labelLongitude.Location = new Point(20, 59);
+            labelLongitude.Location = new Point(92, 59);
             labelLongitude.Name = "labelLongitude";
-            labelLongitude.Size = new Size(61, 15);
-            labelLongitude.TabIndex = 4;
-            labelLongitude.Text = "Longitude";
-            // 
-            // textBoxLatitude
-            // 
-            textBoxLatitude.Location = new Point(97, 25);
-            textBoxLatitude.Name = "textBoxLatitude";
-            textBoxLatitude.Size = new Size(100, 23);
-            textBoxLatitude.TabIndex = 5;
-            // 
-            // textBoxLongitude
-            // 
-            textBoxLongitude.Location = new Point(97, 61);
-            textBoxLongitude.Name = "textBoxLongitude";
-            textBoxLongitude.Size = new Size(100, 23);
-            textBoxLongitude.TabIndex = 6;
+            labelLongitude.Size = new Size(30, 15);
+            labelLongitude.TabIndex = 9;
+            labelLongitude.Text = "xxxº";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(textBoxLongitude);
-            Controls.Add(textBoxLatitude);
+            ClientSize = new Size(1116, 671);
             Controls.Add(labelLongitude);
             Controls.Add(labelLatitude);
+            Controls.Add(btnCarregarFicheiro);
+            Controls.Add(labelmostrarLongitude);
+            Controls.Add(labelMostrarLatitude);
             Controls.Add(button1);
             Controls.Add(mapa);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Projeto Informático M2";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -120,9 +139,10 @@
 
         private GMap.NET.WindowsForms.GMapControl mapa;
         private Button button1;
+        private Label labelMostrarLatitude;
+        private Label labelmostrarLongitude;
+        private Button btnCarregarFicheiro;
         private Label labelLatitude;
         private Label labelLongitude;
-        private TextBox textBoxLatitude;
-        private TextBox textBoxLongitude;
     }
 }
