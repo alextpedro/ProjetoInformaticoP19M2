@@ -35,6 +35,7 @@
             btnCarregarFicheiro = new Button();
             labelLatitude = new Label();
             labelLongitude = new Label();
+            labelTestCoords = new Label();
             SuspendLayout();
             // 
             // mapa
@@ -112,6 +113,7 @@
             labelLatitude.Size = new Size(30, 15);
             labelLatitude.TabIndex = 8;
             labelLatitude.Text = "xxxº";
+            labelLatitude.Click += labelLatitude_Click;
             // 
             // labelLongitude
             // 
@@ -121,12 +123,22 @@
             labelLongitude.Size = new Size(30, 15);
             labelLongitude.TabIndex = 9;
             labelLongitude.Text = "xxxº";
+            labelLongitude.Click += labelLongitude_Click;
+            // 
+            // labelTestCoords
+            // 
+            labelTestCoords.AutoSize = true;
+            labelTestCoords.Location = new Point(495, 37);
+            labelTestCoords.Name = "labelTestCoords";
+            labelTestCoords.Size = new Size(0, 15);
+            labelTestCoords.TabIndex = 10;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 671);
+            Controls.Add(labelTestCoords);
             Controls.Add(labelLongitude);
             Controls.Add(labelLatitude);
             Controls.Add(btnCarregarFicheiro);
@@ -137,6 +149,7 @@
             Name = "Form1";
             Text = "Projeto Informático M2";
             Shown += Form1_Shown;
+            KeyDown += Form1_KeyDown;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -150,5 +163,6 @@
         private Button btnCarregarFicheiro;
         private Label labelLatitude;
         private Label labelLongitude;
+        private Label labelTestCoords;
     }
 }

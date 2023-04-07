@@ -13,8 +13,12 @@ namespace ProjetoFinalM2
 {
     public partial class Form1 : Form
     {
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
         public Form1()
         {
+            //Permite a criacao de uma consola para fins de debugging
+            AllocConsole();
             InitializeComponent();
         }
 
@@ -22,15 +26,15 @@ namespace ProjetoFinalM2
         {
 
             #region Tentativa 1
-            //GMapOverlay routes = new GMapOverlay("routes");
-            //List<PointLatLng> points = new List<PointLatLng>();
-            //points.Add(new PointLatLng(39.734105, -8.821917));
-            //points.Add(new PointLatLng(39.734336, -8.821535));
-            //points.Add(new PointLatLng(39.734728, -8.820946));
-            //GMapRoute route = new GMapRoute(points, "A Vehicle Route");
-            //route.Stroke = new Pen(Color.Red, 3);
-            //routes.Routes.Add(route);
-            //mapa.Overlays.Add(routes);
+            GMapOverlay routes = new GMapOverlay("routes");
+            List<PointLatLng> points = new List<PointLatLng>();
+            points.Add(new PointLatLng(39.734105, -8.821917));
+            points.Add(new PointLatLng(39.734336, -8.821535));
+            points.Add(new PointLatLng(39.734728, -8.820946));
+            GMapRoute route = new GMapRoute(points, "A Vehicle Route");
+            route.Stroke = new Pen(Color.Red, 3);
+            routes.Routes.Add(route);
+            mapa.Overlays.Add(routes);
             #endregion
 
             #region Tentativa 2
@@ -109,6 +113,25 @@ namespace ProjetoFinalM2
             mapa.Zoom = 18;
             mapa.AutoScroll = true;
             #endregion
+        }
+
+        private void labelLatitude_Click(object sender, EventArgs e)
+        {
+            labelLatitude.Focus();
+        }
+
+        private void labelLongitude_Click(object sender, EventArgs e)
+        {
+            labelLongitude.Focus();
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (labelLatitude.ContainsFocus && e.Control && e.KeyCode == Keys.C)
+                Clipboard.SetText(labelLatitude.Text);
+
+            if (labelLongitude.ContainsFocus && e.Control && e.KeyCode == Keys.C)
+                Clipboard.SetText(labelLongitude.Text);
         }
     }
 }
