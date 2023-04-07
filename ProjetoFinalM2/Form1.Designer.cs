@@ -1,5 +1,7 @@
-﻿namespace ProjetoFinalM2 {
-    partial class Form1 {
+﻿namespace ProjetoFinalM2
+{
+    partial class Form1
+    {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -9,8 +11,10 @@
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,9 +26,10 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             mapa = new GMap.NET.WindowsForms.GMapControl();
-            button1 = new Button();
+            btnCarregarMapa = new Button();
             labelMostrarLatitude = new Label();
             labelmostrarLongitude = new Label();
             btnCarregarFicheiro = new Button();
@@ -57,19 +62,19 @@
             mapa.Size = new Size(1092, 547);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
-            mapa.MouseClick += mapa_MouseClick;
-            mapa.MouseHover += mapa_MouseHover;
+            mapa.MouseClick += Mapa_MouseClick;
+            mapa.MouseHover += Mapa_MouseHover;
             // 
-            // button1
+            // btnCarregarMapa
             // 
-            button1.BackColor = Color.FromArgb(128, 255, 128);
-            button1.Location = new Point(957, 28);
-            button1.Name = "button1";
-            button1.Size = new Size(147, 56);
-            button1.TabIndex = 2;
-            button1.Text = "Carregar Mapa";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            btnCarregarMapa.BackColor = Color.FromArgb(128, 255, 128);
+            btnCarregarMapa.Location = new Point(957, 28);
+            btnCarregarMapa.Name = "btnCarregarMapa";
+            btnCarregarMapa.Size = new Size(147, 56);
+            btnCarregarMapa.TabIndex = 2;
+            btnCarregarMapa.Text = "Carregar Mapa";
+            btnCarregarMapa.UseVisualStyleBackColor = false;
+            btnCarregarMapa.Click += btnCarregarMapa_Click;
             // 
             // labelMostrarLatitude
             // 
@@ -127,10 +132,11 @@
             Controls.Add(btnCarregarFicheiro);
             Controls.Add(labelmostrarLongitude);
             Controls.Add(labelMostrarLatitude);
-            Controls.Add(button1);
+            Controls.Add(btnCarregarMapa);
             Controls.Add(mapa);
             Name = "Form1";
             Text = "Projeto Informático M2";
+            Shown += Form1_Shown;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -138,7 +144,7 @@
         #endregion
 
         private GMap.NET.WindowsForms.GMapControl mapa;
-        private Button button1;
+        private Button btnCarregarMapa;
         private Label labelMostrarLatitude;
         private Label labelmostrarLongitude;
         private Button btnCarregarFicheiro;
