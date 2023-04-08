@@ -75,7 +75,7 @@
             btnCarregarMapa.TabIndex = 2;
             btnCarregarMapa.Text = "Carregar Mapa";
             btnCarregarMapa.UseVisualStyleBackColor = false;
-            btnCarregarMapa.Click += btnCarregarMapa_Click;
+            btnCarregarMapa.Click += BtnCarregarMapa_Click;
             // 
             // labelMostrarLatitude
             // 
@@ -102,8 +102,9 @@
             btnCarregarFicheiro.Name = "btnCarregarFicheiro";
             btnCarregarFicheiro.Size = new Size(147, 56);
             btnCarregarFicheiro.TabIndex = 7;
-            btnCarregarFicheiro.Text = "Carregar Ficheiro Excel";
+            btnCarregarFicheiro.Text = "Carregar Ficheiro CSV";
             btnCarregarFicheiro.UseVisualStyleBackColor = false;
+            btnCarregarFicheiro.Click += BtnCarregarFicheiro_Click;
             // 
             // labelLatitude
             // 
@@ -113,7 +114,7 @@
             labelLatitude.Size = new Size(30, 15);
             labelLatitude.TabIndex = 8;
             labelLatitude.Text = "xxxº";
-            labelLatitude.Click += labelLatitude_Click;
+            labelLatitude.Click += LabelLatitude_Click;
             // 
             // labelLongitude
             // 
@@ -123,7 +124,7 @@
             labelLongitude.Size = new Size(30, 15);
             labelLongitude.TabIndex = 9;
             labelLongitude.Text = "xxxº";
-            labelLongitude.Click += labelLongitude_Click;
+            labelLongitude.Click += LabelLongitude_Click;
             // 
             // labelTestCoords
             // 

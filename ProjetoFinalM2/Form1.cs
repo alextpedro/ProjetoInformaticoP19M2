@@ -8,13 +8,18 @@ using System.Drawing.Text;
 using GMap.NET.WindowsForms;
 using System.Collections.Generic;
 //using GMap.NET.WindowsPresentation;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ProjetoFinalM2
 {
     public partial class Form1 : Form
     {
+        private static string? loadedFileName;
+
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
+
         public Form1()
         {
             //Permite a criacao de uma consola para fins de debugging
@@ -22,39 +27,65 @@ namespace ProjetoFinalM2
             InitializeComponent();
         }
 
-        private void btnCarregarMapa_Click(object sender, EventArgs e)
+        private void BtnCarregarMapa_Click(object sender, EventArgs e)
         {
 
-            #region Tentativa 1
             GMapOverlay routes = new GMapOverlay("routes");
             List<PointLatLng> points = new List<PointLatLng>();
-            points.Add(new PointLatLng(39.734105, -8.821917));
-            points.Add(new PointLatLng(39.734336, -8.821535));
-            points.Add(new PointLatLng(39.734728, -8.820946));
+
+            if (loadedFileName != null)
+            {
+                //grab coords from file
+                using (TextFieldParser parser = new TextFieldParser(loadedFileName))
+                {
+                    parser.TextFieldType = FieldType.Delimited;
+                    parser.SetDelimiters(",");
+
+                    bool isHeader = true;
+                    while (!parser.EndOfData)
+                    {
+                        string[] fields = parser.ReadFields();
+
+                        if (isHeader)
+                        {
+                            isHeader = false;
+                            continue;
+                        }
+
+                        for (int i = 0; i < fields.Length; i += 2) //fields tem sempre só 2 indices
+                        {
+                            Console.WriteLine(fields[i] + "," + fields[i + 1]);
+                            double lat = Convert.ToDouble(fields[i]);
+                            double lon = Convert.ToDouble(fields[i + 1]);
+                            points.Add(new PointLatLng(lat, lon));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                points.Add(new PointLatLng(39.734105, -8.821917));
+                points.Add(new PointLatLng(39.734336, -8.821535));
+                points.Add(new PointLatLng(39.734728, -8.820946));
+            }
+
             GMapRoute route = new GMapRoute(points, "A Vehicle Route");
             route.Stroke = new Pen(Color.Red, 3);
+
             routes.Routes.Add(route);
             mapa.Overlays.Add(routes);
-            #endregion
-
-            #region Tentativa 2
-            /*mapa.Position = new PointLatLng(39.734273, -8.821656);
-            PointLatLng start = new PointLatLng(39.736998, -8.821571);
-            PointLatLng end = new PointLatLng(39.738739, -8.818470);
-            MapRoute route = GoogleMapProvider.Instance.GetRoute(start, end, false, false, 18);
-            GMapRoute r = new GMapRoute(route.Points, "My route");
-            GMapOverlay routesOverlay = new GMapOverlay("routes");
-            routesOverlay.Routes.Add(r);
-            mapa.Overlays.Add(routesOverlay);
-            r.Stroke.Width = 2;
-            r.Stroke.Color = Color.SeaGreen;*/
-            #endregion
 
         }
-
-        private static void btnCarregarFicheiro_Click(object sender, EventArgs e)
+        private void BtnCarregarFicheiro_Click(object sender, EventArgs e)
         {
-
+            using (var selectFileDialog = new OpenFileDialog())
+            {
+                if (selectFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    loadedFileName = selectFileDialog.FileName;
+                    Console.WriteLine("Filename: " + loadedFileName);
+                }
+            }
         }
 
         //private static List<Coordenada> ReadXls() {
@@ -115,12 +146,12 @@ namespace ProjetoFinalM2
             #endregion
         }
 
-        private void labelLatitude_Click(object sender, EventArgs e)
+        private void LabelLatitude_Click(object sender, EventArgs e)
         {
             labelLatitude.Focus();
         }
 
-        private void labelLongitude_Click(object sender, EventArgs e)
+        private void LabelLongitude_Click(object sender, EventArgs e)
         {
             labelLongitude.Focus();
         }
@@ -133,5 +164,6 @@ namespace ProjetoFinalM2
             if (labelLongitude.ContainsFocus && e.Control && e.KeyCode == Keys.C)
                 Clipboard.SetText(labelLongitude.Text);
         }
+
     }
 }
