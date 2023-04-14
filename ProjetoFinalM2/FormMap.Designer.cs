@@ -1,6 +1,6 @@
 ﻿namespace ProjetoFinalM2
 {
-    partial class Form1
+    partial class FormMap
     {
         /// <summary>
         ///  Required designer variable.
