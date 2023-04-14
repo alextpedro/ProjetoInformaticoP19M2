@@ -37,6 +37,10 @@
             labelLongitude = new Label();
             labelTestCoords = new Label();
             btnSaveCoord = new Button();
+            labelCurrentFile = new Label();
+            labelCurrentFileName = new Label();
+            labelSaveFile = new Label();
+            labelSaveFileName = new Label();
             SuspendLayout();
             // 
             // mapa
@@ -146,11 +150,51 @@
             btnSaveCoord.UseVisualStyleBackColor = true;
             btnSaveCoord.Click += btnSaveCoord_Click;
             // 
+            // labelCurrentFile
+            // 
+            labelCurrentFile.AutoSize = true;
+            labelCurrentFile.Location = new Point(796, 88);
+            labelCurrentFile.Name = "labelCurrentFile";
+            labelCurrentFile.Size = new Size(52, 15);
+            labelCurrentFile.TabIndex = 12;
+            labelCurrentFile.Text = "Ficheiro:";
+            // 
+            // labelCurrentFileName
+            // 
+            labelCurrentFileName.AutoSize = true;
+            labelCurrentFileName.Location = new Point(849, 88);
+            labelCurrentFileName.Name = "labelCurrentFileName";
+            labelCurrentFileName.Size = new Size(54, 15);
+            labelCurrentFileName.TabIndex = 13;
+            labelCurrentFileName.Text = "Nenhum";
+            // 
+            // labelSaveFile
+            // 
+            labelSaveFile.AutoSize = true;
+            labelSaveFile.Location = new Point(130, 86);
+            labelSaveFile.Name = "labelSaveFile";
+            labelSaveFile.Size = new Size(52, 15);
+            labelSaveFile.TabIndex = 14;
+            labelSaveFile.Text = "Ficheiro:";
+            // 
+            // labelSaveFileName
+            // 
+            labelSaveFileName.AutoSize = true;
+            labelSaveFileName.Location = new Point(183, 86);
+            labelSaveFileName.Name = "labelSaveFileName";
+            labelSaveFileName.Size = new Size(54, 15);
+            labelSaveFileName.TabIndex = 15;
+            labelSaveFileName.Text = "Nenhum";
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 671);
+            Controls.Add(labelSaveFileName);
+            Controls.Add(labelSaveFile);
+            Controls.Add(labelCurrentFileName);
+            Controls.Add(labelCurrentFile);
             Controls.Add(btnSaveCoord);
             Controls.Add(labelTestCoords);
             Controls.Add(labelLongitude);
@@ -179,5 +223,9 @@
         private Label labelLongitude;
         private Label labelTestCoords;
         private Button btnSaveCoord;
+        private Label labelCurrentFile;
+        private Label labelCurrentFileName;
+        private Label labelSaveFile;
+        private Label labelSaveFileName;
     }
 }

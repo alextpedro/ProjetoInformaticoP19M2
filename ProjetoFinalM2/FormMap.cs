@@ -46,6 +46,8 @@ namespace ProjetoFinalM2
                 {
                     loadedFileName = selectFileDialog.FileName;
                     Console.WriteLine("Filename: " + loadedFileName);
+
+                    labelCurrentFileName.Text = selectFileDialog.SafeFileName;
                 }
             }
         }
@@ -73,7 +75,7 @@ namespace ProjetoFinalM2
 
         private void Mapa_MouseHover(object sender, EventArgs e)
         {
-            
+
         }
 
         private void FormMap_Shown(object sender, EventArgs e)
@@ -161,9 +163,10 @@ namespace ProjetoFinalM2
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     savedCoordsFile = openFileDialog.FileName;
+                    labelSaveFileName.Text = openFileDialog.SafeFileName;
                 }
             }
-            
+
             //  Verificar se não é null pois o utilizador pode ter cancelado o openFileDialog
             if (savedCoordsFile != null)
             {
