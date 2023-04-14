@@ -36,6 +36,7 @@
             labelLatitude = new Label();
             labelLongitude = new Label();
             labelTestCoords = new Label();
+            btnSaveCoord = new Button();
             SuspendLayout();
             // 
             // mapa
@@ -134,11 +135,23 @@
             labelTestCoords.Size = new Size(0, 15);
             labelTestCoords.TabIndex = 10;
             // 
-            // Form1
+            // btnSaveCoord
+            // 
+            btnSaveCoord.BackgroundImageLayout = ImageLayout.Stretch;
+            btnSaveCoord.Location = new Point(20, 83);
+            btnSaveCoord.Name = "btnSaveCoord";
+            btnSaveCoord.Size = new Size(102, 23);
+            btnSaveCoord.TabIndex = 11;
+            btnSaveCoord.Text = "Guardar Coord";
+            btnSaveCoord.UseVisualStyleBackColor = true;
+            btnSaveCoord.Click += btnSaveCoord_Click;
+            // 
+            // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 671);
+            Controls.Add(btnSaveCoord);
             Controls.Add(labelTestCoords);
             Controls.Add(labelLongitude);
             Controls.Add(labelLatitude);
@@ -147,9 +160,9 @@
             Controls.Add(labelMostrarLatitude);
             Controls.Add(btnCarregarMapa);
             Controls.Add(mapa);
-            Name = "Form1";
+            Name = "FormMap";
             Text = "Projeto Informático M2";
-            Shown += Form1_Shown;
+            Shown += FormMap_Shown;
             KeyDown += Form1_KeyDown;
             ResumeLayout(false);
             PerformLayout();
@@ -165,5 +178,6 @@
         private Label labelLatitude;
         private Label labelLongitude;
         private Label labelTestCoords;
+        private Button btnSaveCoord;
     }
 }

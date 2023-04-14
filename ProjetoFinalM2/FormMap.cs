@@ -14,6 +14,7 @@ namespace ProjetoFinalM2
     public partial class FormMap : Form
     {
         private static string? loadedFileName;
+        private static string? savedCoordsFile;
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -72,11 +73,10 @@ namespace ProjetoFinalM2
 
         private void Mapa_MouseHover(object sender, EventArgs e)
         {
-            //labelLatitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lat.ToString();
-            //labelLongitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lng.ToString();
+            
         }
 
-        private void Form1_Shown(object sender, EventArgs e)
+        private void FormMap_Shown(object sender, EventArgs e)
         {
             //Codigo corre assim que o formulario acabar de carregar tudo
 
@@ -89,7 +89,11 @@ namespace ProjetoFinalM2
             mapa.MaxZoom = 24;
             mapa.Zoom = 18;
             mapa.AutoScroll = true;
+            mapa.ShowCenter = false;
             #endregion
+
+            labelLatitude.Text = mapa.Position.Lat.ToString();
+            labelLongitude.Text = mapa.Position.Lng.ToString();
         }
 
         private void LoadMapFromFile()
@@ -143,5 +147,37 @@ namespace ProjetoFinalM2
             mapa.ZoomAndCenterRoute(route);
         }
 
+        private void btnSaveCoord_Click(object sender, EventArgs e)
+        {
+            if (savedCoordsFile == null)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+
+                openFileDialog.DefaultExt = "csv";
+                openFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                openFileDialog.CheckFileExists = false;
+                openFileDialog.Title = "Abrir ou criar ficheiro CSV";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    savedCoordsFile = openFileDialog.FileName;
+                }
+            }
+            
+            //  Verificar se não é null pois o utilizador pode ter cancelado o openFileDialog
+            if (savedCoordsFile != null)
+            {
+                using (StreamWriter fileStream = File.AppendText(savedCoordsFile))
+                {
+                    if (new FileInfo(savedCoordsFile).Length == 0)
+                    {
+                        fileStream.WriteLine("Latitude,Longitude");
+                    }
+
+                    fileStream.WriteLine(labelLatitude.Text + "," + labelLongitude.Text);
+                }
+            }
+
+        }
     }
 }
