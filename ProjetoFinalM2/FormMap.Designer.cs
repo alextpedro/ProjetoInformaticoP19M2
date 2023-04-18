@@ -1,7 +1,5 @@
-﻿namespace ProjetoFinalM2
-{
-    partial class FormMap
-    {
+﻿namespace ProjetoFinalM2 {
+    partial class FormMap {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -11,10 +9,8 @@
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -26,8 +22,7 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             mapa = new GMap.NET.WindowsForms.GMapControl();
             btnCarregarMapa = new Button();
             labelMostrarLatitude = new Label();
@@ -41,6 +36,8 @@
             labelCurrentFileName = new Label();
             labelSaveFile = new Label();
             labelSaveFileName = new Label();
+            buttonCarregarTransito = new Button();
+            buttonRemoveOverlays = new Button();
             SuspendLayout();
             // 
             // mapa
@@ -74,7 +71,7 @@
             // btnCarregarMapa
             // 
             btnCarregarMapa.BackColor = Color.FromArgb(128, 255, 128);
-            btnCarregarMapa.Location = new Point(957, 28);
+            btnCarregarMapa.Location = new Point(755, 24);
             btnCarregarMapa.Name = "btnCarregarMapa";
             btnCarregarMapa.Size = new Size(147, 56);
             btnCarregarMapa.TabIndex = 2;
@@ -103,7 +100,7 @@
             // btnCarregarFicheiro
             // 
             btnCarregarFicheiro.BackColor = Color.FromArgb(128, 255, 255);
-            btnCarregarFicheiro.Location = new Point(795, 28);
+            btnCarregarFicheiro.Location = new Point(593, 24);
             btnCarregarFicheiro.Name = "btnCarregarFicheiro";
             btnCarregarFicheiro.Size = new Size(147, 56);
             btnCarregarFicheiro.TabIndex = 7;
@@ -153,7 +150,7 @@
             // labelCurrentFile
             // 
             labelCurrentFile.AutoSize = true;
-            labelCurrentFile.Location = new Point(796, 88);
+            labelCurrentFile.Location = new Point(594, 84);
             labelCurrentFile.Name = "labelCurrentFile";
             labelCurrentFile.Size = new Size(52, 15);
             labelCurrentFile.TabIndex = 12;
@@ -162,7 +159,7 @@
             // labelCurrentFileName
             // 
             labelCurrentFileName.AutoSize = true;
-            labelCurrentFileName.Location = new Point(849, 88);
+            labelCurrentFileName.Location = new Point(647, 84);
             labelCurrentFileName.Name = "labelCurrentFileName";
             labelCurrentFileName.Size = new Size(54, 15);
             labelCurrentFileName.TabIndex = 13;
@@ -186,11 +183,37 @@
             labelSaveFileName.TabIndex = 15;
             labelSaveFileName.Text = "Nenhum";
             // 
+            // buttonCarregarTransito
+            // 
+            buttonCarregarTransito.BackColor = Color.FromArgb(255, 224, 192);
+            buttonCarregarTransito.Location = new Point(917, 24);
+            buttonCarregarTransito.Name = "buttonCarregarTransito";
+            buttonCarregarTransito.Size = new Size(147, 56);
+            buttonCarregarTransito.TabIndex = 16;
+            buttonCarregarTransito.Text = "Medir Trânsito";
+            buttonCarregarTransito.UseVisualStyleBackColor = false;
+            buttonCarregarTransito.Click += buttonCarregarTransito_Click;
+            // 
+            // buttonRemoveOverlays
+            // 
+            buttonRemoveOverlays.BackColor = Color.Red;
+            buttonRemoveOverlays.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonRemoveOverlays.ForeColor = SystemColors.ButtonFace;
+            buttonRemoveOverlays.Location = new Point(917, 86);
+            buttonRemoveOverlays.Name = "buttonRemoveOverlays";
+            buttonRemoveOverlays.Size = new Size(147, 22);
+            buttonRemoveOverlays.TabIndex = 17;
+            buttonRemoveOverlays.Text = "Remover Overlays";
+            buttonRemoveOverlays.UseVisualStyleBackColor = false;
+            buttonRemoveOverlays.Click += buttonRemoveOverlays_Click;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 671);
+            Controls.Add(buttonRemoveOverlays);
+            Controls.Add(buttonCarregarTransito);
             Controls.Add(labelSaveFileName);
             Controls.Add(labelSaveFile);
             Controls.Add(labelCurrentFileName);
@@ -227,5 +250,7 @@
         private Label labelCurrentFileName;
         private Label labelSaveFile;
         private Label labelSaveFileName;
+        private Button buttonCarregarTransito;
+        private Button buttonRemoveOverlays;
     }
 }
