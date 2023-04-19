@@ -178,8 +178,6 @@ namespace ProjetoFinalM2 {
 
                 using (TextFieldParser parser = new TextFieldParser(loadedFileName)) {
                     parser.TextFieldType = FieldType.Delimited;
-                    // Francisco usa . para separar coordenadas e inteira,decimal;
-                    // Alex usa , para separar coordenaadas e inteira.decimal;
                     parser.SetDelimiters(",");
 
                     bool isHeader = true;
@@ -227,7 +225,7 @@ namespace ProjetoFinalM2 {
         private void buttonRemoveOverlays_Click(object sender, EventArgs e) {
 
             if (mapa.Overlays.Count > 0) {
-                mapa.Overlays.RemoveAt(0);
+                mapa.Overlays.Clear();
                 mapa.Refresh();
             }
         }
