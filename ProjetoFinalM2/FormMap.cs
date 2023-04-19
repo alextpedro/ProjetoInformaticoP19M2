@@ -11,6 +11,7 @@ using Microsoft.VisualBasic.FileIO;
 using System.Collections;
 using System.Windows.Documents;
 using static GMap.NET.Entity.OpenStreetMapRouteEntity;
+using System.Globalization;
 
 namespace ProjetoFinalM2 {
     public partial class FormMap : Form {
@@ -23,6 +24,13 @@ namespace ProjetoFinalM2 {
         public FormMap() {
             //Permite a criacao de uma consola para fins de debugging
             AllocConsole();
+
+            #region Colocar delimitador standard
+            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+            #endregion
+
             InitializeComponent();
         }
 
@@ -93,8 +101,7 @@ namespace ProjetoFinalM2 {
                 //grab coords from file
                 using (TextFieldParser parser = new TextFieldParser(loadedFileName)) {
                     parser.TextFieldType = FieldType.Delimited;
-                    // Alternar entre Alex e Francisco de . para ,
-                    parser.SetDelimiters(".");
+                    parser.SetDelimiters(",");
 
                     bool isHeader = true;
                     while (!parser.EndOfData) {
@@ -173,7 +180,7 @@ namespace ProjetoFinalM2 {
                     parser.TextFieldType = FieldType.Delimited;
                     // Francisco usa . para separar coordenadas e inteira,decimal;
                     // Alex usa , para separar coordenaadas e inteira.decimal;
-                    parser.SetDelimiters(".");
+                    parser.SetDelimiters(",");
 
                     bool isHeader = true;
                     while (!parser.EndOfData) {
@@ -205,6 +212,8 @@ namespace ProjetoFinalM2 {
             }
 
             GMapPolygon polygon = new GMapPolygon(trafficPoints, "Traffic Area");
+
+            //polygon.IsInside(/*um ponto*/);
 
             polygon.Fill = new SolidBrush(Color.FromArgb(35, Color.Red));
             polygon.Stroke = new Pen(Color.Red, 1);
