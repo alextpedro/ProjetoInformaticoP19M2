@@ -12,6 +12,7 @@ using System.Collections;
 using System.Windows.Documents;
 using static GMap.NET.Entity.OpenStreetMapRouteEntity;
 using System.Globalization;
+using Avalonia;
 
 namespace ProjetoFinalM2 {
     public partial class FormMap : Form {
@@ -93,7 +94,7 @@ namespace ProjetoFinalM2 {
             labelLongitude.Text = mapa.Position.Lng.ToString();
         }
 
-        private void LoadMapFromFile() {
+        public void LoadMapFromFile() {
             GMapOverlay routes = new GMapOverlay("routes");
             List<PointLatLng> points = new List<PointLatLng>();
 
@@ -128,7 +129,7 @@ namespace ProjetoFinalM2 {
             }
 
             GMapRoute route = new GMapRoute(points, "A Vehicle Route");
-            route.Stroke = new Pen(Color.Red, 3);
+            route.Stroke = new Pen(Color.Green, 3);
 
             routes.Routes.Add(route);
             mapa.Overlays.Add(routes);
@@ -159,7 +160,7 @@ namespace ProjetoFinalM2 {
                         fileStream.WriteLine("Latitude,Longitude");
                     }
 
-                    fileStream.WriteLine(labelLatitude.Text + "." + labelLongitude.Text);
+                    fileStream.WriteLine(labelLatitude.Text + "," + labelLongitude.Text);
                 }
             }
 
@@ -169,13 +170,13 @@ namespace ProjetoFinalM2 {
             LoadTrafficFromFile();
         }
 
-        private void LoadTrafficFromFile() {
+        public void LoadTrafficFromFile() {
 
-            GMapOverlay polyOverlay = new GMapOverlay("polygons");
             List<PointLatLng> trafficPoints = new List<PointLatLng>();
+            GMapOverlay polyOverlay = new GMapOverlay("polygons");
 
             if (loadedFileName != null) {
-
+                
                 using (TextFieldParser parser = new TextFieldParser(loadedFileName)) {
                     parser.TextFieldType = FieldType.Delimited;
                     parser.SetDelimiters(",");
@@ -196,6 +197,16 @@ namespace ProjetoFinalM2 {
                             trafficPoints.Add(new PointLatLng(lat, lon));
                         }
                     }
+                    GMapPolygon polygon1 = new GMapPolygon(trafficPoints, "Traffic Area");
+
+                    polygon1.Fill = new SolidBrush(Color.FromArgb(35, Color.Black));
+                    polygon1.Stroke = new Pen(Color.Black, 1);
+
+                    polyOverlay.Polygons.Add(polygon1);
+                    mapa.Overlays.Add(polyOverlay);
+                    mapa.ZoomAndCenterRoute(polygon1);
+
+                    //polygon1.IsInside();
                 }
             } else {
                 // Caso não tenho um ficheiro válido:
@@ -209,17 +220,6 @@ namespace ProjetoFinalM2 {
                 Console.WriteLine("Entrei no else");
             }
 
-            GMapPolygon polygon = new GMapPolygon(trafficPoints, "Traffic Area");
-
-            //polygon.IsInside(/*um ponto*/);
-
-            polygon.Fill = new SolidBrush(Color.FromArgb(35, Color.Red));
-            polygon.Stroke = new Pen(Color.Red, 1);
-
-            polyOverlay.Polygons.Add(polygon);
-
-            // Força o mapa a fazer zoom para mostrar logo a rota:
-            mapa.ZoomAndCenterRoute(polygon);
         }
 
         private void buttonRemoveOverlays_Click(object sender, EventArgs e) {
@@ -229,5 +229,23 @@ namespace ProjetoFinalM2 {
                 mapa.Refresh();
             }
         }
+
+    }
+
+    // Será a classe que guarda caraterísticas do veículo
+    public class Vehicle {
+        private int id { get; }
+        private int idPath { get; }
+        //private List<PointLatLng> coordinates;
+    }
+
+    // Será a classe Percurso
+    public class Path {
+        private int ID { get; }
+        private string Name { get; set; }
+        private string Date { get; set; }
+        private int IDVehicle { get; }
+        private int NVehicles { get; set; }
+        private List<PointLatLng> coordinates;
     }
 }
