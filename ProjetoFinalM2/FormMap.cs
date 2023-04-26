@@ -18,6 +18,11 @@ namespace ProjetoFinalM2 {
     public partial class FormMap : Form {
         private static string? loadedFileName;
         private static string? savedCoordsFile;
+        public int numPoints = 0;
+        public int nOverlays = 0;
+        public List<PointLatLng> points;
+        public int quantidadePontosNoPoligono = 0;
+        public List<PointLatLng> trafficPoints;
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -96,7 +101,7 @@ namespace ProjetoFinalM2 {
 
         public void LoadMapFromFile() {
             GMapOverlay routes = new GMapOverlay("routes");
-            List<PointLatLng> points = new List<PointLatLng>();
+            points = new List<PointLatLng>();
 
             if (loadedFileName != null) {
                 //grab coords from file
@@ -120,6 +125,15 @@ namespace ProjetoFinalM2 {
                             var lon = Convert.ToDouble(fields[i + 1]);
                             points.Add(new PointLatLng(lat, lon));
                         }
+                    }
+                    numPoints = points.Count;
+                    Console.WriteLine("Número de pontos da rota é " + numPoints);
+                    nOverlays = mapa.Overlays.Count;
+                    Console.WriteLine("O número de Overlays é " + nOverlays);
+                    if (mapa.Overlays.Contains(routes)) {
+                        Console.WriteLine("Contem a overlay ROTA!");
+                    }else {
+                        Console.WriteLine("Não contem a rotita! :( ");
                     }
                 }
             } else {
@@ -172,7 +186,7 @@ namespace ProjetoFinalM2 {
 
         public void LoadTrafficFromFile() {
 
-            List<PointLatLng> trafficPoints = new List<PointLatLng>();
+            trafficPoints = new List<PointLatLng>();
             GMapOverlay polyOverlay = new GMapOverlay("polygons");
 
             if (loadedFileName != null) {
@@ -207,6 +221,16 @@ namespace ProjetoFinalM2 {
                     mapa.ZoomAndCenterRoute(polygon1);
 
                     //polygon1.IsInside();
+
+                    var nVerticesPoligono = trafficPoints.Count();
+                    Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
+
+                    foreach(var point in points) {
+                        if (polygon1.IsInside(point)) {
+                            quantidadePontosNoPoligono += 1;
+                        }
+                    }
+                    Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
                 }
             } else {
                 // Caso não tenho um ficheiro válido:
@@ -219,7 +243,7 @@ namespace ProjetoFinalM2 {
                 trafficPoints.Add(new PointLatLng(39.73476155756275, -8.820868134498596));
                 Console.WriteLine("Entrei no else");
             }
-
+            
         }
 
         private void buttonRemoveOverlays_Click(object sender, EventArgs e) {
@@ -228,6 +252,9 @@ namespace ProjetoFinalM2 {
                 mapa.Overlays.Clear();
                 mapa.Refresh();
             }
+            numPoints = 0;
+            quantidadePontosNoPoligono = 0;
+            nOverlays = 0;
         }
 
     }
