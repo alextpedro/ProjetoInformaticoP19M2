@@ -38,6 +38,13 @@
             labelSaveFileName = new Label();
             buttonCarregarTransito = new Button();
             buttonRemoveOverlays = new Button();
+            dateTimePickerInicio = new DateTimePicker();
+            dateTimePickerFim = new DateTimePicker();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            textBoxRua = new TextBox();
+            buttonTransito = new Button();
             SuspendLayout();
             // 
             // mapa
@@ -48,7 +55,7 @@
             mapa.GrayScaleMode = false;
             mapa.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapa.LevelsKeepInMemory = 5;
-            mapa.Location = new Point(12, 112);
+            mapa.Location = new Point(12, 149);
             mapa.MarkersEnabled = true;
             mapa.MaxZoom = 24;
             mapa.MinZoom = 0;
@@ -62,7 +69,7 @@
             mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapa.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapa.ShowTileGridLines = false;
-            mapa.Size = new Size(1092, 547);
+            mapa.Size = new Size(1092, 510);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
             mapa.MouseClick += Mapa_MouseClick;
@@ -207,11 +214,78 @@
             buttonRemoveOverlays.UseVisualStyleBackColor = false;
             buttonRemoveOverlays.Click += buttonRemoveOverlays_Click;
             // 
+            // dateTimePickerInicio
+            // 
+            dateTimePickerInicio.Location = new Point(375, 24);
+            dateTimePickerInicio.Name = "dateTimePickerInicio";
+            dateTimePickerInicio.Size = new Size(200, 23);
+            dateTimePickerInicio.TabIndex = 18;
+            // 
+            // dateTimePickerFim
+            // 
+            dateTimePickerFim.Location = new Point(375, 55);
+            dateTimePickerFim.Name = "dateTimePickerFim";
+            dateTimePickerFim.Size = new Size(200, 23);
+            dateTimePickerFim.TabIndex = 19;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(290, 30);
+            label1.Name = "label1";
+            label1.Size = new Size(79, 15);
+            label1.TabIndex = 20;
+            label1.Text = "Data de Início";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(290, 59);
+            label2.Name = "label2";
+            label2.Size = new Size(70, 15);
+            label2.TabIndex = 21;
+            label2.Text = "Data de Fim";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(318, 86);
+            label3.Name = "label3";
+            label3.Size = new Size(27, 15);
+            label3.TabIndex = 22;
+            label3.Text = "Rua";
+            // 
+            // textBoxRua
+            // 
+            textBoxRua.Location = new Point(375, 83);
+            textBoxRua.Name = "textBoxRua";
+            textBoxRua.Size = new Size(200, 23);
+            textBoxRua.TabIndex = 23;
+            // 
+            // buttonTransito
+            // 
+            buttonTransito.BackColor = Color.CornflowerBlue;
+            buttonTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonTransito.ForeColor = SystemColors.ButtonFace;
+            buttonTransito.Location = new Point(375, 112);
+            buttonTransito.Name = "buttonTransito";
+            buttonTransito.Size = new Size(200, 31);
+            buttonTransito.TabIndex = 24;
+            buttonTransito.Text = "ConsultarTransito";
+            buttonTransito.UseVisualStyleBackColor = false;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 671);
+            Controls.Add(buttonTransito);
+            Controls.Add(textBoxRua);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(dateTimePickerFim);
+            Controls.Add(dateTimePickerInicio);
             Controls.Add(buttonRemoveOverlays);
             Controls.Add(buttonCarregarTransito);
             Controls.Add(labelSaveFileName);
@@ -252,5 +326,12 @@
         private Label labelSaveFileName;
         private Button buttonCarregarTransito;
         private Button buttonRemoveOverlays;
+        private DateTimePicker dateTimePickerInicio;
+        private DateTimePicker dateTimePickerFim;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private TextBox textBoxRua;
+        private Button buttonTransito;
     }
 }
