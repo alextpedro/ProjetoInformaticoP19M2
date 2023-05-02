@@ -14,8 +14,10 @@ using static GMap.NET.Entity.OpenStreetMapRouteEntity;
 using System.Globalization;
 using Avalonia;
 
-namespace ProjetoFinalM2 {
-    public partial class FormMap : Form {
+namespace ProjetoFinalM2
+{
+    public partial class FormMap : Form
+    {
         private static string? loadedFileName;
         private static string? savedCoordsFile;
         public int numPoints = 0;
@@ -27,7 +29,8 @@ namespace ProjetoFinalM2 {
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
 
-        public FormMap() {
+        public FormMap()
+        {
             //Permite a criacao de uma consola para fins de debugging
             AllocConsole();
 
@@ -40,18 +43,23 @@ namespace ProjetoFinalM2 {
             InitializeComponent();
         }
 
-        private void BtnCarregarMapa_Click(object sender, EventArgs e) {
+        private void BtnCarregarMapa_Click(object sender, EventArgs e)
+        {
             LoadMapFromFile();
         }
 
-        private void Mapa_MouseClick(object sender, MouseEventArgs e) {
+        private void Mapa_MouseClick(object sender, MouseEventArgs e)
+        {
             labelLatitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lat.ToString();
             labelLongitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lng.ToString();
         }
 
-        private void BtnCarregarFicheiro_Click(object sender, EventArgs e) {
-            using (var selectFileDialog = new OpenFileDialog()) {
-                if (selectFileDialog.ShowDialog() == DialogResult.OK) {
+        private void BtnCarregarFicheiro_Click(object sender, EventArgs e)
+        {
+            using (var selectFileDialog = new OpenFileDialog())
+            {
+                if (selectFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     loadedFileName = selectFileDialog.FileName;
                     Console.WriteLine("Filename: " + loadedFileName);
 
@@ -60,15 +68,18 @@ namespace ProjetoFinalM2 {
             }
         }
 
-        private void LabelLatitude_Click(object sender, EventArgs e) {
+        private void LabelLatitude_Click(object sender, EventArgs e)
+        {
             labelLatitude.Focus();
         }
 
-        private void LabelLongitude_Click(object sender, EventArgs e) {
+        private void LabelLongitude_Click(object sender, EventArgs e)
+        {
             labelLongitude.Focus();
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e) {
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
             if (labelLatitude.ContainsFocus && e.Control && e.KeyCode == Keys.C)
                 Clipboard.SetText(labelLatitude.Text);
 
@@ -76,11 +87,13 @@ namespace ProjetoFinalM2 {
                 Clipboard.SetText(labelLongitude.Text);
         }
 
-        private void Mapa_MouseHover(object sender, EventArgs e) {
+        private void Mapa_MouseHover(object sender, EventArgs e)
+        {
 
         }
 
-        private void FormMap_Shown(object sender, EventArgs e) {
+        private void FormMap_Shown(object sender, EventArgs e)
+        {
             //Codigo corre assim que o formulario acabar de carregar tudo
 
             #region Configurar o mapa:
@@ -99,44 +112,31 @@ namespace ProjetoFinalM2 {
             labelLongitude.Text = mapa.Position.Lng.ToString();
         }
 
-        public void LoadMapFromFile() {
+        public void LoadMapFromFile()
+        {
             GMapOverlay routes = new GMapOverlay("routes");
             points = new List<PointLatLng>();
 
-            if (loadedFileName != null) {
+            if (loadedFileName != null)
+            {
                 //grab coords from file
-                using (TextFieldParser parser = new TextFieldParser(loadedFileName)) {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(",");
-
-                    bool isHeader = true;
-                    while (!parser.EndOfData) {
-                        string[] fields = parser.ReadFields();
-
-                        if (isHeader) {
-                            isHeader = false;
-                            continue;
-                        }
-
-                        for (int i = 0; i < fields.Length; i += 2) //fields tem sempre só 2 indices
-                        {
-                            Console.WriteLine(fields[i] + " , " + fields[i + 1]);
-                            var lat = Convert.ToDouble(fields[i]);
-                            var lon = Convert.ToDouble(fields[i + 1]);
-                            points.Add(new PointLatLng(lat, lon));
-                        }
-                    }
-                    numPoints = points.Count;
-                    Console.WriteLine("Número de pontos da rota é " + numPoints);
-                    nOverlays = mapa.Overlays.Count;
-                    Console.WriteLine("O número de Overlays é " + nOverlays);
-                    if (mapa.Overlays.Contains(routes)) {
-                        Console.WriteLine("Contem a overlay ROTA!");
-                    }else {
-                        Console.WriteLine("Não contem a rotita! :( ");
-                    }
+                LoadFilePoints(points);
+                numPoints = points.Count;
+                Console.WriteLine("Número de pontos da rota é " + numPoints);
+                nOverlays = mapa.Overlays.Count;
+                Console.WriteLine("O número de Overlays é " + nOverlays);
+                if (mapa.Overlays.Contains(routes))
+                {
+                    Console.WriteLine("Contem a overlay ROTA!");
                 }
-            } else {
+                else
+                {
+                    Console.WriteLine("Não contem a rotita! :( ");
+                }
+
+            }
+            else
+            {
                 points.Add(new PointLatLng(39.734105, -8.821917));
                 points.Add(new PointLatLng(39.734336, -8.821535));
                 points.Add(new PointLatLng(39.734728, -8.820946));
@@ -152,8 +152,10 @@ namespace ProjetoFinalM2 {
             mapa.ZoomAndCenterRoute(route);
         }
 
-        private void btnSaveCoord_Click(object sender, EventArgs e) {
-            if (savedCoordsFile == null) {
+        private void btnSaveCoord_Click(object sender, EventArgs e)
+        {
+            if (savedCoordsFile == null)
+            {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
                 openFileDialog.DefaultExt = "csv";
@@ -161,16 +163,20 @@ namespace ProjetoFinalM2 {
                 openFileDialog.CheckFileExists = false;
                 openFileDialog.Title = "Abrir ou criar ficheiro CSV";
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     savedCoordsFile = openFileDialog.FileName;
                     labelSaveFileName.Text = openFileDialog.SafeFileName;
                 }
             }
 
             //  Verificar se não é null pois o utilizador pode ter cancelado o openFileDialog
-            if (savedCoordsFile != null) {
-                using (StreamWriter fileStream = File.AppendText(savedCoordsFile)) {
-                    if (new FileInfo(savedCoordsFile).Length == 0) {
+            if (savedCoordsFile != null)
+            {
+                using (StreamWriter fileStream = File.AppendText(savedCoordsFile))
+                {
+                    if (new FileInfo(savedCoordsFile).Length == 0)
+                    {
                         fileStream.WriteLine("Latitude,Longitude");
                     }
 
@@ -180,59 +186,47 @@ namespace ProjetoFinalM2 {
 
         }
 
-        private void buttonCarregarTransito_Click(object sender, EventArgs e) {
+        private void buttonCarregarTransito_Click(object sender, EventArgs e)
+        {
             LoadTrafficFromFile();
         }
 
-        public void LoadTrafficFromFile() {
+        public void LoadTrafficFromFile()
+        {
 
             trafficPoints = new List<PointLatLng>();
             GMapOverlay polyOverlay = new GMapOverlay("polygons");
 
-            if (loadedFileName != null) {
-                
-                using (TextFieldParser parser = new TextFieldParser(loadedFileName)) {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(",");
+            if (loadedFileName != null)
+            {
 
-                    bool isHeader = true;
-                    while (!parser.EndOfData) {
-                        string[] fields = parser.ReadFields();
+                LoadFilePoints(trafficPoints);
+                GMapPolygon polygon1 = new GMapPolygon(trafficPoints, "Traffic Area");
 
-                        if (isHeader) {
-                            isHeader = false;
-                            continue;
-                        }
+                polygon1.Fill = new SolidBrush(Color.FromArgb(35, Color.Black));
+                polygon1.Stroke = new Pen(Color.Black, 1);
 
-                        for (int i = 0; i < fields.Length; i += 2) {
-                            Console.WriteLine(fields[i] + " , " + fields[i + 1]);
-                            var lat = Convert.ToDouble(fields[i]);
-                            var lon = Convert.ToDouble(fields[i + 1]);
-                            trafficPoints.Add(new PointLatLng(lat, lon));
-                        }
+                polyOverlay.Polygons.Add(polygon1);
+                mapa.Overlays.Add(polyOverlay);
+                mapa.ZoomAndCenterRoute(polygon1);
+
+                //polygon1.IsInside();
+
+                var nVerticesPoligono = trafficPoints.Count();
+                Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
+
+                foreach (var point in points)
+                {
+                    if (polygon1.IsInside(point))
+                    {
+                        quantidadePontosNoPoligono += 1;
                     }
-                    GMapPolygon polygon1 = new GMapPolygon(trafficPoints, "Traffic Area");
-
-                    polygon1.Fill = new SolidBrush(Color.FromArgb(35, Color.Black));
-                    polygon1.Stroke = new Pen(Color.Black, 1);
-
-                    polyOverlay.Polygons.Add(polygon1);
-                    mapa.Overlays.Add(polyOverlay);
-                    mapa.ZoomAndCenterRoute(polygon1);
-
-                    //polygon1.IsInside();
-
-                    var nVerticesPoligono = trafficPoints.Count();
-                    Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
-
-                    foreach(var point in points) {
-                        if (polygon1.IsInside(point)) {
-                            quantidadePontosNoPoligono += 1;
-                        }
-                    }
-                    Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
                 }
-            } else {
+                Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
+
+            }
+            else
+            {
                 // Caso não tenho um ficheiro válido:
                 trafficPoints.Add(new PointLatLng(39.73572687127097, -8.821855187416077));
                 trafficPoints.Add(new PointLatLng(39.73630027771427, -8.820868134498596));
@@ -243,12 +237,47 @@ namespace ProjetoFinalM2 {
                 trafficPoints.Add(new PointLatLng(39.73476155756275, -8.820868134498596));
                 Console.WriteLine("Entrei no else");
             }
-            
+
         }
 
-        private void buttonRemoveOverlays_Click(object sender, EventArgs e) {
+        private void LoadFilePoints(List<PointLatLng> list)
+        {
+            using (TextFieldParser parser = new TextFieldParser(loadedFileName))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
 
-            if (mapa.Overlays.Count > 0) {
+                bool isHeader = true;
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+
+                    if (isHeader)
+                    {
+                        isHeader = false;
+                        continue;
+                    }
+
+                    try
+                    {
+                        var lat = Convert.ToDouble(fields[1]);
+                        var lon = Convert.ToDouble(fields[2]);
+                        list.Add(new PointLatLng(lat, lon));
+                    }
+                    catch
+                    {
+                        // Caso a linha esteja vazia e não consiga produzir um double continua para a próxima
+                        continue;
+                    }
+                }
+            }
+        }
+
+        private void buttonRemoveOverlays_Click(object sender, EventArgs e)
+        {
+
+            if (mapa.Overlays.Count > 0)
+            {
                 mapa.Overlays.Clear();
                 mapa.Refresh();
             }
@@ -260,14 +289,16 @@ namespace ProjetoFinalM2 {
     }
 
     // Será a classe que guarda caraterísticas do veículo
-    public class Vehicle {
+    public class Vehicle
+    {
         private int id { get; }
         private int idPath { get; }
         //private List<PointLatLng> coordinates;
     }
 
     // Será a classe Percurso
-    public class Path {
+    public class Path
+    {
         private int ID { get; }
         private string Name { get; set; }
         private string Date { get; set; }
