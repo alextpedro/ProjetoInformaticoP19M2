@@ -1,5 +1,7 @@
-﻿namespace ProjetoFinalM2 {
-    partial class FormMap {
+﻿namespace ProjetoFinalM2
+{
+    partial class FormMap
+    {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -9,8 +11,10 @@
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,7 +26,8 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             mapa = new GMap.NET.WindowsForms.GMapControl();
             btnCarregarMapa = new Button();
             labelMostrarLatitude = new Label();
@@ -45,6 +50,8 @@
             label3 = new Label();
             textBoxRua = new TextBox();
             buttonTransito = new Button();
+            dateTimePickerStartTime = new DateTimePicker();
+            dateTimePickerEndTime = new DateTimePicker();
             SuspendLayout();
             // 
             // mapa
@@ -218,14 +225,14 @@
             // 
             dateTimePickerInicio.Location = new Point(375, 24);
             dateTimePickerInicio.Name = "dateTimePickerInicio";
-            dateTimePickerInicio.Size = new Size(200, 23);
+            dateTimePickerInicio.Size = new Size(120, 23);
             dateTimePickerInicio.TabIndex = 18;
             // 
             // dateTimePickerFim
             // 
             dateTimePickerFim.Location = new Point(375, 55);
             dateTimePickerFim.Name = "dateTimePickerFim";
-            dateTimePickerFim.Size = new Size(200, 23);
+            dateTimePickerFim.Size = new Size(120, 23);
             dateTimePickerFim.TabIndex = 19;
             // 
             // label1
@@ -273,12 +280,31 @@
             buttonTransito.TabIndex = 24;
             buttonTransito.Text = "ConsultarTransito";
             buttonTransito.UseVisualStyleBackColor = false;
+            buttonTransito.Click += buttonTransito_Click;
+            // 
+            // dateTimePickerStartTime
+            // 
+            dateTimePickerStartTime.Format = DateTimePickerFormat.Time;
+            dateTimePickerStartTime.Location = new Point(501, 24);
+            dateTimePickerStartTime.Name = "dateTimePickerStartTime";
+            dateTimePickerStartTime.Size = new Size(74, 23);
+            dateTimePickerStartTime.TabIndex = 25;
+            // 
+            // dateTimePickerEndTime
+            // 
+            dateTimePickerEndTime.Format = DateTimePickerFormat.Time;
+            dateTimePickerEndTime.Location = new Point(501, 55);
+            dateTimePickerEndTime.Name = "dateTimePickerEndTime";
+            dateTimePickerEndTime.Size = new Size(74, 23);
+            dateTimePickerEndTime.TabIndex = 26;
             // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 671);
+            Controls.Add(dateTimePickerEndTime);
+            Controls.Add(dateTimePickerStartTime);
             Controls.Add(buttonTransito);
             Controls.Add(textBoxRua);
             Controls.Add(label3);
@@ -333,5 +359,7 @@
         private Label label3;
         private TextBox textBoxRua;
         private Button buttonTransito;
+        private DateTimePicker dateTimePickerStartTime;
+        private DateTimePicker dateTimePickerEndTime;
     }
 }
