@@ -49,7 +49,7 @@
             label2 = new Label();
             label3 = new Label();
             textBoxRua = new TextBox();
-            buttonTransito = new Button();
+            buttonPesquisarTransito = new Button();
             dateTimePickerStartTime = new DateTimePicker();
             dateTimePickerEndTime = new DateTimePicker();
             SuspendLayout();
@@ -80,7 +80,6 @@
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
             mapa.MouseClick += Mapa_MouseClick;
-            mapa.MouseHover += Mapa_MouseHover;
             // 
             // btnCarregarMapa
             // 
@@ -269,24 +268,25 @@
             textBoxRua.Size = new Size(200, 23);
             textBoxRua.TabIndex = 23;
             // 
-            // buttonTransito
+            // buttonPesquisarTransito
             // 
-            buttonTransito.BackColor = Color.CornflowerBlue;
-            buttonTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonTransito.ForeColor = SystemColors.ButtonFace;
-            buttonTransito.Location = new Point(375, 112);
-            buttonTransito.Name = "buttonTransito";
-            buttonTransito.Size = new Size(200, 31);
-            buttonTransito.TabIndex = 24;
-            buttonTransito.Text = "ConsultarTransito";
-            buttonTransito.UseVisualStyleBackColor = false;
-            buttonTransito.Click += buttonTransito_Click;
+            buttonPesquisarTransito.BackColor = Color.CornflowerBlue;
+            buttonPesquisarTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonPesquisarTransito.ForeColor = SystemColors.ButtonFace;
+            buttonPesquisarTransito.Location = new Point(375, 112);
+            buttonPesquisarTransito.Name = "buttonPesquisarTransito";
+            buttonPesquisarTransito.Size = new Size(200, 31);
+            buttonPesquisarTransito.TabIndex = 24;
+            buttonPesquisarTransito.Text = "ConsultarTransito";
+            buttonPesquisarTransito.UseVisualStyleBackColor = false;
+            buttonPesquisarTransito.Click += buttonPesquisarTransito_Click;
             // 
             // dateTimePickerStartTime
             // 
             dateTimePickerStartTime.Format = DateTimePickerFormat.Time;
             dateTimePickerStartTime.Location = new Point(501, 24);
             dateTimePickerStartTime.Name = "dateTimePickerStartTime";
+            dateTimePickerStartTime.ShowUpDown = true;
             dateTimePickerStartTime.Size = new Size(74, 23);
             dateTimePickerStartTime.TabIndex = 25;
             // 
@@ -295,6 +295,7 @@
             dateTimePickerEndTime.Format = DateTimePickerFormat.Time;
             dateTimePickerEndTime.Location = new Point(501, 55);
             dateTimePickerEndTime.Name = "dateTimePickerEndTime";
+            dateTimePickerEndTime.ShowUpDown = true;
             dateTimePickerEndTime.Size = new Size(74, 23);
             dateTimePickerEndTime.TabIndex = 26;
             // 
@@ -305,7 +306,7 @@
             ClientSize = new Size(1116, 671);
             Controls.Add(dateTimePickerEndTime);
             Controls.Add(dateTimePickerStartTime);
-            Controls.Add(buttonTransito);
+            Controls.Add(buttonPesquisarTransito);
             Controls.Add(textBoxRua);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -358,7 +359,7 @@
         private Label label2;
         private Label label3;
         private TextBox textBoxRua;
-        private Button buttonTransito;
+        private Button buttonPesquisarTransito;
         private DateTimePicker dateTimePickerStartTime;
         private DateTimePicker dateTimePickerEndTime;
     }

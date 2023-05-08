@@ -1,30 +1,19 @@
-using GMap.NET.MapProviders;
 using GMap.NET;
-using System.Linq.Expressions;
-using OfficeOpenXml;
-using System.Windows.Forms;
-using System.Drawing.Text;
+using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
-using System.Collections.Generic;
-using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.FileIO;
-using System.Collections;
-using System.Windows.Documents;
-using static GMap.NET.Entity.OpenStreetMapRouteEntity;
-using System.Globalization;
-using Avalonia;
 
 namespace ProjetoFinalM2
 {
     public partial class FormMap : Form
     {
-        private static string? loadedFileName;
-        private static string? savedCoordsFile;
+        private static string loadedFileName = "";
+        private static string savedCoordsFile = "";
         public int numPoints = 0;
         public int nOverlays = 0;
-        public List<PointLatLng> points;
+        public List<PointLatLng> points = new List<PointLatLng>();
         public int quantidadePontosNoPoligono = 0;
-        public List<PointLatLng> trafficPoints;
+        public List<PointLatLng> trafficPoints = new List<PointLatLng>();
         public List<TimestampedCoords> loadedTSCoords = new List<TimestampedCoords>();
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
@@ -90,11 +79,6 @@ namespace ProjetoFinalM2
                 Clipboard.SetText(labelLongitude.Text);
         }
 
-        private void Mapa_MouseHover(object sender, EventArgs e)
-        {
-
-        }
-
         private void FormMap_Shown(object sender, EventArgs e)
         {
             //Codigo corre assim que o formulario acabar de carregar tudo
@@ -120,29 +104,27 @@ namespace ProjetoFinalM2
             GMapOverlay routes = new GMapOverlay("routes");
             points = new List<PointLatLng>();
 
-            if (loadedFileName != null)
+            if (!String.IsNullOrEmpty(loadedFileName))
             {
                 //grab coords from file
                 LoadFilePoints(points);
                 numPoints = points.Count;
-                Console.WriteLine("Número de pontos da rota é " + numPoints);
+                Console.WriteLine("NÃºmero de pontos da rota : " + numPoints);
                 nOverlays = mapa.Overlays.Count;
-                Console.WriteLine("O número de Overlays é " + nOverlays);
+                Console.WriteLine("O nÃºmero de Overlays : " + nOverlays);
                 if (mapa.Overlays.Contains(routes))
                 {
                     Console.WriteLine("Contem a overlay ROTA!");
                 }
                 else
                 {
-                    Console.WriteLine("Não contem a rotita! :( ");
+                    Console.WriteLine("NÃ£o contem a rotita! :( ");
                 }
 
             }
             else
             {
-                points.Add(new PointLatLng(39.734105, -8.821917));
-                points.Add(new PointLatLng(39.734336, -8.821535));
-                points.Add(new PointLatLng(39.734728, -8.820946));
+                MessageBox.Show("Nenhum ficheiro selecionado.");
             }
 
             GMapRoute route = new GMapRoute(points, "A Vehicle Route");
@@ -151,13 +133,13 @@ namespace ProjetoFinalM2
             routes.Routes.Add(route);
             mapa.Overlays.Add(routes);
 
-            // Força o mapa a fazer zoom para mostrar logo a rota. mapa.Refresh() não funciona.
+            // ForÃ§a o mapa a fazer zoom para mostrar logo a rota. mapa.Refresh() nÃ£o funciona.
             mapa.ZoomAndCenterRoute(route);
         }
 
         private void btnSaveCoord_Click(object sender, EventArgs e)
         {
-            if (savedCoordsFile == null)
+            if (!String.IsNullOrEmpty(loadedFileName))
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -173,8 +155,8 @@ namespace ProjetoFinalM2
                 }
             }
 
-            //  Verificar se não é null pois o utilizador pode ter cancelado o openFileDialog
-            if (savedCoordsFile != null)
+            //  Verificar se nÃ£o Ã© null pois o utilizador pode ter cancelado o openFileDialog
+            if (!String.IsNullOrEmpty(savedCoordsFile))
             {
                 using (StreamWriter fileStream = File.AppendText(savedCoordsFile))
                 {
@@ -196,13 +178,11 @@ namespace ProjetoFinalM2
 
         public void LoadTrafficFromFile()
         {
-
             trafficPoints = new List<PointLatLng>();
             GMapOverlay polyOverlay = new GMapOverlay("polygons");
 
-            if (loadedFileName != null)
+            if (!String.IsNullOrEmpty(loadedFileName))
             {
-
                 LoadFilePoints(trafficPoints);
                 GMapPolygon polygon1 = new GMapPolygon(trafficPoints, "Traffic Area");
 
@@ -216,7 +196,7 @@ namespace ProjetoFinalM2
                 //polygon1.IsInside();
 
                 var nVerticesPoligono = trafficPoints.Count();
-                Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
+                Console.WriteLine("O polÃ­gono para medir o transito tem " + nVerticesPoligono + " vÃ©rtices.");
 
                 foreach (var point in points)
                 {
@@ -225,28 +205,20 @@ namespace ProjetoFinalM2
                         quantidadePontosNoPoligono += 1;
                     }
                 }
-                Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
-
+                Console.WriteLine("Dentro do PolÃ­gono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
             }
             else
             {
-                // Caso não tenho um ficheiro válido:
-                trafficPoints.Add(new PointLatLng(39.73572687127097, -8.821855187416077));
-                trafficPoints.Add(new PointLatLng(39.73630027771427, -8.820868134498596));
-                trafficPoints.Add(new PointLatLng(39.736287902086005, -8.82051408290863));
-                trafficPoints.Add(new PointLatLng(39.735854753696806, -8.819999098777771));
-                trafficPoints.Add(new PointLatLng(39.73574749748473, -8.819961547851562));
-                trafficPoints.Add(new PointLatLng(39.73527721827691, -8.820052742958069));
-                trafficPoints.Add(new PointLatLng(39.73476155756275, -8.820868134498596));
-                Console.WriteLine("Entrei no else");
+                MessageBox.Show("Nenhum ficheiro carregado.");
             }
-
         }
 
         private void LoadFilePoints(List<PointLatLng> list)
         {
-            using (TextFieldParser parser = new TextFieldParser(loadedFileName))
+            if (!String.IsNullOrEmpty(loadedFileName))
             {
+
+                using TextFieldParser parser = new TextFieldParser(loadedFileName);
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
 
@@ -274,10 +246,14 @@ namespace ProjetoFinalM2
                     }
                     catch
                     {
-                        // Caso a linha esteja vazia e não consiga produzir um double continua para a próxima
+                        // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
                         continue;
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Nenhum ficheiro carregado.");
             }
         }
 
@@ -294,71 +270,82 @@ namespace ProjetoFinalM2
             nOverlays = 0;
         }
 
-        private void buttonTransito_Click(object sender, EventArgs e)
+        private void buttonPesquisarTransito_Click(object sender, EventArgs e)
         {
-            //get 2 dates + times ex: 2023-05-03 11:14:24.426
-            DateTime start = DateTime.Parse(dateTimePickerInicio.Text + " " + dateTimePickerStartTime.Text);
-            DateTime end = DateTime.Parse(dateTimePickerFim.Text + " " + dateTimePickerEndTime.Text);
+            DateTime start = dateTimePickerInicio.Value.Date + dateTimePickerStartTime.Value.TimeOfDay;
+            DateTime end = dateTimePickerFim.Value.Date + dateTimePickerEndTime.Value.TimeOfDay;
 
             //Para debugging
             Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
             Console.WriteLine($"There are {loadedTSCoords.Count} points in loadedTSCoords.");
 
-            //search in current routes
-            GMapOverlay routesSearch = new GMapOverlay("routesSearch");
-            points = new List<PointLatLng>();
-            foreach (var tsCoord in loadedTSCoords)
+            try
             {
-                if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks)
+                //search in current routes
+                GMapOverlay routesSearch = new GMapOverlay("routesSearch");
+                points = new List<PointLatLng>();
+                foreach (var tsCoord in loadedTSCoords)
                 {
-                    points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
+                    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks)
+                    {
+                        points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
+                    }
                 }
-            }
-            GMapRoute route = new GMapRoute(points, "Coords between these dates");
+                GMapRoute route = new GMapRoute(points, "Coords between these dates");
 
-            //Mudar cor consoante o Nº de pontos?
-            if (points.Count > 1000)
+                //Mudar cor consoante o NÂº de pontos
+                if (points.Count > 1000)
+                {
+                    route.Stroke = new Pen(Color.Red, 3);
+                }
+                else if (points.Count < 1000 && points.Count > 500)
+                {
+                    route.Stroke = new Pen(Color.Yellow, 3);
+                }
+                else
+                {
+                    route.Stroke = new Pen(Color.Green, 3);
+                }
+
+                routesSearch.Routes.Add(route);
+
+                //clear overlay and draw "selected" routes
+                mapa.Overlays.Clear();
+                mapa.Overlays.Add(routesSearch);
+                mapa.ZoomAndCenterRoute(route);
+
+                //NOTA:loadedTSCoords -> Depois teremos de guardar os dados fora do objecto do GMAP atÃ© podermos fazer isto com pesquisas Ã  DB. 
+            }
+            catch (Exception ex)
             {
-                route.Stroke = new Pen(Color.Red, 3);
+                MessageBox.Show("Algo correu mal!");
+                Console.WriteLine(ex.Message);
             }
-            else if (points.Count < 1000 && points.Count > 500)
-            {
-                route.Stroke = new Pen(Color.Yellow, 3);
-            }
-            else
-            {
-                route.Stroke = new Pen(Color.Green, 3);
-            }
-
-            routesSearch.Routes.Add(route);
-
-            //clear overlay and draw "selected" routes
-            mapa.Overlays.Clear();
-            mapa.Overlays.Add(routesSearch);
-            mapa.ZoomAndCenterRoute(route);
-
-            //NOTA:loadedTSCoords -> Depois teremos de guardar os dados fora do objecto do GMAP até podermos fazer isto com pesquisas à DB. 
         }
     }
 
-    // Será a classe que guarda caraterísticas do veículo
-    public class Vehicle
-    {
-        private int id { get; }
-        private int idPath { get; }
-        //private List<PointLatLng> coordinates;
-    }
+    #region Classe Vehicle
+    //// Serï¿½ a classe que guarda caraterï¿½sticas do veï¿½culo
+    //public class Vehicle
+    //{
+    //    private int id { get; }
+    //    private int idPath { get; }
+    //    //private List<PointLatLng> coordinates;
+    //}
+    #endregion
 
-    // Será a classe Percurso
-    public class Path
-    {
-        private int ID { get; }
-        private string Name { get; set; }
-        private string Date { get; set; }
-        private int IDVehicle { get; }
-        private int NVehicles { get; set; }
-        private List<PointLatLng> coordinates;
-    }
+    #region Classe Percurso
+    //// Serï¿½ a classe Percurso
+    //public class Path
+    //{
+    //    private int ID { get; }
+    //    private string Name { get; set; }
+    //    private string Date { get; set; }
+    //    private int IDVehicle { get; }
+    //    private int NVehicles { get; set; }
+    //    private List<PointLatLng> coordinates;
+    //}
+    #endregion
 
     public class TimestampedCoords
     {
