@@ -302,7 +302,7 @@ namespace ProjetoFinalM2
 
             //Para debugging
             Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
-            Console.WriteLine(loadedTSCoords[0].ToString());
+            Console.WriteLine($"There are {loadedTSCoords.Count} points in loadedTSCoords.");
 
             //search in current routes
             GMapOverlay routesSearch = new GMapOverlay("routesSearch");
@@ -317,7 +317,18 @@ namespace ProjetoFinalM2
             GMapRoute route = new GMapRoute(points, "Coords between these dates");
 
             //Mudar cor consoante o Nº de pontos?
-            route.Stroke = new Pen(Color.Green, 3);
+            if (points.Count > 1000)
+            {
+                route.Stroke = new Pen(Color.Red, 3);
+            }
+            else if (points.Count < 1000 && points.Count > 500)
+            {
+                route.Stroke = new Pen(Color.Yellow, 3);
+            }
+            else
+            {
+                route.Stroke = new Pen(Color.Green, 3);
+            }
 
             routesSearch.Routes.Add(route);
 
