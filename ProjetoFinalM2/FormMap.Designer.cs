@@ -175,7 +175,7 @@
             // labelSaveFile
             // 
             labelSaveFile.AutoSize = true;
-            labelSaveFile.Location = new Point(130, 86);
+            labelSaveFile.Location = new Point(20, 120);
             labelSaveFile.Name = "labelSaveFile";
             labelSaveFile.Size = new Size(52, 15);
             labelSaveFile.TabIndex = 14;
@@ -184,7 +184,7 @@
             // labelSaveFileName
             // 
             labelSaveFileName.AutoSize = true;
-            labelSaveFileName.Location = new Point(183, 86);
+            labelSaveFileName.Location = new Point(73, 120);
             labelSaveFileName.Name = "labelSaveFileName";
             labelSaveFileName.Size = new Size(54, 15);
             labelSaveFileName.TabIndex = 15;
@@ -208,7 +208,7 @@
             buttonRemoveOverlays.ForeColor = SystemColors.ButtonFace;
             buttonRemoveOverlays.Location = new Point(917, 86);
             buttonRemoveOverlays.Name = "buttonRemoveOverlays";
-            buttonRemoveOverlays.Size = new Size(147, 22);
+            buttonRemoveOverlays.Size = new Size(147, 31);
             buttonRemoveOverlays.TabIndex = 17;
             buttonRemoveOverlays.Text = "Remover Overlays";
             buttonRemoveOverlays.UseVisualStyleBackColor = false;
@@ -216,6 +216,8 @@
             // 
             // dateTimePickerInicio
             // 
+            dateTimePickerInicio.CustomFormat = "yyyy MMM dd ";
+            dateTimePickerInicio.Format = DateTimePickerFormat.Time;
             dateTimePickerInicio.Location = new Point(375, 24);
             dateTimePickerInicio.Name = "dateTimePickerInicio";
             dateTimePickerInicio.Size = new Size(200, 23);
@@ -273,6 +275,7 @@
             buttonTransito.TabIndex = 24;
             buttonTransito.Text = "ConsultarTransito";
             buttonTransito.UseVisualStyleBackColor = false;
+            buttonTransito.Click += buttonTransito_Click;
             // 
             // FormMap
             // 

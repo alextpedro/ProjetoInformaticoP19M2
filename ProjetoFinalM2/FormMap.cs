@@ -23,6 +23,7 @@ namespace ProjetoFinalM2 {
         public List<PointLatLng> points;
         public int quantidadePontosNoPoligono = 0;
         public List<PointLatLng> trafficPoints;
+        public int numRotas = 0;
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -53,7 +54,9 @@ namespace ProjetoFinalM2 {
             using (var selectFileDialog = new OpenFileDialog()) {
                 if (selectFileDialog.ShowDialog() == DialogResult.OK) {
                     loadedFileName = selectFileDialog.FileName;
+                    Console.WriteLine("******************************************");
                     Console.WriteLine("Filename: " + loadedFileName);
+                    Console.WriteLine("******************************************");
 
                     labelCurrentFileName.Text = selectFileDialog.SafeFileName;
                 }
@@ -107,19 +110,17 @@ namespace ProjetoFinalM2 {
                 //grab coords from file
                 LoadFilePoints(points);
                 numPoints = points.Count;
+                Console.WriteLine("******************************************");
                 Console.WriteLine("Número de pontos da rota é " + numPoints);
-                nOverlays = mapa.Overlays.Count;
-                Console.WriteLine("O número de Overlays é " + nOverlays);
-                if (mapa.Overlays.Contains(routes)) {
-                    Console.WriteLine("Contem a overlay ROTA!");
-                } else {
-                    Console.WriteLine("Não contem a rotita! :( ");
-                }
-
+                numRotas++;
             } else {
-                points.Add(new PointLatLng(39.734105, -8.821917));
-                points.Add(new PointLatLng(39.734336, -8.821535));
-                points.Add(new PointLatLng(39.734728, -8.820946));
+                //points.Add(new PointLatLng(39.734105, -8.821917));
+                //points.Add(new PointLatLng(39.734336, -8.821535));
+                //points.Add(new PointLatLng(39.734728, -8.820946));
+                Console.WriteLine("##########################################");
+                Console.WriteLine("###          Não tem Overlays!         ###");
+                Console.WriteLine("###        Insira rotas primeiro!      ###");
+                Console.WriteLine("##########################################");
             }
 
             GMapRoute route = new GMapRoute(points, "A Vehicle Route");
@@ -168,10 +169,12 @@ namespace ProjetoFinalM2 {
 
             trafficPoints = new List<PointLatLng>();
             GMapOverlay polyOverlay = new GMapOverlay("polygons");
+            // Obtem a primeira Overlay
+            GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
 
             if (loadedFileName != null) {
 
-                LoadFilePoints(trafficPoints);
+                LoadFilePointsAntigo(trafficPoints);
                 GMapPolygon polygon1 = new GMapPolygon(trafficPoints, "Traffic Area");
 
                 polygon1.Fill = new SolidBrush(Color.FromArgb(35, Color.Black));
@@ -181,17 +184,56 @@ namespace ProjetoFinalM2 {
                 mapa.Overlays.Add(polyOverlay);
                 mapa.ZoomAndCenterRoute(polygon1);
 
-                //polygon1.IsInside();
-
                 var nVerticesPoligono = trafficPoints.Count();
                 Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
 
-                foreach (var point in points) {
-                    if (polygon1.IsInside(point)) {
-                        quantidadePontosNoPoligono += 1;
+                //foreach (var point in points) {
+                //    if (polygon1.IsInside(point)) {
+                //        quantidadePontosNoPoligono += 1;
+
+                //    }
+                //}
+                //Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " pontos da Rota anterior.");
+
+                foreach (GMapRoute route in overlay.Routes) {
+                    // Fazer algo com cada rota -> como acessar as coordenadas de seus pontos
+                    List<PointLatLng> routePoints = route.Points;
+                    foreach (var point in routePoints) {
+                        if (polygon1.IsInside(point)) {
+                            quantidadePontosNoPoligono += 1;
+                        }
                     }
+                    numRotas++;
+
+                    #region Onde definimos cores consoante trânsito
+                    if (numRotas < 3) {
+                        // Pouco Transito -> Verde a Rua 
+                        route.Stroke = new Pen(Color.Green, 3);
+                    } else if (numRotas < 6) {
+                        // Transito Moderado -> Laranja a Rua
+                        route.Stroke = new Pen(Color.Orange, 3);
+                    } else {
+                        // Muito Trânsito -> Vermelho a Rua
+                        route.Stroke = new Pen(Color.Red, 3);
+                    }
+                    #endregion
+
+                    mapa.ZoomAndCenterRoutes(overlay.Id);
+
+                    #region Dados a imprimir na consola
+                    Console.WriteLine("******************************************");
+                    Console.WriteLine("Estou na Rota: " + route.Name);
+                    Console.WriteLine("******************************************");
+                    Console.WriteLine("Quantidade de Rotas =    " + numRotas);
+                    Console.WriteLine("******************************************");
+                    Console.WriteLine("Quantidade de Pontos =   " + points.Count);
+                    Console.WriteLine("******************************************");
+                    Console.WriteLine("Quantidade de Overlays = " + mapa.Overlays.Count);
+                    Console.WriteLine("******************************************");
+                    Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " pontos da Rota anterior.");
+                    Console.WriteLine("******************************************");
+                    #endregion
                 }
-                Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
 
             } else {
                 // Caso não tenho um ficheiro válido:
@@ -202,7 +244,7 @@ namespace ProjetoFinalM2 {
                 trafficPoints.Add(new PointLatLng(39.73574749748473, -8.819961547851562));
                 trafficPoints.Add(new PointLatLng(39.73527721827691, -8.820052742958069));
                 trafficPoints.Add(new PointLatLng(39.73476155756275, -8.820868134498596));
-                Console.WriteLine("Entrei no else");
+                //Console.WriteLine("Entrei no else");
             }
 
         }
@@ -233,17 +275,128 @@ namespace ProjetoFinalM2 {
             }
         }
 
+        #region Apagar quando o LoadFilePoints estiver bom
+        private void LoadFilePointsAntigo(List<PointLatLng> list) {
+            using (TextFieldParser parser = new TextFieldParser(loadedFileName)) {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+
+                bool isHeader = true;
+                while (!parser.EndOfData) {
+                    string[] fields = parser.ReadFields();
+
+                    if (isHeader) {
+                        isHeader = false;
+                        continue;
+                    }
+
+                    try {
+                        var lat = Convert.ToDouble(fields[0]);
+                        var lon = Convert.ToDouble(fields[1]);
+                        list.Add(new PointLatLng(lat, lon));
+                    } catch {
+                        // Caso a linha esteja vazia e não consiga produzir um double continua para a próxima
+                        continue;
+                    }
+                }
+            }
+        }
+        #endregion
+
         private void buttonRemoveOverlays_Click(object sender, EventArgs e) {
 
             if (mapa.Overlays.Count > 0) {
                 mapa.Overlays.Clear();
                 mapa.Refresh();
+                Console.WriteLine("##########################################");
+                Console.WriteLine("###    As Overlays foram removidas.    ###");
+                Console.WriteLine("##########################################");
             }
             numPoints = 0;
+            numRotas = 0;
             quantidadePontosNoPoligono = 0;
             nOverlays = 0;
+            numRotas = 0;
         }
 
+        private void buttonTransito_Click(object sender, EventArgs e) {
+
+            #region Variaveis com dados dos filtros
+            string dataInicio = dateTimePickerInicio.ToString();
+            string dataFim = dateTimePickerFim.ToString();
+            string rua = textBoxRua.ToString();
+            #endregion
+
+            // Obtem a primeira Overlay
+            GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
+
+
+            string startCoorStreet = "Rua dos Mártires, Leiria, Portugal";//textBoxRua.ToString();
+            string endCoorStreet = "Avenida Marquês de Pombal, Leiria, Portugal";//textBoxRua.ToString();
+            MapRoute mapRoute = GMap.NET.MapProviders.GoogleMapProvider.Instance.GetRoute(startCoorStreet, endCoorStreet, false, false, 15);
+            GMapRoute r = new GMapRoute(mapRoute.Points, "My route");
+
+            GMapOverlay routesOverlay = new GMapOverlay("trafficRoutes");
+            routesOverlay.Routes.Add(r);
+            mapa.Overlays.Add(routesOverlay);
+
+            if (numRotas < 3) {
+                // Pouco Transito -> Verde a Rua 
+                r.Stroke = new Pen(Color.Green, 3);
+            } else if (numRotas < 6) {
+                // Transito Moderado -> Laranja a Rua
+                r.Stroke = new Pen(Color.Orange, 3);
+            } else {
+                // Muito Trânsito -> Vermelho a Rua
+                r.Stroke = new Pen(Color.Red, 3);
+            }
+
+
+            //if (overlay != null) {
+
+            //    // Itera sobre cada rota na Overlay
+            //    foreach (GMapRoute route in overlay.Routes) {
+            //        // Fazer algo com cada rota -> como acessar as coordenadas de seus pontos
+            //        List<PointLatLng> routePoints = route.Points;
+
+
+
+            //        #region Onde definimos cores consoante trânsito
+            //        if (numRotas < 3) {
+            //            // Pouco Transito -> Verde a Rua 
+            //            //route.Stroke = new Pen(Color.Green, 3);
+            //        } else if (numRotas < 6) {
+            //            // Transito Moderado -> Laranja a Rua
+            //            route.Stroke = new Pen(Color.Orange, 3);
+            //        } else {
+            //            // Muito Trânsito -> Vermelho a Rua
+            //            route.Stroke = new Pen(Color.Red, 3);
+            //        }
+            //        #endregion
+
+            //        // No final faz zoom na rua
+            //        //mapa.ZoomAndCenterRoute(route);
+            //        mapa.ZoomAndCenterRoutes(overlay.Id);
+
+            //        #region Dados a imprimir na consola
+            //        Console.WriteLine("******************************************");
+            //        Console.WriteLine("Estou na Rota: " + route.Name);
+            //        Console.WriteLine("******************************************");
+            //        Console.WriteLine("Quantidade de Rotas =    " + numRotas);
+            //        Console.WriteLine("******************************************");
+            //        Console.WriteLine("Quantidade de Pontos =   " + points.Count);
+            //        Console.WriteLine("******************************************");
+            //        Console.WriteLine("Quantidade de Overlays = " + mapa.Overlays.Count);
+            //        Console.WriteLine("******************************************");
+            //        #endregion
+            //    }
+            //} else {
+            //    Console.WriteLine("##########################################");
+            //    Console.WriteLine("###          Não tem Overlays!         ###");
+            //    Console.WriteLine("###        Insira rotas primeiro!      ###");
+            //    Console.WriteLine("##########################################");
+            //}
+        }
     }
 
     // Será a classe que guarda caraterísticas do veículo
