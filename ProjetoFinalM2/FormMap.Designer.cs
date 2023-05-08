@@ -287,6 +287,7 @@
             dateTimePickerStartTime.Format = DateTimePickerFormat.Time;
             dateTimePickerStartTime.Location = new Point(501, 24);
             dateTimePickerStartTime.Name = "dateTimePickerStartTime";
+            dateTimePickerStartTime.ShowUpDown = true;
             dateTimePickerStartTime.Size = new Size(74, 23);
             dateTimePickerStartTime.TabIndex = 25;
             // 
@@ -295,6 +296,7 @@
             dateTimePickerEndTime.Format = DateTimePickerFormat.Time;
             dateTimePickerEndTime.Location = new Point(501, 55);
             dateTimePickerEndTime.Name = "dateTimePickerEndTime";
+            dateTimePickerEndTime.ShowUpDown = true;
             dateTimePickerEndTime.Size = new Size(74, 23);
             dateTimePickerEndTime.TabIndex = 26;
             // 
