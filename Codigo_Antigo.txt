@@ -1,0 +1,22 @@
+    #region Classe Vehicle
+    //// Ser� a classe que guarda carater�sticas do ve�culo
+    //public class Vehicle
+    //{
+    //    private int id { get; }
+    //    private int idPath { get; }
+    //    //private List<PointLatLng> coordinates;
+    //}
+    #endregion
+
+    #region Classe Percurso
+    //// Ser� a classe Percurso
+    //public class Path
+    //{
+    //    private int ID { get; }
+    //    private string Name { get; set; }
+    //    private string Date { get; set; }
+    //    private int IDVehicle { get; }
+    //    private int NVehicles { get; set; }
+    //    private List<PointLatLng> coordinates;
+    //}
+    #endregion
