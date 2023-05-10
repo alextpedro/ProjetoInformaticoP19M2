@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.FileIO;
+using ProjetoFinalM2.Data;
 
 namespace ProjetoFinalM2.Helpers
 {
@@ -19,45 +21,6 @@ namespace ProjetoFinalM2.Helpers
         public static int numPoints = 0;
         public static int nOverlays = 0;
 
-        public static void LoadMapFromFile(GMapControl mapa)
-        {
-            GMapOverlay routes = new GMapOverlay("routes");
-            points = new List<PointLatLng>();
-
-            if (!String.IsNullOrEmpty(loadedFileName))
-            {
-                //grab coords from file
-                //LoadFilePoints(points);
-                numPoints = points.Count;
-                Console.WriteLine("Número de pontos da rota : " + numPoints);
-                nOverlays = mapa.Overlays.Count;
-                Console.WriteLine("O número de Overlays : " + nOverlays);
-                if (mapa.Overlays.Contains(routes))
-                {
-                    Console.WriteLine("Contem a overlay ROTA!");
-                }
-                else
-                {
-                    Console.WriteLine("Não contem a rotita! :( ");
-                }
-
-            }
-            else
-            {
-                MessageBox.Show("Nenhum ficheiro selecionado.");
-            }
-
-            GMapRoute route = new GMapRoute(points, "A Vehicle Route");
-            route.Stroke = new Pen(Color.Green, 3);
-
-            routes.Routes.Add(route);
-            mapa.Overlays.Add(routes);
-
-            // Força o mapa a fazer zoom para mostrar logo a rota. mapa.Refresh() não funciona.
-            mapa.ZoomAndCenterRoute(route);
-        }
-
-        [STAThread]
         public static string SaveCoordToFile(string lat, string lon)
         {
 
@@ -95,9 +58,67 @@ namespace ProjetoFinalM2.Helpers
             return saveFileName;
         }
 
-        public static void TestMethod()
+        public static List<TimestampedCoords>? LoadFilePoints(List<PointLatLng> list)
         {
-            Console.WriteLine("Test method.");
+            if (!String.IsNullOrEmpty(loadedFileName))
+            {
+                using TextFieldParser parser = new TextFieldParser(loadedFileName);
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+
+                List<TimestampedCoords> tmpTSCoords = new List<TimestampedCoords>();
+
+                bool isHeader = true;
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+
+                    if (isHeader)
+                    {
+                        isHeader = false;
+                        continue;
+                    }
+
+                    try
+                    {
+                        var lat = Convert.ToDouble(fields[1]);
+                        var lon = Convert.ToDouble(fields[2]);
+                        list.Add(new PointLatLng(lat, lon));
+
+                        var timestamp = DateTime.Parse(fields[0]);
+
+                        tmpTSCoords.Add(new TimestampedCoords(timestamp, lat, lon));
+
+                    }
+                    catch
+                    {
+                        // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
+                        continue;
+                    }
+                }
+
+                return tmpTSCoords;
+            }
+            else
+            {
+                MessageBox.Show("Nenhum ficheiro carregado.");
+                return null;
+            }
+        }
+
+        internal static string? LoadFile()
+        {
+            using (var selectFileDialog = new OpenFileDialog())
+            {
+                if (selectFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    loadedFileName = selectFileDialog.FileName;
+                    Console.WriteLine($"Filename: {loadedFileName}");
+
+                    return selectFileDialog.SafeFileName;
+                }
+            }
+            return null;
         }
     }
 }

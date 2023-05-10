@@ -33,7 +33,8 @@ namespace ProjetoFinalM2
 
         private void BtnCarregarMapa_Click(object sender, EventArgs e)
         {
-            FileLoader.LoadMapFromFile(mapa);
+            FileLoader.LoadFilePoints(trafficPoints);
+            OverlayHelper.DrawRoute(mapa, trafficPoints, Color.Green, 3);
         }
 
         private void Mapa_MouseClick(object sender, MouseEventArgs e)
@@ -44,7 +45,7 @@ namespace ProjetoFinalM2
 
         private void BtnCarregarFicheiro_Click(object sender, EventArgs e)
         {
-            
+            labelCurrentFileName.Text = FileLoader.LoadFile() ?? labelCurrentFileName.Text;
         }
 
         private void LabelLatitude_Click(object sender, EventArgs e)
@@ -99,95 +100,26 @@ namespace ProjetoFinalM2
         public void LoadTrafficFromFile()
         {
             trafficPoints = new List<PointLatLng>();
-            GMapOverlay polyOverlay = new GMapOverlay("polygons");
+            loadedTSCoords.AddRange(FileLoader.LoadFilePoints(trafficPoints));
 
-            if (!String.IsNullOrEmpty(""/*loadedFileName*/))
-            {
-                LoadFilePoints(trafficPoints);
-                GMapPolygon polygon1 = new GMapPolygon(trafficPoints, "Traffic Area");
+            OverlayHelper.DrawPolygon(mapa, trafficPoints, Color.Black);
 
-                polygon1.Fill = new SolidBrush(Color.FromArgb(35, Color.Black));
-                polygon1.Stroke = new Pen(Color.Black, 1);
+            var nVerticesPoligono = trafficPoints.Count();
+            Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
 
-                polyOverlay.Polygons.Add(polygon1);
-                mapa.Overlays.Add(polyOverlay);
-                mapa.ZoomAndCenterRoute(polygon1);
-
-                //polygon1.IsInside();
-
-                var nVerticesPoligono = trafficPoints.Count();
-                Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
-
-                //foreach (var point in points)
-                //{
-                //    if (polygon1.IsInside(point))
-                //    {
-                //        quantidadePontosNoPoligono += 1;
-                //    }
-                //}
-                Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
-            }
-            else
-            {
-                MessageBox.Show("Nenhum ficheiro carregado.");
-            }
-        }
-
-        private void LoadFilePoints(List<PointLatLng> list)
-        {
-            //if (!String.IsNullOrEmpty(""/*loadedFileName*/))
+            //foreach (var point in points)
             //{
-
-            //    using TextFieldParser parser = new TextFieldParser(loadedFileName);
-            //    parser.TextFieldType = FieldType.Delimited;
-            //    parser.SetDelimiters(",");
-
-            //    bool isHeader = true;
-            //    while (!parser.EndOfData)
+            //    if (polygon1.IsInside(point))
             //    {
-            //        string[] fields = parser.ReadFields();
-
-            //        if (isHeader)
-            //        {
-            //            isHeader = false;
-            //            continue;
-            //        }
-
-            //        try
-            //        {
-            //            var lat = Convert.ToDouble(fields[1]);
-            //            var lon = Convert.ToDouble(fields[2]);
-            //            list.Add(new PointLatLng(lat, lon));
-
-            //            var timestamp = DateTime.Parse(fields[0]);
-
-            //            loadedTSCoords.Add(new TimestampedCoords(timestamp, lat, lon));
-
-            //        }
-            //        catch
-            //        {
-            //            // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
-            //            continue;
-            //        }
+            //        quantidadePontosNoPoligono += 1;
             //    }
             //}
-            //else
-            //{
-            //    MessageBox.Show("Nenhum ficheiro carregado.");
-            //}
+            Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
         }
 
         private void buttonRemoveOverlays_Click(object sender, EventArgs e)
         {
-
-            if (mapa.Overlays.Count > 0)
-            {
-                mapa.Overlays.Clear();
-                mapa.Refresh();
-            }
-            //numPoints = 0;
-            //quantidadePontosNoPoligono = 0;
-            //nOverlays = 0;
+            OverlayHelper.ClearOverlays(mapa);
         }
 
         private void buttonPesquisarTransito_Click(object sender, EventArgs e)
@@ -199,48 +131,35 @@ namespace ProjetoFinalM2
             Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
             Console.WriteLine($"There are {loadedTSCoords.Count} points in loadedTSCoords.");
 
-            //try
-            //{
-            //    //search in current routes
-            //    GMapOverlay routesSearch = new GMapOverlay("routesSearch");
-            //    points = new List<PointLatLng>();
-            //    foreach (var tsCoord in loadedTSCoords)
-            //    {
-            //        if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks)
-            //        {
-            //            points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
-            //        }
-            //    }
-            //    GMapRoute route = new GMapRoute(points, "Coords between these dates");
+            try
+            {
+                List<PointLatLng> points = new List<PointLatLng>();
+                foreach (var tsCoord in loadedTSCoords)
+                {
+                    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks)
+                    {
+                        points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
+                    }
+                }
 
-            //    //Mudar cor consoante o Nº de pontos
-            //    if (points.Count > 1000)
-            //    {
-            //        route.Stroke = new Pen(Color.Red, 3);
-            //    }
-            //    else if (points.Count < 1000 && points.Count > 500)
-            //    {
-            //        route.Stroke = new Pen(Color.Yellow, 3);
-            //    }
-            //    else
-            //    {
-            //        route.Stroke = new Pen(Color.Green, 3);
-            //    }
-
-            //    routesSearch.Routes.Add(route);
-
-            //    //clear overlay and draw "selected" routes
-            //    mapa.Overlays.Clear();
-            //    mapa.Overlays.Add(routesSearch);
-            //    mapa.ZoomAndCenterRoute(route);
-
-            //    //NOTA:loadedTSCoords -> Depois teremos de guardar os dados fora do objecto do GMAP até podermos fazer isto com pesquisas à DB. 
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Algo correu mal!");
-            //    Console.WriteLine(ex.Message);
-            //}
+                if (points.Count > 1000)
+                {
+                    OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
+                }
+                else if (points.Count < 1000 && points.Count > 500)
+                {
+                    OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
+                }
+                else
+                {
+                    OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Algo correu mal!");
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
