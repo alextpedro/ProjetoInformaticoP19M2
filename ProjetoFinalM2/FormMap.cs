@@ -1,7 +1,5 @@
 using GMap.NET;
 using GMap.NET.MapProviders;
-using GMap.NET.WindowsForms;
-using Microsoft.VisualBasic.FileIO;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
 
@@ -9,7 +7,7 @@ namespace ProjetoFinalM2
 {
     public partial class FormMap : Form
     {
-        
+
         public int quantidadePontosNoPoligono = 0;
         public List<TimestampedCoords> loadedTSCoords = new List<TimestampedCoords>();
 
@@ -18,8 +16,7 @@ namespace ProjetoFinalM2
 
         public FormMap()
         {
-            //Permite a criacao de uma consola para fins de debugging
-            AllocConsole();
+            AllocConsole(); //Permite a criacao de uma consola para fins de debugging
 
             #region Colocar delimitador standard
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
@@ -32,8 +29,21 @@ namespace ProjetoFinalM2
 
         private void BtnCarregarMapa_Click(object sender, EventArgs e)
         {
-            pointsLoadedFromFile = FileLoader.LoadPointsFromFile();
-            OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
+            try
+            {
+                loadedTSCoords.AddRange(FileLoader.LoadPointsFromFile());
+
+                List<PointLatLng> pointsLoadedFromFile = new();
+                pointsLoadedFromFile.AddRange(from coord in loadedTSCoords
+                                              select new PointLatLng(coord.Lat, coord.Lon));
+
+                OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Nenhum ficheiro carregado.");
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void Mapa_MouseClick(object sender, MouseEventArgs e)
@@ -93,13 +103,9 @@ namespace ProjetoFinalM2
 
         private void buttonCarregarTransito_Click(object sender, EventArgs e)
         {
-            LoadTrafficFromFile();
-        }
-
-        public void LoadTrafficFromFile()
-        {
-            trafficPoints = new List<PointLatLng>();
-            loadedTSCoords.AddRange(FileLoader.LoadFilePoints(trafficPoints));
+            List<PointLatLng> trafficPoints = new();
+            trafficPoints.AddRange(from coord in loadedTSCoords
+                                   select new PointLatLng(coord.Lat, coord.Lon));
 
             OverlayHelper.DrawPolygon(mapa, trafficPoints, Color.Black);
 
@@ -135,7 +141,7 @@ namespace ProjetoFinalM2
                 List<PointLatLng> points = new List<PointLatLng>();
                 foreach (var tsCoord in loadedTSCoords)
                 {
-                    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks)
+                    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
                     {
                         points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
                     }

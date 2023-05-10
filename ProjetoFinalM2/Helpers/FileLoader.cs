@@ -92,7 +92,6 @@ namespace ProjetoFinalM2.Helpers
             }
             else
             {
-                MessageBox.Show("Nenhum ficheiro carregado.");
                 return null;
             }
         }
