@@ -11,7 +11,6 @@ namespace ProjetoFinalM2
     {
         
         public int quantidadePontosNoPoligono = 0;
-        public List<PointLatLng> trafficPoints = new List<PointLatLng>();
         public List<TimestampedCoords> loadedTSCoords = new List<TimestampedCoords>();
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
@@ -33,8 +32,8 @@ namespace ProjetoFinalM2
 
         private void BtnCarregarMapa_Click(object sender, EventArgs e)
         {
-            FileLoader.LoadFilePoints(trafficPoints);
-            OverlayHelper.DrawRoute(mapa, trafficPoints, Color.Green, 3);
+            pointsLoadedFromFile = FileLoader.LoadPointsFromFile();
+            OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
         }
 
         private void Mapa_MouseClick(object sender, MouseEventArgs e)

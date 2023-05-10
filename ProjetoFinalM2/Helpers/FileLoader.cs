@@ -16,15 +16,12 @@ namespace ProjetoFinalM2.Helpers
         private static string? loadedFileName;
         private static string? savedCoordsFile;
         private static string? saveFileName;
-        public static List<PointLatLng> points = new List<PointLatLng>();
 
         public static int numPoints = 0;
         public static int nOverlays = 0;
 
         public static string SaveCoordToFile(string lat, string lon)
         {
-
-            //Se não houver ficheiro de guardar coordenadas:
             if (String.IsNullOrEmpty(savedCoordsFile))
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -41,7 +38,6 @@ namespace ProjetoFinalM2.Helpers
                 }
             }
 
-            //  Verificar se não é null pois o utilizador pode ter cancelado o openFileDialog
             if (!String.IsNullOrEmpty(savedCoordsFile))
             {
                 using (StreamWriter fileStream = File.AppendText(savedCoordsFile))
@@ -58,7 +54,7 @@ namespace ProjetoFinalM2.Helpers
             return saveFileName;
         }
 
-        public static List<TimestampedCoords>? LoadFilePoints(List<PointLatLng> list)
+        public static List<TimestampedCoords>? LoadPointsFromFile()
         {
             if (!String.IsNullOrEmpty(loadedFileName))
             {
@@ -83,18 +79,13 @@ namespace ProjetoFinalM2.Helpers
                     {
                         var lat = Convert.ToDouble(fields[1]);
                         var lon = Convert.ToDouble(fields[2]);
-                        list.Add(new PointLatLng(lat, lon));
 
                         var timestamp = DateTime.Parse(fields[0]);
 
                         tmpTSCoords.Add(new TimestampedCoords(timestamp, lat, lon));
 
                     }
-                    catch
-                    {
-                        // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
-                        continue;
-                    }
+                    catch { continue; } // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
                 }
 
                 return tmpTSCoords;
