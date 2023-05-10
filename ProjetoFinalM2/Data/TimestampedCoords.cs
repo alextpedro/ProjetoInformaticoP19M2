@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetoFinalM2
+namespace ProjetoFinalM2.Data
 {
     public class TimestampedCoords
     {
+        public DateTime Timestamp { get; set; }
+        public double Lat { get; set; }
+        public double Lon { get; set; }
+
         public TimestampedCoords(DateTime timestamp, double lat, double lon)
         {
             Timestamp = timestamp;
@@ -19,9 +23,5 @@ namespace ProjetoFinalM2
         {
             return $"{Timestamp} {Lat} {Lon}";
         }
-
-        public DateTime Timestamp { get; set; }
-        public double Lat { get; set; }
-        public double Lon { get; set; }
     }
 }
