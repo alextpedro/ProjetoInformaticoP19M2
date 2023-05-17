@@ -2,6 +2,8 @@ using GMap.NET;
 using GMap.NET.MapProviders;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
+using System;
+using System.Net;
 
 namespace ProjetoFinalM2
 {
@@ -139,14 +141,55 @@ namespace ProjetoFinalM2
             try
             {
                 List<PointLatLng> points = new List<PointLatLng>();
-                foreach (var tsCoord in loadedTSCoords)
+                //foreach (var tsCoord in loadedTSCoords)
+                //{
+                //    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
+                //    {
+                //        points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
+                //    }
+                //}
+
+                #region Adicionar Pontos na Lista e Filtrar
+                for (int i = 1; i < loadedTSCoords.Count; i++)
                 {
-                    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
+                    var pontoAnterior = loadedTSCoords[i - 1];
+                    var pontoAtual = loadedTSCoords[i];
+
+                    if (pontoAtual.Lon > pontoAnterior.Lon || pontoAtual.Lat > pontoAnterior.Lat ||
+                        pontoAtual.Lon < pontoAnterior.Lon || pontoAtual.Lat < pontoAnterior.Lat)
                     {
-                        points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
+                        #region Adiciona pontos limpos sem repetições à lista
+                        if (pontoAtual.Timestamp.Ticks >= start.Ticks && pontoAtual.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
+                        {
+                            points.Add(new PointLatLng(pontoAtual.Lat, pontoAtual.Lon));
+                        }
+                        #endregion
+
+                        #region Direções Cartesianas
+                        if (pontoAtual.Lon > pontoAnterior.Lon)
+                        {
+                            // Rota da esquerda para a direita
+                            Console.WriteLine("Sentido cartesiano: Este para Oeste");
+                        } else if (pontoAtual.Lon < pontoAnterior.Lon)
+                        {
+                            // Rota da direita para a esquerda
+                            Console.WriteLine("Sentido cartesiano: Oeste para Este");
+                        }
+                        if (pontoAtual.Lat > pontoAnterior.Lat)
+                        {
+                            // Rota de cima para baixo
+                            Console.WriteLine("Sentido cartesiano: Norte para Sul");
+                        } else if (pontoAtual.Lat < pontoAnterior.Lat)
+                        {
+                            // Rota de baixo para cima
+                            Console.WriteLine("Sentido cartesiano: Sul para Norte");
+                        }
+                        #endregion
                     }
                 }
+                #endregion
 
+                #region Colorir a Rota
                 if (points.Count > 1000)
                 {
                     OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
@@ -159,8 +202,9 @@ namespace ProjetoFinalM2
                 {
                     OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
                 }
-            }
-            catch (Exception ex)
+                #endregion
+
+            } catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);
