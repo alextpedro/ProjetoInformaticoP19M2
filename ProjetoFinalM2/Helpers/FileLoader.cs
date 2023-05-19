@@ -82,7 +82,9 @@ namespace ProjetoFinalM2.Helpers
 
                         var timestamp = DateTime.Parse(fields[0]);
 
-                        tmpTSCoords.Add(new TimestampedCoords(timestamp, lat, lon));
+                        var id = Convert.ToInt32(fields[3]);
+
+                        tmpTSCoords.Add(new TimestampedCoords(timestamp, lat, lon, id));
 
                     }
                     catch { continue; } // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima

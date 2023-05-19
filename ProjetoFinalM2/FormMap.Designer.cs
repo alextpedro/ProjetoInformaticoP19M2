@@ -41,17 +41,20 @@
             labelCurrentFileName = new Label();
             labelSaveFile = new Label();
             labelSaveFileName = new Label();
-            buttonCarregarTransito = new Button();
             buttonRemoveOverlays = new Button();
             dateTimePickerInicio = new DateTimePicker();
             dateTimePickerFim = new DateTimePicker();
             label1 = new Label();
             label2 = new Label();
-            label3 = new Label();
-            textBoxRua = new TextBox();
             buttonPesquisarTransito = new Button();
             dateTimePickerStartTime = new DateTimePicker();
             dateTimePickerEndTime = new DateTimePicker();
+            trackBarTempo = new TrackBar();
+            label4 = new Label();
+            label5 = new Label();
+            nVeiculosTransito = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)trackBarTempo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nVeiculosTransito).BeginInit();
             SuspendLayout();
             // 
             // mapa
@@ -62,7 +65,7 @@
             mapa.GrayScaleMode = false;
             mapa.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapa.LevelsKeepInMemory = 5;
-            mapa.Location = new Point(12, 149);
+            mapa.Location = new Point(12, 156);
             mapa.MarkersEnabled = true;
             mapa.MaxZoom = 24;
             mapa.MinZoom = 0;
@@ -76,7 +79,7 @@
             mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapa.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapa.ShowTileGridLines = false;
-            mapa.Size = new Size(1092, 510);
+            mapa.Size = new Size(1092, 635);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
             mapa.MouseClick += Mapa_MouseClick;
@@ -84,7 +87,7 @@
             // btnCarregarMapa
             // 
             btnCarregarMapa.BackColor = Color.FromArgb(128, 255, 128);
-            btnCarregarMapa.Location = new Point(755, 24);
+            btnCarregarMapa.Location = new Point(930, 9);
             btnCarregarMapa.Name = "btnCarregarMapa";
             btnCarregarMapa.Size = new Size(147, 56);
             btnCarregarMapa.TabIndex = 2;
@@ -113,7 +116,7 @@
             // btnCarregarFicheiro
             // 
             btnCarregarFicheiro.BackColor = Color.FromArgb(128, 255, 255);
-            btnCarregarFicheiro.Location = new Point(593, 24);
+            btnCarregarFicheiro.Location = new Point(777, 9);
             btnCarregarFicheiro.Name = "btnCarregarFicheiro";
             btnCarregarFicheiro.Size = new Size(147, 56);
             btnCarregarFicheiro.TabIndex = 7;
@@ -163,7 +166,7 @@
             // labelCurrentFile
             // 
             labelCurrentFile.AutoSize = true;
-            labelCurrentFile.Location = new Point(594, 84);
+            labelCurrentFile.Location = new Point(786, 72);
             labelCurrentFile.Name = "labelCurrentFile";
             labelCurrentFile.Size = new Size(52, 15);
             labelCurrentFile.TabIndex = 12;
@@ -172,7 +175,7 @@
             // labelCurrentFileName
             // 
             labelCurrentFileName.AutoSize = true;
-            labelCurrentFileName.Location = new Point(647, 84);
+            labelCurrentFileName.Location = new Point(844, 72);
             labelCurrentFileName.Name = "labelCurrentFileName";
             labelCurrentFileName.Size = new Size(54, 15);
             labelCurrentFileName.TabIndex = 13;
@@ -196,25 +199,14 @@
             labelSaveFileName.TabIndex = 15;
             labelSaveFileName.Text = "Nenhum";
             // 
-            // buttonCarregarTransito
-            // 
-            buttonCarregarTransito.BackColor = Color.FromArgb(255, 224, 192);
-            buttonCarregarTransito.Location = new Point(917, 24);
-            buttonCarregarTransito.Name = "buttonCarregarTransito";
-            buttonCarregarTransito.Size = new Size(147, 56);
-            buttonCarregarTransito.TabIndex = 16;
-            buttonCarregarTransito.Text = "Medir Trânsito";
-            buttonCarregarTransito.UseVisualStyleBackColor = false;
-            buttonCarregarTransito.Click += buttonCarregarTransito_Click;
-            // 
             // buttonRemoveOverlays
             // 
             buttonRemoveOverlays.BackColor = Color.Red;
             buttonRemoveOverlays.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonRemoveOverlays.ForeColor = SystemColors.ButtonFace;
-            buttonRemoveOverlays.Location = new Point(917, 86);
+            buttonRemoveOverlays.Location = new Point(930, 93);
             buttonRemoveOverlays.Name = "buttonRemoveOverlays";
-            buttonRemoveOverlays.Size = new Size(147, 22);
+            buttonRemoveOverlays.Size = new Size(147, 57);
             buttonRemoveOverlays.TabIndex = 17;
             buttonRemoveOverlays.Text = "Remover Overlays";
             buttonRemoveOverlays.UseVisualStyleBackColor = false;
@@ -252,30 +244,14 @@
             label2.TabIndex = 21;
             label2.Text = "Data de Fim";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(318, 86);
-            label3.Name = "label3";
-            label3.Size = new Size(27, 15);
-            label3.TabIndex = 22;
-            label3.Text = "Rua";
-            // 
-            // textBoxRua
-            // 
-            textBoxRua.Location = new Point(375, 83);
-            textBoxRua.Name = "textBoxRua";
-            textBoxRua.Size = new Size(200, 23);
-            textBoxRua.TabIndex = 23;
-            // 
             // buttonPesquisarTransito
             // 
             buttonPesquisarTransito.BackColor = Color.CornflowerBlue;
             buttonPesquisarTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonPesquisarTransito.ForeColor = SystemColors.ButtonFace;
-            buttonPesquisarTransito.Location = new Point(375, 112);
+            buttonPesquisarTransito.Location = new Point(777, 93);
             buttonPesquisarTransito.Name = "buttonPesquisarTransito";
-            buttonPesquisarTransito.Size = new Size(200, 31);
+            buttonPesquisarTransito.Size = new Size(147, 57);
             buttonPesquisarTransito.TabIndex = 24;
             buttonPesquisarTransito.Text = "ConsultarTransito";
             buttonPesquisarTransito.UseVisualStyleBackColor = false;
@@ -299,22 +275,56 @@
             dateTimePickerEndTime.Size = new Size(74, 23);
             dateTimePickerEndTime.TabIndex = 26;
             // 
+            // trackBarTempo
+            // 
+            trackBarTempo.Location = new Point(597, 55);
+            trackBarTempo.Maximum = 60;
+            trackBarTempo.Name = "trackBarTempo";
+            trackBarTempo.Size = new Size(104, 45);
+            trackBarTempo.TabIndex = 27;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(597, 37);
+            label4.Name = "label4";
+            label4.Size = new Size(88, 15);
+            label4.TabIndex = 28;
+            label4.Text = "Linha Temporal";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(290, 87);
+            label5.Name = "label5";
+            label5.Size = new Size(62, 15);
+            label5.TabIndex = 29;
+            label5.Text = "N Veiculos";
+            // 
+            // nVeiculosTransito
+            // 
+            nVeiculosTransito.Location = new Point(375, 90);
+            nVeiculosTransito.Name = "nVeiculosTransito";
+            nVeiculosTransito.Size = new Size(120, 23);
+            nVeiculosTransito.TabIndex = 30;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1116, 671);
+            ClientSize = new Size(1116, 803);
+            Controls.Add(nVeiculosTransito);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(trackBarTempo);
             Controls.Add(dateTimePickerEndTime);
             Controls.Add(dateTimePickerStartTime);
             Controls.Add(buttonPesquisarTransito);
-            Controls.Add(textBoxRua);
-            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(dateTimePickerFim);
             Controls.Add(dateTimePickerInicio);
             Controls.Add(buttonRemoveOverlays);
-            Controls.Add(buttonCarregarTransito);
             Controls.Add(labelSaveFileName);
             Controls.Add(labelSaveFile);
             Controls.Add(labelCurrentFileName);
@@ -332,6 +342,8 @@
             Text = "Projeto Informático M2";
             Shown += FormMap_Shown;
             KeyDown += Form1_KeyDown;
+            ((System.ComponentModel.ISupportInitialize)trackBarTempo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nVeiculosTransito).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -351,16 +363,17 @@
         private Label labelCurrentFileName;
         private Label labelSaveFile;
         private Label labelSaveFileName;
-        private Button buttonCarregarTransito;
         private Button buttonRemoveOverlays;
         private DateTimePicker dateTimePickerInicio;
         private DateTimePicker dateTimePickerFim;
         private Label label1;
         private Label label2;
-        private Label label3;
-        private TextBox textBoxRua;
         private Button buttonPesquisarTransito;
         private DateTimePicker dateTimePickerStartTime;
         private DateTimePicker dateTimePickerEndTime;
+        private TrackBar trackBarTempo;
+        private Label label4;
+        private Label label5;
+        private NumericUpDown nVeiculosTransito;
     }
 }

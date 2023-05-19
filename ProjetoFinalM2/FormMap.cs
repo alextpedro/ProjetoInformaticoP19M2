@@ -1,5 +1,7 @@
 using GMap.NET;
 using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
 using System;
@@ -11,6 +13,7 @@ namespace ProjetoFinalM2
     {
 
         public int quantidadePontosNoPoligono = 0;
+        public int totalVeiculos = 0;
         public List<TimestampedCoords> loadedTSCoords = new List<TimestampedCoords>();
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
@@ -40,8 +43,7 @@ namespace ProjetoFinalM2
                                               select new PointLatLng(coord.Lat, coord.Lon));
 
                 OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -103,26 +105,26 @@ namespace ProjetoFinalM2
             labelSaveFileName.Text = FileLoader.SaveCoordToFile(labelLatitude.Text, labelLongitude.Text) ?? labelSaveFileName.Text;
         }
 
-        private void buttonCarregarTransito_Click(object sender, EventArgs e)
-        {
-            List<PointLatLng> trafficPoints = new();
-            trafficPoints.AddRange(from coord in loadedTSCoords
-                                   select new PointLatLng(coord.Lat, coord.Lon));
+        //private void buttonCarregarTransito_Click(object sender, EventArgs e)
+        //{
+        //    List<PointLatLng> trafficPoints = new();
+        //    trafficPoints.AddRange(from coord in loadedTSCoords
+        //                           select new PointLatLng(coord.Lat, coord.Lon));
 
-            OverlayHelper.DrawPolygon(mapa, trafficPoints, Color.Black);
+        //    OverlayHelper.DrawPolygon(mapa, trafficPoints, Color.Black);
 
-            var nVerticesPoligono = trafficPoints.Count();
-            Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
+        //    var nVerticesPoligono = trafficPoints.Count();
+        //    Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
 
-            //foreach (var point in points)
-            //{
-            //    if (polygon1.IsInside(point))
-            //    {
-            //        quantidadePontosNoPoligono += 1;
-            //    }
-            //}
-            Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
-        }
+        //    //foreach (var point in points)
+        //    //{
+        //    //    if (polygon1.IsInside(point))
+        //    //    {
+        //    //        quantidadePontosNoPoligono += 1;
+        //    //    }
+        //    //}
+        //    Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
+        //}
 
         private void buttonRemoveOverlays_Click(object sender, EventArgs e)
         {
@@ -133,6 +135,8 @@ namespace ProjetoFinalM2
         {
             DateTime start = dateTimePickerInicio.Value.Date + dateTimePickerStartTime.Value.TimeOfDay;
             DateTime end = dateTimePickerFim.Value.Date + dateTimePickerEndTime.Value.TimeOfDay;
+            var segundos = trackBarTempo.Value;
+            Console.WriteLine("Segundos na trackbar = " + segundos);
 
             //Para debugging
             Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
@@ -141,13 +145,6 @@ namespace ProjetoFinalM2
             try
             {
                 List<PointLatLng> points = new List<PointLatLng>();
-                //foreach (var tsCoord in loadedTSCoords)
-                //{
-                //    if (tsCoord.Timestamp.Ticks >= start.Ticks && tsCoord.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
-                //    {
-                //        points.Add(new PointLatLng(tsCoord.Lat, tsCoord.Lon));
-                //    }
-                //}
 
                 #region Adicionar Pontos na Lista e Filtrar
                 for (int i = 1; i < loadedTSCoords.Count; i++)
@@ -155,6 +152,7 @@ namespace ProjetoFinalM2
                     var pontoAnterior = loadedTSCoords[i - 1];
                     var pontoAtual = loadedTSCoords[i];
 
+                    // Vê se pontoAtual != pontoAnterior
                     if (pontoAtual.Lon > pontoAnterior.Lon || pontoAtual.Lat > pontoAnterior.Lat ||
                         pontoAtual.Lon < pontoAnterior.Lon || pontoAtual.Lat < pontoAnterior.Lat)
                     {
@@ -162,6 +160,15 @@ namespace ProjetoFinalM2
                         if (pontoAtual.Timestamp.Ticks >= start.Ticks && pontoAtual.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
                         {
                             points.Add(new PointLatLng(pontoAtual.Lat, pontoAtual.Lon));
+
+                            #region Colocar Marcador no mapa de cada veículo
+                            GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
+                            PointLatLng markerPosition = new PointLatLng(pontoAtual.Lat, pontoAtual.Lon);
+                            GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.blue_pushpin);
+                            marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador
+                            markersOverlay.Markers.Add(marker);
+                            mapa.Overlays.Add(markersOverlay);
+                            #endregion
                         }
                         #endregion
 
@@ -190,18 +197,18 @@ namespace ProjetoFinalM2
                 #endregion
 
                 #region Colorir a Rota
-                if (points.Count > 1000)
-                {
-                    OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
-                }
-                else if (points.Count < 1000 && points.Count > 500)
-                {
-                    OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
-                }
-                else
-                {
-                    OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
-                }
+                // Variável que guarda o nº passado na interface:
+                var nVeiculosMax = nVeiculosTransito.Value;
+                //if (points.Count > 1000)
+                //{
+                //    OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
+                //} else if (points.Count < 1000 && points.Count > 500)
+                //{
+                //    OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
+                //} else
+                //{
+                //    OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
+                //}
                 #endregion
 
             } catch (Exception ex)
