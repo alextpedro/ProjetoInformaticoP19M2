@@ -54,7 +54,7 @@ namespace ProjetoFinalM2.Helpers
             return saveFileName;
         }
 
-        public static List<Vehicle>? LoadPointsFromFile()
+        public static List<Vehicle>? LoadPointsFromFile(List<Vehicle> VehiclesList)
         {
             if (!String.IsNullOrEmpty(loadedFileName))
             {

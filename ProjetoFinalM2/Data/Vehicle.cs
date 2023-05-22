@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoFinalM2.Data
 {
-    internal class Vehicle
+    public class Vehicle
     {
         public int Id { get; set; }
         public List<TimestampedCoords> TimestampedCoords { get; set; }
