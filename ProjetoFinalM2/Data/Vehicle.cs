@@ -15,5 +15,10 @@ namespace ProjetoFinalM2.Data
             Id = id;
             TimestampedCoords = new List<TimestampedCoords>();
         }
+
+        public override string ToString()
+        {
+            return $"Vehicle ID: {Id} with {TimestampedCoords.Count} coords.";
+        }
     }
 }

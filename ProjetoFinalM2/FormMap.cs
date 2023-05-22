@@ -32,21 +32,22 @@ namespace ProjetoFinalM2
 
         private void BtnCarregarMapa_Click(object sender, EventArgs e)
         {
-            try
-            {
-                loadedTSCoords.AddRange(FileLoader.LoadPointsFromFile());
+            FileLoader.LoadPointsFromFile(); //TESTING
+            //try
+            //{
+            //    loadedTSCoords.AddRange(FileLoader.LoadPointsFromFile());
 
-                List<PointLatLng> pointsLoadedFromFile = new();
-                pointsLoadedFromFile.AddRange(from coord in loadedTSCoords
-                                              select new PointLatLng(coord.Lat, coord.Lon));
+            //    List<PointLatLng> pointsLoadedFromFile = new();
+            //    pointsLoadedFromFile.AddRange(from coord in loadedTSCoords
+            //                                  select new PointLatLng(coord.Lat, coord.Lon));
 
-                OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Nenhum ficheiro carregado.");
-                Console.WriteLine(ex.Message);
-            }
+            //    OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Nenhum ficheiro carregado.");
+            //    Console.WriteLine(ex.Message);
+            //}
         }
 
         private void Mapa_MouseClick(object sender, MouseEventArgs e)
@@ -162,7 +163,7 @@ namespace ProjetoFinalM2
                             GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
                             PointLatLng markerPosition = new PointLatLng(pontoAtual.Lat, pontoAtual.Lon);
                             GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.blue_pushpin);
-                            marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador
+                            //marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador TODO: Vehicles
                             markersOverlay.Markers.Add(marker);
                             mapa.Overlays.Add(markersOverlay);
                             #endregion

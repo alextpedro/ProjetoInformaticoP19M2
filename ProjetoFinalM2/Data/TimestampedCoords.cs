@@ -11,19 +11,17 @@ namespace ProjetoFinalM2.Data
         public DateTime Timestamp { get; set; }
         public double Lat { get; set; }
         public double Lon { get; set; }
-        public int Id { get; set; }
 
-        public TimestampedCoords(DateTime timestamp, double lat, double lon, int id)
+        public TimestampedCoords(DateTime timestamp, double lat, double lon)
         {
             Timestamp = timestamp;
             Lat = lat;
             Lon = lon;
-            Id = id;
         }
 
         public override string ToString()
         {
-            return $"{Timestamp} {Lat} {Lon} {Id}";
+            return $"{Timestamp} {Lat} {Lon}";
         }
     }
 }

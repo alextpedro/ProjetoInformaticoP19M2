@@ -54,7 +54,7 @@ namespace ProjetoFinalM2.Helpers
             return saveFileName;
         }
 
-        public static List<TimestampedCoords>? LoadPointsFromFile()
+        public static List<Vehicle>? LoadPointsFromFile()
         {
             if (!String.IsNullOrEmpty(loadedFileName))
             {
@@ -62,7 +62,7 @@ namespace ProjetoFinalM2.Helpers
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
 
-                List<TimestampedCoords> tmpTSCoords = new List<TimestampedCoords>();
+                List<Vehicle> tmpVehiclesList = new List<Vehicle>();
 
                 bool isHeader = true;
                 while (!parser.EndOfData)
@@ -84,13 +84,24 @@ namespace ProjetoFinalM2.Helpers
 
                         var id = Convert.ToInt32(fields[3]);
 
-                        tmpTSCoords.Add(new TimestampedCoords(timestamp, lat, lon, id));
+                        Vehicle tmpVehicle = new Vehicle(id);
 
+                        bool vehicleExists = tmpVehiclesList.Any(vehicle => vehicle.Id == tmpVehicle.Id);
+                        if (vehicleExists)
+                        {
+                            tmpVehiclesList.Find(vehicle => vehicle.Id == tmpVehicle.Id).TimestampedCoords.Add(new TimestampedCoords(timestamp, lat, lon));
+                        }
+                        else
+                        {
+                            tmpVehicle.TimestampedCoords.Add(new TimestampedCoords(timestamp, lat, lon));
+                            tmpVehiclesList.Add(tmpVehicle);
+                        }
                     }
                     catch { continue; } // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
                 }
-
-                return tmpTSCoords;
+                
+                tmpVehiclesList.ForEach(v => Console.WriteLine(v.ToString()));
+                return tmpVehiclesList;
             }
             else
             {
