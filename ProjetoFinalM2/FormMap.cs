@@ -43,7 +43,8 @@ namespace ProjetoFinalM2
                                               select new PointLatLng(coord.Lat, coord.Lon));
 
                 OverlayHelper.DrawRoute(mapa, pointsLoadedFromFile, Color.Green, 3);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -133,13 +134,13 @@ namespace ProjetoFinalM2
 
         private void buttonPesquisarTransito_Click(object sender, EventArgs e)
         {
-            DateTime start = dateTimePickerInicio.Value.Date + dateTimePickerStartTime.Value.TimeOfDay;
-            DateTime end = dateTimePickerFim.Value.Date + dateTimePickerEndTime.Value.TimeOfDay;
-            var segundos = trackBarTempo.Value;
+            DateTime start = dateTimePickerDate.Value.Date + dateTimePickerTime.Value.TimeOfDay;
+            //DateTime end = dateTimePickerFim.Value.Date + dateTimePickerEndTime.Value.TimeOfDay;
+            var segundos = trackBarTime.Value;
             Console.WriteLine("Segundos na trackbar = " + segundos);
 
             //Para debugging
-            Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
+            //Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
             Console.WriteLine($"There are {loadedTSCoords.Count} points in loadedTSCoords.");
 
             try
@@ -157,19 +158,19 @@ namespace ProjetoFinalM2
                         pontoAtual.Lon < pontoAnterior.Lon || pontoAtual.Lat < pontoAnterior.Lat)
                     {
                         #region Adiciona pontos limpos sem repetições à lista
-                        if (pontoAtual.Timestamp.Ticks >= start.Ticks && pontoAtual.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
-                        {
-                            points.Add(new PointLatLng(pontoAtual.Lat, pontoAtual.Lon));
+                        //if (pontoAtual.Timestamp.Ticks >= start.Ticks && pontoAtual.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
+                        //{
+                        //    points.Add(new PointLatLng(pontoAtual.Lat, pontoAtual.Lon));
 
-                            #region Colocar Marcador no mapa de cada veículo
-                            GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
-                            PointLatLng markerPosition = new PointLatLng(pontoAtual.Lat, pontoAtual.Lon);
-                            GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.blue_pushpin);
-                            marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador
-                            markersOverlay.Markers.Add(marker);
-                            mapa.Overlays.Add(markersOverlay);
-                            #endregion
-                        }
+                        //    #region Colocar Marcador no mapa de cada veículo
+                        //    GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
+                        //    PointLatLng markerPosition = new PointLatLng(pontoAtual.Lat, pontoAtual.Lon);
+                        //    GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.blue_pushpin);
+                        //    marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador
+                        //    markersOverlay.Markers.Add(marker);
+                        //    mapa.Overlays.Add(markersOverlay);
+                        //    #endregion
+                        //}
                         #endregion
 
                         #region Direções Cartesianas
@@ -177,7 +178,8 @@ namespace ProjetoFinalM2
                         {
                             // Rota da esquerda para a direita
                             Console.WriteLine("Sentido cartesiano: Este para Oeste");
-                        } else if (pontoAtual.Lon < pontoAnterior.Lon)
+                        }
+                        else if (pontoAtual.Lon < pontoAnterior.Lon)
                         {
                             // Rota da direita para a esquerda
                             Console.WriteLine("Sentido cartesiano: Oeste para Este");
@@ -186,7 +188,8 @@ namespace ProjetoFinalM2
                         {
                             // Rota de cima para baixo
                             Console.WriteLine("Sentido cartesiano: Norte para Sul");
-                        } else if (pontoAtual.Lat < pontoAnterior.Lat)
+                        }
+                        else if (pontoAtual.Lat < pontoAnterior.Lat)
                         {
                             // Rota de baixo para cima
                             Console.WriteLine("Sentido cartesiano: Sul para Norte");
@@ -211,7 +214,8 @@ namespace ProjetoFinalM2
                 //}
                 #endregion
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);

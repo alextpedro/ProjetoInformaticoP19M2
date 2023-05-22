@@ -42,18 +42,18 @@
             labelSaveFile = new Label();
             labelSaveFileName = new Label();
             buttonRemoveOverlays = new Button();
-            dateTimePickerInicio = new DateTimePicker();
-            dateTimePickerFim = new DateTimePicker();
+            dateTimePickerDate = new DateTimePicker();
             label1 = new Label();
-            label2 = new Label();
             buttonPesquisarTransito = new Button();
-            dateTimePickerStartTime = new DateTimePicker();
-            dateTimePickerEndTime = new DateTimePicker();
-            trackBarTempo = new TrackBar();
+            dateTimePickerTime = new DateTimePicker();
+            trackBarTime = new TrackBar();
             label4 = new Label();
             label5 = new Label();
             nVeiculosTransito = new NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)trackBarTempo).BeginInit();
+            labelSecsStart = new Label();
+            labelSecsMid = new Label();
+            labelSecsEnd = new Label();
+            ((System.ComponentModel.ISupportInitialize)trackBarTime).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nVeiculosTransito).BeginInit();
             SuspendLayout();
             // 
@@ -212,19 +212,12 @@
             buttonRemoveOverlays.UseVisualStyleBackColor = false;
             buttonRemoveOverlays.Click += buttonRemoveOverlays_Click;
             // 
-            // dateTimePickerInicio
+            // dateTimePickerDate
             // 
-            dateTimePickerInicio.Location = new Point(375, 24);
-            dateTimePickerInicio.Name = "dateTimePickerInicio";
-            dateTimePickerInicio.Size = new Size(120, 23);
-            dateTimePickerInicio.TabIndex = 18;
-            // 
-            // dateTimePickerFim
-            // 
-            dateTimePickerFim.Location = new Point(375, 55);
-            dateTimePickerFim.Name = "dateTimePickerFim";
-            dateTimePickerFim.Size = new Size(120, 23);
-            dateTimePickerFim.TabIndex = 19;
+            dateTimePickerDate.Location = new Point(375, 24);
+            dateTimePickerDate.Name = "dateTimePickerDate";
+            dateTimePickerDate.Size = new Size(120, 23);
+            dateTimePickerDate.TabIndex = 18;
             // 
             // label1
             // 
@@ -234,15 +227,6 @@
             label1.Size = new Size(79, 15);
             label1.TabIndex = 20;
             label1.Text = "Data de Início";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(290, 59);
-            label2.Name = "label2";
-            label2.Size = new Size(70, 15);
-            label2.TabIndex = 21;
-            label2.Text = "Data de Fim";
             // 
             // buttonPesquisarTransito
             // 
@@ -257,36 +241,29 @@
             buttonPesquisarTransito.UseVisualStyleBackColor = false;
             buttonPesquisarTransito.Click += buttonPesquisarTransito_Click;
             // 
-            // dateTimePickerStartTime
+            // dateTimePickerTime
             // 
-            dateTimePickerStartTime.Format = DateTimePickerFormat.Time;
-            dateTimePickerStartTime.Location = new Point(501, 24);
-            dateTimePickerStartTime.Name = "dateTimePickerStartTime";
-            dateTimePickerStartTime.ShowUpDown = true;
-            dateTimePickerStartTime.Size = new Size(74, 23);
-            dateTimePickerStartTime.TabIndex = 25;
+            dateTimePickerTime.CustomFormat = "HH:mm";
+            dateTimePickerTime.Format = DateTimePickerFormat.Custom;
+            dateTimePickerTime.Location = new Point(501, 24);
+            dateTimePickerTime.Name = "dateTimePickerTime";
+            dateTimePickerTime.ShowUpDown = true;
+            dateTimePickerTime.Size = new Size(74, 23);
+            dateTimePickerTime.TabIndex = 25;
             // 
-            // dateTimePickerEndTime
+            // trackBarTime
             // 
-            dateTimePickerEndTime.Format = DateTimePickerFormat.Time;
-            dateTimePickerEndTime.Location = new Point(501, 55);
-            dateTimePickerEndTime.Name = "dateTimePickerEndTime";
-            dateTimePickerEndTime.ShowUpDown = true;
-            dateTimePickerEndTime.Size = new Size(74, 23);
-            dateTimePickerEndTime.TabIndex = 26;
-            // 
-            // trackBarTempo
-            // 
-            trackBarTempo.Location = new Point(597, 55);
-            trackBarTempo.Maximum = 60;
-            trackBarTempo.Name = "trackBarTempo";
-            trackBarTempo.Size = new Size(104, 45);
-            trackBarTempo.TabIndex = 27;
+            trackBarTime.Location = new Point(375, 53);
+            trackBarTime.Maximum = 60;
+            trackBarTime.Name = "trackBarTime";
+            trackBarTime.Size = new Size(200, 45);
+            trackBarTime.TabIndex = 27;
+            trackBarTime.TickFrequency = 30;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(597, 37);
+            label4.Location = new Point(281, 59);
             label4.Name = "label4";
             label4.Size = new Size(88, 15);
             label4.TabIndex = 28;
@@ -295,7 +272,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(290, 87);
+            label5.Location = new Point(290, 98);
             label5.Name = "label5";
             label5.Size = new Size(62, 15);
             label5.TabIndex = 29;
@@ -303,27 +280,54 @@
             // 
             // nVeiculosTransito
             // 
-            nVeiculosTransito.Location = new Point(375, 90);
+            nVeiculosTransito.Location = new Point(375, 98);
             nVeiculosTransito.Name = "nVeiculosTransito";
             nVeiculosTransito.Size = new Size(120, 23);
             nVeiculosTransito.TabIndex = 30;
+            // 
+            // labelSecsStart
+            // 
+            labelSecsStart.AutoSize = true;
+            labelSecsStart.Location = new Point(382, 80);
+            labelSecsStart.Name = "labelSecsStart";
+            labelSecsStart.Size = new Size(13, 15);
+            labelSecsStart.TabIndex = 31;
+            labelSecsStart.Text = "0";
+            // 
+            // labelSecsMid
+            // 
+            labelSecsMid.AutoSize = true;
+            labelSecsMid.Location = new Point(465, 80);
+            labelSecsMid.Name = "labelSecsMid";
+            labelSecsMid.Size = new Size(19, 15);
+            labelSecsMid.TabIndex = 32;
+            labelSecsMid.Text = "30";
+            // 
+            // labelSecsEnd
+            // 
+            labelSecsEnd.AutoSize = true;
+            labelSecsEnd.Location = new Point(552, 80);
+            labelSecsEnd.Name = "labelSecsEnd";
+            labelSecsEnd.Size = new Size(19, 15);
+            labelSecsEnd.TabIndex = 33;
+            labelSecsEnd.Text = "60";
             // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 803);
+            Controls.Add(labelSecsEnd);
+            Controls.Add(labelSecsMid);
+            Controls.Add(labelSecsStart);
             Controls.Add(nVeiculosTransito);
             Controls.Add(label5);
             Controls.Add(label4);
-            Controls.Add(trackBarTempo);
-            Controls.Add(dateTimePickerEndTime);
-            Controls.Add(dateTimePickerStartTime);
+            Controls.Add(trackBarTime);
+            Controls.Add(dateTimePickerTime);
             Controls.Add(buttonPesquisarTransito);
-            Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(dateTimePickerFim);
-            Controls.Add(dateTimePickerInicio);
+            Controls.Add(dateTimePickerDate);
             Controls.Add(buttonRemoveOverlays);
             Controls.Add(labelSaveFileName);
             Controls.Add(labelSaveFile);
@@ -342,7 +346,7 @@
             Text = "Projeto Informático M2";
             Shown += FormMap_Shown;
             KeyDown += Form1_KeyDown;
-            ((System.ComponentModel.ISupportInitialize)trackBarTempo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarTime).EndInit();
             ((System.ComponentModel.ISupportInitialize)nVeiculosTransito).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -364,16 +368,16 @@
         private Label labelSaveFile;
         private Label labelSaveFileName;
         private Button buttonRemoveOverlays;
-        private DateTimePicker dateTimePickerInicio;
-        private DateTimePicker dateTimePickerFim;
+        private DateTimePicker dateTimePickerDate;
         private Label label1;
-        private Label label2;
         private Button buttonPesquisarTransito;
-        private DateTimePicker dateTimePickerStartTime;
-        private DateTimePicker dateTimePickerEndTime;
-        private TrackBar trackBarTempo;
+        private DateTimePicker dateTimePickerTime;
+        private TrackBar trackBarTime;
         private Label label4;
         private Label label5;
         private NumericUpDown nVeiculosTransito;
+        private Label labelSecsStart;
+        private Label labelSecsMid;
+        private Label labelSecsEnd;
     }
 }
