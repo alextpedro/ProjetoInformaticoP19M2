@@ -254,7 +254,7 @@
             // trackBarTime
             // 
             trackBarTime.Location = new Point(375, 53);
-            trackBarTime.Maximum = 60;
+            trackBarTime.Maximum = 59;
             trackBarTime.Name = "trackBarTime";
             trackBarTime.Size = new Size(200, 45);
             trackBarTime.TabIndex = 27;
@@ -310,7 +310,7 @@
             labelSecsEnd.Name = "labelSecsEnd";
             labelSecsEnd.Size = new Size(19, 15);
             labelSecsEnd.TabIndex = 33;
-            labelSecsEnd.Text = "60";
+            labelSecsEnd.Text = "59";
             // 
             // FormMap
             // 

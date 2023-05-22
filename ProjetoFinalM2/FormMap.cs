@@ -134,92 +134,93 @@ namespace ProjetoFinalM2
 
         private void buttonPesquisarTransito_Click(object sender, EventArgs e)
         {
-            DateTime start = dateTimePickerDate.Value.Date + dateTimePickerTime.Value.TimeOfDay;
-            //DateTime end = dateTimePickerFim.Value.Date + dateTimePickerEndTime.Value.TimeOfDay;
-            var segundos = trackBarTime.Value;
-            Console.WriteLine("Segundos na trackbar = " + segundos);
+            String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
+            DateTime selectedTime = DateTime.Parse(timeWorkaround);
+            Console.WriteLine(selectedTime);
+            //var segundos = trackBarTime.Value;
+            //Console.WriteLine("Segundos na trackbar = " + segundos);
 
-            //Para debugging
-            //Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
-            Console.WriteLine($"There are {loadedTSCoords.Count} points in loadedTSCoords.");
+            ////Para debugging
+            ////Console.WriteLine($"TS: {start.ToString()} {end.ToString()}");
+            //Console.WriteLine($"There are {loadedTSCoords.Count} points in loadedTSCoords.");
 
-            try
-            {
-                List<PointLatLng> points = new List<PointLatLng>();
+            //try
+            //{
+            //    List<PointLatLng> points = new List<PointLatLng>();
 
-                #region Adicionar Pontos na Lista e Filtrar
-                for (int i = 1; i < loadedTSCoords.Count; i++)
-                {
-                    var pontoAnterior = loadedTSCoords[i - 1];
-                    var pontoAtual = loadedTSCoords[i];
+            //    #region Adicionar Pontos na Lista e Filtrar
+            //    for (int i = 1; i < loadedTSCoords.Count; i++)
+            //    {
+            //        var pontoAnterior = loadedTSCoords[i - 1];
+            //        var pontoAtual = loadedTSCoords[i];
 
-                    // Vê se pontoAtual != pontoAnterior
-                    if (pontoAtual.Lon > pontoAnterior.Lon || pontoAtual.Lat > pontoAnterior.Lat ||
-                        pontoAtual.Lon < pontoAnterior.Lon || pontoAtual.Lat < pontoAnterior.Lat)
-                    {
-                        #region Adiciona pontos limpos sem repetições à lista
-                        //if (pontoAtual.Timestamp.Ticks >= start.Ticks && pontoAtual.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
-                        //{
-                        //    points.Add(new PointLatLng(pontoAtual.Lat, pontoAtual.Lon));
+            //        // Vê se pontoAtual != pontoAnterior
+            //        if (pontoAtual.Lon > pontoAnterior.Lon || pontoAtual.Lat > pontoAnterior.Lat ||
+            //            pontoAtual.Lon < pontoAnterior.Lon || pontoAtual.Lat < pontoAnterior.Lat)
+            //        {
+            //            #region Adiciona pontos limpos sem repetições à lista
+            //            //if (pontoAtual.Timestamp.Ticks >= start.Ticks && pontoAtual.Timestamp.Ticks <= end.Ticks) //TODO: Bug de tempo
+            //            //{
+            //            //    points.Add(new PointLatLng(pontoAtual.Lat, pontoAtual.Lon));
 
-                        //    #region Colocar Marcador no mapa de cada veículo
-                        //    GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
-                        //    PointLatLng markerPosition = new PointLatLng(pontoAtual.Lat, pontoAtual.Lon);
-                        //    GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.blue_pushpin);
-                        //    marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador
-                        //    markersOverlay.Markers.Add(marker);
-                        //    mapa.Overlays.Add(markersOverlay);
-                        //    #endregion
-                        //}
-                        #endregion
+            //            //    #region Colocar Marcador no mapa de cada veículo
+            //            //    GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
+            //            //    PointLatLng markerPosition = new PointLatLng(pontoAtual.Lat, pontoAtual.Lon);
+            //            //    GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.blue_pushpin);
+            //            //    marker.ToolTipText = "Veiculo " + pontoAtual.Id.ToString(); // Texto do tooltip do marcador
+            //            //    markersOverlay.Markers.Add(marker);
+            //            //    mapa.Overlays.Add(markersOverlay);
+            //            //    #endregion
+            //            //}
+            //            #endregion
 
-                        #region Direções Cartesianas
-                        if (pontoAtual.Lon > pontoAnterior.Lon)
-                        {
-                            // Rota da esquerda para a direita
-                            Console.WriteLine("Sentido cartesiano: Este para Oeste");
-                        }
-                        else if (pontoAtual.Lon < pontoAnterior.Lon)
-                        {
-                            // Rota da direita para a esquerda
-                            Console.WriteLine("Sentido cartesiano: Oeste para Este");
-                        }
-                        if (pontoAtual.Lat > pontoAnterior.Lat)
-                        {
-                            // Rota de cima para baixo
-                            Console.WriteLine("Sentido cartesiano: Norte para Sul");
-                        }
-                        else if (pontoAtual.Lat < pontoAnterior.Lat)
-                        {
-                            // Rota de baixo para cima
-                            Console.WriteLine("Sentido cartesiano: Sul para Norte");
-                        }
-                        #endregion
-                    }
-                }
-                #endregion
+            //            #region Direções Cartesianas
+            //            if (pontoAtual.Lon > pontoAnterior.Lon)
+            //            {
+            //                // Rota da esquerda para a direita
+            //                Console.WriteLine("Sentido cartesiano: Este para Oeste");
+            //            }
+            //            else if (pontoAtual.Lon < pontoAnterior.Lon)
+            //            {
+            //                // Rota da direita para a esquerda
+            //                Console.WriteLine("Sentido cartesiano: Oeste para Este");
+            //            }
+            //            if (pontoAtual.Lat > pontoAnterior.Lat)
+            //            {
+            //                // Rota de cima para baixo
+            //                Console.WriteLine("Sentido cartesiano: Norte para Sul");
+            //            }
+            //            else if (pontoAtual.Lat < pontoAnterior.Lat)
+            //            {
+            //                // Rota de baixo para cima
+            //                Console.WriteLine("Sentido cartesiano: Sul para Norte");
+            //            }
+            //            #endregion
+            //        }
+            //    }
+            //    #endregion
 
-                #region Colorir a Rota
-                // Variável que guarda o nº passado na interface:
-                var nVeiculosMax = nVeiculosTransito.Value;
-                //if (points.Count > 1000)
-                //{
-                //    OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
-                //} else if (points.Count < 1000 && points.Count > 500)
-                //{
-                //    OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
-                //} else
-                //{
-                //    OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
-                //}
-                #endregion
+            //    #region Colorir a Rota
+            //    // Variável que guarda o nº passado na interface:
+            //    var nVeiculosMax = nVeiculosTransito.Value;
+            //    //if (points.Count > 1000)
+            //    //{
+            //    //    OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
+            //    //} else if (points.Count < 1000 && points.Count > 500)
+            //    //{
+            //    //    OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
+            //    //} else
+            //    //{
+            //    //    OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
+            //    //}
+            //    #endregion
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Algo correu mal!");
-                Console.WriteLine(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Algo correu mal!");
+            //    Console.WriteLine(ex.Message);
+            //}
         }
     }
 }
