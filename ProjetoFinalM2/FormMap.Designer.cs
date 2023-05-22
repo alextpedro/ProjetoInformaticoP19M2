@@ -49,12 +49,12 @@
             trackBarTime = new TrackBar();
             label4 = new Label();
             label5 = new Label();
-            nVeiculosTransito = new NumericUpDown();
+            uiNVeiculosTransito = new NumericUpDown();
             labelSecsStart = new Label();
             labelSecsMid = new Label();
             labelSecsEnd = new Label();
             ((System.ComponentModel.ISupportInitialize)trackBarTime).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)nVeiculosTransito).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
             SuspendLayout();
             // 
             // mapa
@@ -278,12 +278,12 @@
             label5.TabIndex = 29;
             label5.Text = "N Veiculos";
             // 
-            // nVeiculosTransito
+            // uiNVeiculosTransito
             // 
-            nVeiculosTransito.Location = new Point(375, 98);
-            nVeiculosTransito.Name = "nVeiculosTransito";
-            nVeiculosTransito.Size = new Size(120, 23);
-            nVeiculosTransito.TabIndex = 30;
+            uiNVeiculosTransito.Location = new Point(375, 98);
+            uiNVeiculosTransito.Name = "uiNVeiculosTransito";
+            uiNVeiculosTransito.Size = new Size(120, 23);
+            uiNVeiculosTransito.TabIndex = 30;
             // 
             // labelSecsStart
             // 
@@ -320,7 +320,7 @@
             Controls.Add(labelSecsEnd);
             Controls.Add(labelSecsMid);
             Controls.Add(labelSecsStart);
-            Controls.Add(nVeiculosTransito);
+            Controls.Add(uiNVeiculosTransito);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(trackBarTime);
@@ -347,7 +347,7 @@
             Shown += FormMap_Shown;
             KeyDown += Form1_KeyDown;
             ((System.ComponentModel.ISupportInitialize)trackBarTime).EndInit();
-            ((System.ComponentModel.ISupportInitialize)nVeiculosTransito).EndInit();
+            ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -375,7 +375,7 @@
         private TrackBar trackBarTime;
         private Label label4;
         private Label label5;
-        private NumericUpDown nVeiculosTransito;
+        private NumericUpDown uiNVeiculosTransito;
         private Label labelSecsStart;
         private Label labelSecsMid;
         private Label labelSecsEnd;
