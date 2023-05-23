@@ -53,6 +53,8 @@
             labelSecsStart = new Label();
             labelSecsMid = new Label();
             labelSecsEnd = new Label();
+            labelNumVehicles = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)trackBarTime).BeginInit();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
             SuspendLayout();
@@ -312,11 +314,31 @@
             labelSecsEnd.TabIndex = 33;
             labelSecsEnd.Text = "59";
             // 
+            // labelNumVehicles
+            // 
+            labelNumVehicles.AutoSize = true;
+            labelNumVehicles.Location = new Point(382, 126);
+            labelNumVehicles.Name = "labelNumVehicles";
+            labelNumVehicles.Size = new Size(17, 15);
+            labelNumVehicles.TabIndex = 34;
+            labelNumVehicles.Text = "--";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(266, 126);
+            label2.Name = "label2";
+            label2.Size = new Size(103, 15);
+            label2.TabIndex = 35;
+            label2.Text = "Estado do Trânsito";
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 803);
+            Controls.Add(label2);
+            Controls.Add(labelNumVehicles);
             Controls.Add(labelSecsEnd);
             Controls.Add(labelSecsMid);
             Controls.Add(labelSecsStart);
@@ -379,5 +401,7 @@
         private Label labelSecsStart;
         private Label labelSecsMid;
         private Label labelSecsEnd;
+        private Label labelNumVehicles;
+        private Label label2;
     }
 }
