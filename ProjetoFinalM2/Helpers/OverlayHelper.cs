@@ -62,6 +62,7 @@ namespace ProjetoFinalM2.Helpers
             marker.ToolTipText = tooltip;
             markersOverlay.Markers.Add(marker);
             mapa.Overlays.Add(markersOverlay);
+            mapa.ZoomAndCenterMarkers("MarkersOverlay");
         }
     }
 }
