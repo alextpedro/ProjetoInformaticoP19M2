@@ -53,8 +53,9 @@
             labelSecsStart = new Label();
             labelSecsMid = new Label();
             labelSecsEnd = new Label();
-            labelNumVehicles = new Label();
+            labelTrafficState = new Label();
             label2 = new Label();
+            labelSelectedSeconds = new Label();
             ((System.ComponentModel.ISupportInitialize)trackBarTime).BeginInit();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
             SuspendLayout();
@@ -261,6 +262,7 @@
             trackBarTime.Size = new Size(200, 45);
             trackBarTime.TabIndex = 27;
             trackBarTime.TickFrequency = 30;
+            trackBarTime.ValueChanged += trackBarTime_ValueChanged;
             // 
             // label4
             // 
@@ -314,14 +316,14 @@
             labelSecsEnd.TabIndex = 33;
             labelSecsEnd.Text = "59";
             // 
-            // labelNumVehicles
+            // labelTrafficState
             // 
-            labelNumVehicles.AutoSize = true;
-            labelNumVehicles.Location = new Point(382, 126);
-            labelNumVehicles.Name = "labelNumVehicles";
-            labelNumVehicles.Size = new Size(17, 15);
-            labelNumVehicles.TabIndex = 34;
-            labelNumVehicles.Text = "--";
+            labelTrafficState.AutoSize = true;
+            labelTrafficState.Location = new Point(382, 126);
+            labelTrafficState.Name = "labelTrafficState";
+            labelTrafficState.Size = new Size(17, 15);
+            labelTrafficState.TabIndex = 34;
+            labelTrafficState.Text = "--";
             // 
             // label2
             // 
@@ -332,13 +334,22 @@
             label2.TabIndex = 35;
             label2.Text = "Estado do Trânsito";
             // 
+            // labelSelectedSeconds
+            // 
+            labelSelectedSeconds.AutoSize = true;
+            labelSelectedSeconds.Location = new Point(577, 55);
+            labelSelectedSeconds.Name = "labelSelectedSeconds";
+            labelSelectedSeconds.Size = new Size(0, 15);
+            labelSelectedSeconds.TabIndex = 36;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1116, 803);
+            Controls.Add(labelSelectedSeconds);
             Controls.Add(label2);
-            Controls.Add(labelNumVehicles);
+            Controls.Add(labelTrafficState);
             Controls.Add(labelSecsEnd);
             Controls.Add(labelSecsMid);
             Controls.Add(labelSecsStart);
@@ -401,7 +412,8 @@
         private Label labelSecsStart;
         private Label labelSecsMid;
         private Label labelSecsEnd;
-        private Label labelNumVehicles;
+        private Label labelTrafficState;
         private Label label2;
+        private Label labelSelectedSeconds;
     }
 }

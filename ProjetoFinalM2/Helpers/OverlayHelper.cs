@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using GMap.NET;
 using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using ProjetoFinalM2.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,16 @@ namespace ProjetoFinalM2.Helpers
                 mapa.Overlays.Clear();
                 mapa.Refresh();
             }
+        }
+
+        public static void DrawPin (GMapControl mapa, PointLatLng pinPoint, string tooltip)
+        {
+            GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
+            PointLatLng markerPosition = pinPoint;
+            GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.red_pushpin);
+            marker.ToolTipText = tooltip;
+            markersOverlay.Markers.Add(marker);
+            mapa.Overlays.Add(markersOverlay);
         }
     }
 }
