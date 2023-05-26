@@ -6,6 +6,7 @@ using GMap.NET.WindowsForms.Markers;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
 using System.Reflection;
+using System.Linq;
 
 namespace ProjetoFinalM2
 {
@@ -45,13 +46,11 @@ namespace ProjetoFinalM2
                 //pointsLoadedFromFile.AddRange(from coord in loadedTSCoords
                 //                              select new PointLatLng(coord.Lat, coord.Lon));
 
-                vehiclesList.ForEach(vehicle =>
-                {
+                vehiclesList.ForEach(vehicle => {
                     //Color randomColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
                     List<PointLatLng> tmpListCoords = new();
 
-                    vehicle.TimestampedCoords.ForEach(coord =>
-                    {
+                    vehicle.TimestampedCoords.ForEach(coord => {
                         tmpListCoords.Add(new PointLatLng(coord.Lat, coord.Lon));
                     });
 
@@ -74,15 +73,13 @@ namespace ProjetoFinalM2
                 if (vehiclesList.Count < (int)uiNVeiculosTransito.Value)
                 {
                     labelTrafficState.Text = "Normal";
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Com Transito";
                 }
                 #endregion
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -175,10 +172,12 @@ namespace ProjetoFinalM2
             //TODO: Refactor for Vehicles
             String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
             DateTime selectedTime = DateTime.Parse(timeWorkaround);
+            string streetName = textBoxSreetName.Text;
 
             //Para debugging
             Console.WriteLine($"TS: {selectedTime}");
             Console.WriteLine($"There are {vehiclesList.Count} vehicles in vehiclesList.");
+            Console.WriteLine("O nome da rua é " + streetName);
 
             try
             {
@@ -222,6 +221,35 @@ namespace ProjetoFinalM2
                         {
                             OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
                         }
+
+                        #region Sentido Cartesiano
+                        for (int i = 1; i < 2; i++)
+                        {
+                            TimestampedCoords pontoAtual = v.TimestampedCoords[i];
+                            TimestampedCoords pontoAnterior = v.TimestampedCoords[i - 1];
+                            if (pontoAtual.Lon > pontoAnterior.Lon)
+                            {
+                                // Rota da esquerda para a direita
+                                Console.WriteLine("Veículo " + v.Id + " circula de Este para Oeste");
+                            } else if (pontoAtual.Lon < pontoAnterior.Lon)
+                            {
+                                // Rota da direita para a esquerda
+                                Console.WriteLine("Veículo " + v.Id + " circula de Oeste para Este");
+                            }
+                            if (pontoAtual.Lat > pontoAnterior.Lat)
+                            {
+                                // Rota de cima para baixo
+                                Console.WriteLine("Veículo " + v.Id + " circula de Norte para Sul");
+                            } else if (pontoAtual.Lat < pontoAnterior.Lat)
+                            {
+                                // Rota de baixo para cima
+                                Console.WriteLine("Veículo " + v.Id + " circula deSul para Norte");
+                            } else
+                            {
+                                Console.WriteLine("Estou no else do FOR i do timedVehicles");
+                            }
+                        }
+                        #endregion
                     }
                 }
                 #endregion
@@ -233,21 +261,18 @@ namespace ProjetoFinalM2
                 {
                     //OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
                     labelTrafficState.Text = "Com trânsito";
-                }
-                else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     //OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     //OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
                 }
                 #endregion
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);

@@ -43,6 +43,8 @@
             labelSaveFile = new Label();
             labelSaveFileName = new Label();
             panel1 = new Panel();
+            textBoxSreetName = new TextBox();
+            label1 = new Label();
             labelSelectedSeconds = new Label();
             labelSecsEnd = new Label();
             labelSecsMid = new Label();
@@ -77,7 +79,7 @@
             mapa.GrayScaleMode = false;
             mapa.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapa.LevelsKeepInMemory = 5;
-            mapa.Location = new Point(12, 176);
+            mapa.Location = new Point(12, 249);
             mapa.MarkersEnabled = true;
             mapa.MaxZoom = 24;
             mapa.MinZoom = 0;
@@ -91,7 +93,7 @@
             mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapa.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapa.ShowTileGridLines = false;
-            mapa.Size = new Size(956, 635);
+            mapa.Size = new Size(956, 562);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
             mapa.MouseClick += Mapa_MouseClick;
@@ -112,7 +114,7 @@
             buttonPesquisarTransito.BackgroundImageLayout = ImageLayout.Stretch;
             buttonPesquisarTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonPesquisarTransito.ForeColor = SystemColors.ButtonFace;
-            buttonPesquisarTransito.Location = new Point(268, 92);
+            buttonPesquisarTransito.Location = new Point(268, 87);
             buttonPesquisarTransito.Name = "buttonPesquisarTransito";
             buttonPesquisarTransito.Size = new Size(45, 45);
             buttonPesquisarTransito.TabIndex = 39;
@@ -217,6 +219,8 @@
             // 
             panel1.BackColor = Color.White;
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(textBoxSreetName);
+            panel1.Controls.Add(label1);
             panel1.Controls.Add(labelSelectedSeconds);
             panel1.Controls.Add(labelSecsEnd);
             panel1.Controls.Add(labelSecsMid);
@@ -234,8 +238,25 @@
             panel1.Location = new Point(267, 12);
             panel1.Margin = new Padding(3, 3, 30, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(337, 146);
+            panel1.Size = new Size(337, 181);
             panel1.TabIndex = 40;
+            // 
+            // textBoxSreetName
+            // 
+            textBoxSreetName.Location = new Point(106, 137);
+            textBoxSreetName.Name = "textBoxSreetName";
+            textBoxSreetName.Size = new Size(207, 23);
+            textBoxSreetName.TabIndex = 52;
+            // 
+            // label1
+            // 
+            label1.BackColor = SystemColors.ControlLightLight;
+            label1.Location = new Point(14, 138);
+            label1.Name = "label1";
+            label1.Size = new Size(103, 23);
+            label1.TabIndex = 51;
+            label1.Text = "Rua";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // labelSelectedSeconds
             // 
@@ -489,5 +510,7 @@
         private Label labelCurrentFile;
         private Button btnCarregarFicheiro;
         private Button btnCarregarMapa;
+        private Label label1;
+        private TextBox textBoxSreetName;
     }
 }
