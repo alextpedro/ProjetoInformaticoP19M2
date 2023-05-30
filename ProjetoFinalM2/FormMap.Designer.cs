@@ -64,6 +64,7 @@
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
+            btnRotaTransito = new Button();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -79,7 +80,7 @@
             mapa.GrayScaleMode = false;
             mapa.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapa.LevelsKeepInMemory = 5;
-            mapa.Location = new Point(12, 249);
+            mapa.Location = new Point(12, 209);
             mapa.MarkersEnabled = true;
             mapa.MaxZoom = 24;
             mapa.MinZoom = 0;
@@ -93,7 +94,7 @@
             mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapa.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapa.ShowTileGridLines = false;
-            mapa.Size = new Size(956, 562);
+            mapa.Size = new Size(956, 602);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
             mapa.MouseClick += Mapa_MouseClick;
@@ -142,7 +143,7 @@
             // btnSaveCoord
             // 
             btnSaveCoord.BackgroundImageLayout = ImageLayout.Stretch;
-            btnSaveCoord.Location = new Point(43, 81);
+            btnSaveCoord.Location = new Point(64, 61);
             btnSaveCoord.Name = "btnSaveCoord";
             btnSaveCoord.Size = new Size(106, 23);
             btnSaveCoord.TabIndex = 20;
@@ -328,10 +329,10 @@
             // trackBarTime
             // 
             trackBarTime.BackColor = SystemColors.ControlLightLight;
-            trackBarTime.Location = new Point(106, 41);
+            trackBarTime.Location = new Point(99, 41);
             trackBarTime.Maximum = 59;
             trackBarTime.Name = "trackBarTime";
-            trackBarTime.Size = new Size(200, 45);
+            trackBarTime.Size = new Size(227, 45);
             trackBarTime.TabIndex = 41;
             trackBarTime.TickFrequency = 30;
             trackBarTime.ValueChanged += trackBarTime_ValueChanged;
@@ -386,6 +387,7 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
+            panel2.Controls.Add(btnRotaTransito);
             panel2.Controls.Add(buttonRemoveOverlays);
             panel2.Controls.Add(labelCurrentFileName);
             panel2.Controls.Add(labelCurrentFile);
@@ -399,8 +401,8 @@
             // buttonRemoveOverlays
             // 
             buttonRemoveOverlays.BackColor = Color.Red;
-            buttonRemoveOverlays.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonRemoveOverlays.ForeColor = SystemColors.ButtonFace;
+            buttonRemoveOverlays.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonRemoveOverlays.ForeColor = SystemColors.ActiveCaptionText;
             buttonRemoveOverlays.Location = new Point(2, 89);
             buttonRemoveOverlays.Name = "buttonRemoveOverlays";
             buttonRemoveOverlays.Size = new Size(147, 57);
@@ -448,6 +450,19 @@
             btnCarregarMapa.Text = "Carregar Mapa";
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
+            // 
+            // btnRotaTransito
+            // 
+            btnRotaTransito.BackColor = Color.Orange;
+            btnRotaTransito.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnRotaTransito.ForeColor = SystemColors.ActiveCaptionText;
+            btnRotaTransito.Location = new Point(154, 89);
+            btnRotaTransito.Name = "btnRotaTransito";
+            btnRotaTransito.Size = new Size(147, 57);
+            btnRotaTransito.TabIndex = 23;
+            btnRotaTransito.Text = "Carregar Rota de Trânsito";
+            btnRotaTransito.UseVisualStyleBackColor = false;
+            btnRotaTransito.Click += btnRotaTransito_Click;
             // 
             // FormMap
             // 
@@ -512,5 +527,6 @@
         private Button btnCarregarMapa;
         private Label label1;
         private TextBox textBoxSreetName;
+        private Button btnRotaTransito;
     }
 }

@@ -20,8 +20,6 @@ namespace ProjetoFinalM2
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
 
-        private Random r = new Random();
-
         public FormMap()
         {
             AllocConsole(); //Permite a criacao de uma consola para fins de debugging
@@ -47,7 +45,6 @@ namespace ProjetoFinalM2
                 //                              select new PointLatLng(coord.Lat, coord.Lon));
 
                 vehiclesList.ForEach(vehicle => {
-                    //Color randomColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
                     List<PointLatLng> tmpListCoords = new();
 
                     vehicle.TimestampedCoords.ForEach(coord => {
@@ -124,10 +121,10 @@ namespace ProjetoFinalM2
             mapa.DragButton = MouseButtons.Left;
             mapa.CanDragMap = true;
             mapa.MapProvider = GMapProviders.OpenStreetMap;
-            mapa.Position = new PointLatLng(39.734273, -8.821656);
+            mapa.Position = new PointLatLng(39.739790, -8.805316);
             mapa.MinZoom = 0;
             mapa.MaxZoom = 24;
-            mapa.Zoom = 18;
+            mapa.Zoom = 17;
             mapa.AutoScroll = true;
             mapa.ShowCenter = false;
             #endregion
@@ -283,6 +280,11 @@ namespace ProjetoFinalM2
         {
             labelSelectedSeconds.Text = trackBarTime.Value.ToString();
             //TODO: Filtrar veiculos quando isto muda
+        }
+
+        private void btnRotaTransito_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
