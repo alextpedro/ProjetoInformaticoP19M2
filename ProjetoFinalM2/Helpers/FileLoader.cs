@@ -20,7 +20,7 @@ namespace ProjetoFinalM2.Helpers
         public static int numPoints = 0;
         public static int nOverlays = 0;
 
-        public static string SaveCoordToFile(string lat, string lon)
+        public static string SaveCoordToFile(DateTime time, string lat, string lon, int id)
         {
             if (String.IsNullOrEmpty(savedCoordsFile))
             {
@@ -44,10 +44,10 @@ namespace ProjetoFinalM2.Helpers
                 {
                     if (new FileInfo(savedCoordsFile).Length == 0)
                     {
-                        fileStream.WriteLine("Latitude,Longitude");
+                        fileStream.WriteLine("Timestamp,Latitude,Longitude,Vehicle ID");
                     }
 
-                    fileStream.WriteLine($"{lat}, {lon}");
+                    fileStream.WriteLine($"{time}, {lat}, {lon}, {id}");
                 }
             }
 

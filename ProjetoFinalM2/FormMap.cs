@@ -135,7 +135,7 @@ namespace ProjetoFinalM2
 
         private void btnSaveCoord_Click(object sender, EventArgs e)
         {
-            labelSaveFileName.Text = FileLoader.SaveCoordToFile(labelLatitude.Text, labelLongitude.Text) ?? labelSaveFileName.Text;
+            labelSaveFileName.Text = FileLoader.SaveCoordToFile(DateTime.Now, labelLatitude.Text, labelLongitude.Text,  1) ?? labelSaveFileName.Text;
         }
 
         //private void buttonCarregarTransito_Click(object sender, EventArgs e)
