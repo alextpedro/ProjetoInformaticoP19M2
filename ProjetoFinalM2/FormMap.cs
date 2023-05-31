@@ -16,6 +16,7 @@ namespace ProjetoFinalM2
         public int quantidadePontosNoPoligono = 0;
         public int totalVeiculos = 0;
         public List<Vehicle> vehiclesList = new List<Vehicle>();
+        public List<PointLatLng> pointLatLngsList = new List<PointLatLng>();
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -38,11 +39,6 @@ namespace ProjetoFinalM2
             try
             {
                 vehiclesList.AddRange(FileLoader.LoadPointsFromFile(vehiclesList));
-
-                //Possivelmente já não é preciso
-                //List<PointLatLng> pointsLoadedFromFile = new();
-                //pointsLoadedFromFile.AddRange(from coord in loadedTSCoords
-                //                              select new PointLatLng(coord.Lat, coord.Lon));
 
                 vehiclesList.ForEach(vehicle => {
                     List<PointLatLng> tmpListCoords = new();
@@ -284,7 +280,44 @@ namespace ProjetoFinalM2
 
         private void btnRotaTransito_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                // Carrega pontos para a lista:
+                //pointLatLngsList.AddRange(FileLoader.LoadCoordsFromFile(pointLatLngsList));
+                pointLatLngsList.AddRange(FileLoader.LoadCoordsFromFile());
+
+                OverlayHelper.ClearOverlays(mapa);
+
+                // Desenha rota no mapa:
+                OverlayHelper.DrawRoute(mapa, pointLatLngsList, Color.Green, 3);
+
+                // Verificar pontos da lista se estão dentro ou próximos da rota em cima e contar os que estão
+
+
+                // comparar com uiNVeiculosTransito.Value
+                #region Colorir a Rota / "Está trânsito"
+                //TODO: Esta zona vai ter de limitar, eventualmente, ao nº de veiculos a passar naquela "zona"
+                var nVeiculosMax = uiNVeiculosTransito.Value;
+                //if (timedVehicles.Count > nVeiculosMax)
+                //{
+                //    //OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
+                //    labelTrafficState.Text = "Com trânsito";
+                //} else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                //{
+                //    labelTrafficState.Text = "Trânsito normal";
+                //    //OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
+                //} else
+                //{
+                //    labelTrafficState.Text = "Sem trânsito";
+                //    //OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
+                //}
+                #endregion
+
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Nenhum ficheiro carregado.");
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

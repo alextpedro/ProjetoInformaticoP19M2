@@ -109,6 +109,40 @@ namespace ProjetoFinalM2.Helpers
             }
         }
 
+        public static List<PointLatLng>? LoadCoordsFromFile()
+        {
+            if (!String.IsNullOrEmpty(loadedFileName))
+            {
+                using TextFieldParser parser = new TextFieldParser(loadedFileName);
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+
+                List<PointLatLng> coordsRouteList = new List<PointLatLng>();
+
+                string[] fields = parser.ReadFields();
+
+                bool isHeader = true;
+                while (!parser.EndOfData)
+                {
+                    try
+                    {
+                        var lat = Convert.ToDouble(fields[1]);
+                        var lon = Convert.ToDouble(fields[2]);
+
+                        coordsRouteList.Add(new PointLatLng(lat, lon));
+
+                    } catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+                    return coordsRouteList;
+            } else
+            {
+                return null;
+            }
+        }
+
         internal static string? LoadFile()
         {
             using (var selectFileDialog = new OpenFileDialog())
