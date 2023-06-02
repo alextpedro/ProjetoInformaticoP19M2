@@ -131,7 +131,7 @@ namespace ProjetoFinalM2
 
         private void btnSaveCoord_Click(object sender, EventArgs e)
         {
-            labelSaveFileName.Text = FileLoader.SaveCoordToFile(DateTime.Now, labelLatitude.Text, labelLongitude.Text,  1) ?? labelSaveFileName.Text;
+            labelSaveFileName.Text = FileLoader.SaveCoordToFile(DateTime.Now, labelLatitude.Text, labelLongitude.Text, 1) ?? labelSaveFileName.Text;
         }
 
         //private void buttonCarregarTransito_Click(object sender, EventArgs e)
@@ -172,8 +172,8 @@ namespace ProjetoFinalM2
             Console.WriteLine($"There are {vehiclesList.Count} vehicles in vehiclesList.");
             Console.WriteLine("O nome da rua é " + streetName);
 
-            try
-            {
+            //try
+            //{
                 List<PointLatLng> points = new List<PointLatLng>();
                 List<Vehicle> timedVehicles = new();
 
@@ -204,72 +204,90 @@ namespace ProjetoFinalM2
                 #endregion
 
                 #region Desenhar pins
+                //GMapOverlay overlay = mapa.Overlays["polygon"];
+                GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
+                GMapPolygon polygon = overlay.Polygons.FirstOrDefault(p => p.Name == "polygon");
                 if (timedVehicles != null)
                 {
-                    OverlayHelper.ClearOverlays(mapa);
+                    //OverlayHelper.ClearOverlays(mapa);
 
                     foreach (var v in timedVehicles)
                     {
                         foreach (var c in v.TimestampedCoords)
                         {
-                            OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
+                            //OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
+                            //OverlayHelper.DrawPolygon(mapa, points, Color.Red, 3);
+                            bool isInside = polygon.IsInside(new PointLatLng(c.Lat, c.Lon));
+                            if (isInside)
+                            {
+                                Console.WriteLine("Estou no isInside");
+                                OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
+                            }
                         }
 
                         #region Sentido Cartesiano
-                        for (int i = 1; i < 2; i++)
-                        {
-                            TimestampedCoords pontoAtual = v.TimestampedCoords[i];
-                            TimestampedCoords pontoAnterior = v.TimestampedCoords[i - 1];
-                            if (pontoAtual.Lon > pontoAnterior.Lon)
-                            {
-                                // Rota da esquerda para a direita
-                                Console.WriteLine("Veículo " + v.Id + " circula de Este para Oeste");
-                            } else if (pontoAtual.Lon < pontoAnterior.Lon)
-                            {
-                                // Rota da direita para a esquerda
-                                Console.WriteLine("Veículo " + v.Id + " circula de Oeste para Este");
-                            }
-                            if (pontoAtual.Lat > pontoAnterior.Lat)
-                            {
-                                // Rota de cima para baixo
-                                Console.WriteLine("Veículo " + v.Id + " circula de Norte para Sul");
-                            } else if (pontoAtual.Lat < pontoAnterior.Lat)
-                            {
-                                // Rota de baixo para cima
-                                Console.WriteLine("Veículo " + v.Id + " circula deSul para Norte");
-                            } else
-                            {
-                                Console.WriteLine("Estou no else do FOR i do timedVehicles");
-                            }
-                        }
+                        //for (int i = 1; i < 2; i++)
+                        //{
+                        //    TimestampedCoords pontoAtual = v.TimestampedCoords[i];
+                        //    TimestampedCoords pontoAnterior = v.TimestampedCoords[i - 1];
+                        //    if (pontoAtual.Lon > pontoAnterior.Lon)
+                        //    {
+                        //        // Rota da esquerda para a direita
+                        //        Console.WriteLine("Veículo " + v.Id + " circula de Este para Oeste");
+                        //    } else if (pontoAtual.Lon < pontoAnterior.Lon)
+                        //    {
+                        //        // Rota da direita para a esquerda
+                        //        Console.WriteLine("Veículo " + v.Id + " circula de Oeste para Este");
+                        //    }
+                        //    if (pontoAtual.Lat > pontoAnterior.Lat)
+                        //    {
+                        //        // Rota de cima para baixo
+                        //        Console.WriteLine("Veículo " + v.Id + " circula de Norte para Sul");
+                        //    } else if (pontoAtual.Lat < pontoAnterior.Lat)
+                        //    {
+                        //        // Rota de baixo para cima
+                        //        Console.WriteLine("Veículo " + v.Id + " circula deSul para Norte");
+                        //    } else
+                        //    {
+                        //        Console.WriteLine("Estou no else do FOR i do timedVehicles");
+                        //    }
+                        //}
                         #endregion
                     }
                 }
                 #endregion
 
                 #region Colorir a Rota / "Está trânsito"
-                //TODO: Esta zona vai ter de limitar, eventualmente, ao nº de veiculos a passar naquela "zona"
                 var nVeiculosMax = uiNVeiculosTransito.Value;
                 if (timedVehicles.Count > nVeiculosMax)
                 {
                     //OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
                     labelTrafficState.Text = "Com trânsito";
+                    //OverlayHelper.DrawPolygon(mapa, points, Color.Red, 3);
+                    polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
+                    polygon.Stroke = new Pen(Color.Red, 1);
                 } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     //OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
+                    polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
+                    polygon.Stroke = new Pen(Color.Yellow, 1);
                 } else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     //OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
+                    polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
+                    polygon.Stroke = new Pen(Color.Green, 1);
                 }
                 #endregion
 
-            } catch (Exception ex)
-            {
-                MessageBox.Show("Algo correu mal!");
-                Console.WriteLine(ex.Message);
-            }
+            //} 
+            //catch (Exception ex)
+            //{
+            //    //MessageBox.Show("Algo correu mal!");
+            //    //Console.WriteLine(ex.Message);
+
+            //}
         }
 
         private void trackBarTime_ValueChanged(object sender, EventArgs e)
@@ -282,36 +300,17 @@ namespace ProjetoFinalM2
         {
             try
             {
-                // Carrega pontos para a lista:
-                //pointLatLngsList.AddRange(FileLoader.LoadCoordsFromFile(pointLatLngsList));
-                pointLatLngsList.AddRange(FileLoader.LoadCoordsFromFile());
+                List<PointLatLng> coordsList = new();
 
-                OverlayHelper.ClearOverlays(mapa);
+                vehiclesList.ForEach(vehicle => {
 
-                // Desenha rota no mapa:
-                OverlayHelper.DrawRoute(mapa, pointLatLngsList, Color.Green, 3);
+                    vehicle.TimestampedCoords.ForEach(coord => {
+                        coordsList.Add(new PointLatLng(coord.Lat, coord.Lon));
+                    });
 
-                // Verificar pontos da lista se estão dentro ou próximos da rota em cima e contar os que estão
+                });
 
-
-                // comparar com uiNVeiculosTransito.Value
-                #region Colorir a Rota / "Está trânsito"
-                //TODO: Esta zona vai ter de limitar, eventualmente, ao nº de veiculos a passar naquela "zona"
-                var nVeiculosMax = uiNVeiculosTransito.Value;
-                //if (timedVehicles.Count > nVeiculosMax)
-                //{
-                //    //OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
-                //    labelTrafficState.Text = "Com trânsito";
-                //} else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
-                //{
-                //    labelTrafficState.Text = "Trânsito normal";
-                //    //OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
-                //} else
-                //{
-                //    labelTrafficState.Text = "Sem trânsito";
-                //    //OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
-                //}
-                #endregion
+                OverlayHelper.DrawPolygon(mapa, coordsList, Color.Black);
 
             } catch (Exception ex)
             {

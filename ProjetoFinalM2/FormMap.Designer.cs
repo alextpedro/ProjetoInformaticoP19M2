@@ -59,12 +59,12 @@
             labelTrafficStateText = new Label();
             labelTrafficState = new Label();
             panel2 = new Panel();
+            btnRotaTransito = new Button();
             buttonRemoveOverlays = new Button();
             labelCurrentFileName = new Label();
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
-            btnRotaTransito = new Button();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -398,6 +398,19 @@
             panel2.Size = new Size(304, 146);
             panel2.TabIndex = 41;
             // 
+            // btnRotaTransito
+            // 
+            btnRotaTransito.BackColor = Color.Orange;
+            btnRotaTransito.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnRotaTransito.ForeColor = SystemColors.ActiveCaptionText;
+            btnRotaTransito.Location = new Point(154, 89);
+            btnRotaTransito.Name = "btnRotaTransito";
+            btnRotaTransito.Size = new Size(147, 57);
+            btnRotaTransito.TabIndex = 23;
+            btnRotaTransito.Text = "Fazer Polígono";
+            btnRotaTransito.UseVisualStyleBackColor = false;
+            btnRotaTransito.Click += btnRotaTransito_Click;
+            // 
             // buttonRemoveOverlays
             // 
             buttonRemoveOverlays.BackColor = Color.Red;
@@ -450,19 +463,6 @@
             btnCarregarMapa.Text = "Carregar Mapa";
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
-            // 
-            // btnRotaTransito
-            // 
-            btnRotaTransito.BackColor = Color.Orange;
-            btnRotaTransito.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnRotaTransito.ForeColor = SystemColors.ActiveCaptionText;
-            btnRotaTransito.Location = new Point(154, 89);
-            btnRotaTransito.Name = "btnRotaTransito";
-            btnRotaTransito.Size = new Size(147, 57);
-            btnRotaTransito.TabIndex = 23;
-            btnRotaTransito.Text = "Carregar Rota de Trânsito";
-            btnRotaTransito.UseVisualStyleBackColor = false;
-            btnRotaTransito.Click += btnRotaTransito_Click;
             // 
             // FormMap
             // 
