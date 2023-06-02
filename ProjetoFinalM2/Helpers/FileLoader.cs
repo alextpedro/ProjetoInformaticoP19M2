@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
 using ProjetoFinalM2.Data;
+using System.Globalization;
 
 namespace ProjetoFinalM2.Helpers
 {
@@ -54,7 +55,7 @@ namespace ProjetoFinalM2.Helpers
             return saveFileName;
         }
 
-        public static List<Vehicle>? LoadPointsFromFile(List<Vehicle> VehiclesList)
+        public static List<Vehicle>? LoadPointsFromFile()
         {
             if (!String.IsNullOrEmpty(loadedFileName))
             {
@@ -109,21 +110,28 @@ namespace ProjetoFinalM2.Helpers
             }
         }
 
-        public static List<PointLatLng>? LoadCoordsFromFile()
+        public static List<PointLatLng>? LoadPointsForPolygon()
         {
-            if (!String.IsNullOrEmpty(loadedFileName))
+            string tmpLoadedFileName = LoadFile(true);
+            if (!String.IsNullOrEmpty(tmpLoadedFileName))
             {
-                using TextFieldParser parser = new TextFieldParser(loadedFileName);
+                using TextFieldParser parser = new TextFieldParser(tmpLoadedFileName);
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
 
                 List<PointLatLng> coordsRouteList = new List<PointLatLng>();
 
-                string[] fields = parser.ReadFields();
-
                 bool isHeader = true;
                 while (!parser.EndOfData)
                 {
+                    string[] fields = parser.ReadFields();
+
+                    if (isHeader)
+                    {
+                        isHeader = false;
+                        continue;
+                    }
+
                     try
                     {
                         var lat = Convert.ToDouble(fields[1]);
@@ -131,19 +139,22 @@ namespace ProjetoFinalM2.Helpers
 
                         coordsRouteList.Add(new PointLatLng(lat, lon));
 
-                    } catch (Exception)
+                    }
+                    catch (Exception ex)
                     {
+                        Console.WriteLine();
                         continue;
                     }
                 }
-                    return coordsRouteList;
-            } else
+                return coordsRouteList;
+            }
+            else
             {
                 return null;
             }
         }
 
-        internal static string? LoadFile()
+        internal static string? LoadFile(bool fullPath)
         {
             using (var selectFileDialog = new OpenFileDialog())
             {
@@ -152,6 +163,10 @@ namespace ProjetoFinalM2.Helpers
                     loadedFileName = selectFileDialog.FileName;
                     Console.WriteLine($"Filename: {loadedFileName}");
 
+                    if(fullPath)
+                    {
+                        return loadedFileName;
+                    }
                     return selectFileDialog.SafeFileName;
                 }
             }

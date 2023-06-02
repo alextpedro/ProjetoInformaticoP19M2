@@ -1,12 +1,9 @@
-using Avalonia;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
-using System.Reflection;
-using System.Linq;
 
 namespace ProjetoFinalM2
 {
@@ -38,12 +35,14 @@ namespace ProjetoFinalM2
         {
             try
             {
-                vehiclesList.AddRange(FileLoader.LoadPointsFromFile(vehiclesList));
+                vehiclesList.AddRange(FileLoader.LoadPointsFromFile());
 
-                vehiclesList.ForEach(vehicle => {
+                vehiclesList.ForEach(vehicle =>
+                {
                     List<PointLatLng> tmpListCoords = new();
 
-                    vehicle.TimestampedCoords.ForEach(coord => {
+                    vehicle.TimestampedCoords.ForEach(coord =>
+                    {
                         tmpListCoords.Add(new PointLatLng(coord.Lat, coord.Lon));
                     });
 
@@ -66,13 +65,15 @@ namespace ProjetoFinalM2
                 if (vehiclesList.Count < (int)uiNVeiculosTransito.Value)
                 {
                     labelTrafficState.Text = "Normal";
-                } else
+                }
+                else
                 {
                     labelTrafficState.Text = "Com Transito";
                 }
                 #endregion
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -87,7 +88,7 @@ namespace ProjetoFinalM2
 
         private void BtnCarregarFicheiro_Click(object sender, EventArgs e)
         {
-            labelCurrentFileName.Text = FileLoader.LoadFile() ?? labelCurrentFileName.Text;
+            labelCurrentFileName.Text = FileLoader.LoadFile(false) ?? labelCurrentFileName.Text;
         }
 
         private void LabelLatitude_Click(object sender, EventArgs e)
@@ -129,38 +130,17 @@ namespace ProjetoFinalM2
             labelLongitude.Text = mapa.Position.Lng.ToString();
         }
 
-        private void btnSaveCoord_Click(object sender, EventArgs e)
+        private void BtnSaveCoord_Click(object sender, EventArgs e)
         {
             labelSaveFileName.Text = FileLoader.SaveCoordToFile(DateTime.Now, labelLatitude.Text, labelLongitude.Text, 1) ?? labelSaveFileName.Text;
         }
 
-        //private void buttonCarregarTransito_Click(object sender, EventArgs e)
-        //{
-        //    List<PointLatLng> trafficPoints = new();
-        //    trafficPoints.AddRange(from coord in loadedTSCoords
-        //                           select new PointLatLng(coord.Lat, coord.Lon));
-
-        //    OverlayHelper.DrawPolygon(mapa, trafficPoints, Color.Black);
-
-        //    var nVerticesPoligono = trafficPoints.Count();
-        //    Console.WriteLine("O polígono para medir o transito tem " + nVerticesPoligono + " vértices.");
-
-        //    //foreach (var point in points)
-        //    //{
-        //    //    if (polygon1.IsInside(point))
-        //    //    {
-        //    //        quantidadePontosNoPoligono += 1;
-        //    //    }
-        //    //}
-        //    Console.WriteLine("Dentro do Polígono existem " + quantidadePontosNoPoligono + " da Rota anterior.");
-        //}
-
-        private void buttonRemoveOverlays_Click(object sender, EventArgs e)
+        private void ButtonRemoveOverlays_Click(object sender, EventArgs e)
         {
             OverlayHelper.ClearOverlays(mapa);
         }
 
-        private void buttonPesquisarTransito_Click(object sender, EventArgs e)
+        private void ButtonPesquisarTransito_Click(object sender, EventArgs e)
         {
             //TODO: Refactor for Vehicles
             String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
@@ -172,8 +152,8 @@ namespace ProjetoFinalM2
             Console.WriteLine($"There are {vehiclesList.Count} vehicles in vehiclesList.");
             Console.WriteLine("O nome da rua é " + streetName);
 
-            //try
-            //{
+            try
+            {
                 List<PointLatLng> points = new List<PointLatLng>();
                 List<Vehicle> timedVehicles = new();
 
@@ -257,62 +237,54 @@ namespace ProjetoFinalM2
                 }
                 #endregion
 
-                #region Colorir a Rota / "Está trânsito"
+                #region Colorir o polígono / "Está trânsito"
                 var nVeiculosMax = uiNVeiculosTransito.Value;
                 if (timedVehicles.Count > nVeiculosMax)
                 {
-                    //OverlayHelper.DrawRoute(mapa, points, Color.Red, 3);
                     labelTrafficState.Text = "Com trânsito";
-                    //OverlayHelper.DrawPolygon(mapa, points, Color.Red, 3);
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
                     polygon.Stroke = new Pen(Color.Red, 1);
-                } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                }
+                else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
-                    //OverlayHelper.DrawRoute(mapa, points, Color.Yellow, 3);
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
                     polygon.Stroke = new Pen(Color.Yellow, 1);
-                } else
+                }
+                else
                 {
                     labelTrafficState.Text = "Sem trânsito";
-                    //OverlayHelper.DrawRoute(mapa, points, Color.Green, 3);
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
                     polygon.Stroke = new Pen(Color.Green, 1);
                 }
                 #endregion
 
-            //} 
-            //catch (Exception ex)
-            //{
-            //    //MessageBox.Show("Algo correu mal!");
-            //    //Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Algo correu mal!");
+                Console.WriteLine(ex.Message);
 
-            //}
+            }
         }
 
-        private void trackBarTime_ValueChanged(object sender, EventArgs e)
+        private void TrackBarTime_ValueChanged(object sender, EventArgs e)
         {
             labelSelectedSeconds.Text = trackBarTime.Value.ToString();
             //TODO: Filtrar veiculos quando isto muda
         }
 
-        private void btnRotaTransito_Click(object sender, EventArgs e)
+        private void BtnDrawPolygon_Click(object sender, EventArgs e)
         {
+            List<PointLatLng> coordsList = new List<PointLatLng>();
             try
             {
-                List<PointLatLng> coordsList = new();
-
-                vehiclesList.ForEach(vehicle => {
-
-                    vehicle.TimestampedCoords.ForEach(coord => {
-                        coordsList.Add(new PointLatLng(coord.Lat, coord.Lon));
-                    });
-
-                });
+                coordsList.AddRange(FileLoader.LoadPointsForPolygon());
 
                 OverlayHelper.DrawPolygon(mapa, coordsList, Color.Black);
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);

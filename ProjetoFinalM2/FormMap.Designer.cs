@@ -121,7 +121,7 @@
             buttonPesquisarTransito.TabIndex = 39;
             toolTip1.SetToolTip(buttonPesquisarTransito, "ConsultarTransito");
             buttonPesquisarTransito.UseVisualStyleBackColor = false;
-            buttonPesquisarTransito.Click += buttonPesquisarTransito_Click;
+            buttonPesquisarTransito.Click += ButtonPesquisarTransito_Click;
             // 
             // panelCoordSaves
             // 
@@ -149,7 +149,7 @@
             btnSaveCoord.TabIndex = 20;
             btnSaveCoord.Text = "Guardar Coord";
             btnSaveCoord.UseVisualStyleBackColor = true;
-            btnSaveCoord.Click += btnSaveCoord_Click;
+            btnSaveCoord.Click += BtnSaveCoord_Click;
             // 
             // labelMostrarLatitude
             // 
@@ -335,7 +335,7 @@
             trackBarTime.Size = new Size(227, 45);
             trackBarTime.TabIndex = 41;
             trackBarTime.TickFrequency = 30;
-            trackBarTime.ValueChanged += trackBarTime_ValueChanged;
+            trackBarTime.ValueChanged += TrackBarTime_ValueChanged;
             // 
             // dateTimePickerTime
             // 
@@ -409,7 +409,7 @@
             btnRotaTransito.TabIndex = 23;
             btnRotaTransito.Text = "Fazer Polígono";
             btnRotaTransito.UseVisualStyleBackColor = false;
-            btnRotaTransito.Click += btnRotaTransito_Click;
+            btnRotaTransito.Click += BtnDrawPolygon_Click;
             // 
             // buttonRemoveOverlays
             // 
@@ -422,7 +422,7 @@
             buttonRemoveOverlays.TabIndex = 22;
             buttonRemoveOverlays.Text = "Remover Overlays";
             buttonRemoveOverlays.UseVisualStyleBackColor = false;
-            buttonRemoveOverlays.Click += buttonRemoveOverlays_Click;
+            buttonRemoveOverlays.Click += ButtonRemoveOverlays_Click;
             // 
             // labelCurrentFileName
             // 
