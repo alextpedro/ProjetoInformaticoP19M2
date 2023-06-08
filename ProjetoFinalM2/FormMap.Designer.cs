@@ -43,7 +43,8 @@
             labelSaveFile = new Label();
             labelSaveFileName = new Label();
             panel1 = new Panel();
-            textBoxSreetName = new TextBox();
+            labelStreet = new Label();
+            labelStreetName = new Label();
             label1 = new Label();
             labelSelectedSeconds = new Label();
             labelSecsEnd = new Label();
@@ -59,12 +60,14 @@
             labelTrafficStateText = new Label();
             labelTrafficState = new Label();
             panel2 = new Panel();
+            BtnGetStreet = new Button();
             btnRotaTransito = new Button();
             buttonRemoveOverlays = new Button();
             labelCurrentFileName = new Label();
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
+            labelSentidoCart = new Label();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -220,7 +223,9 @@
             // 
             panel1.BackColor = Color.White;
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(textBoxSreetName);
+            panel1.Controls.Add(labelSentidoCart);
+            panel1.Controls.Add(labelStreet);
+            panel1.Controls.Add(labelStreetName);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(labelSelectedSeconds);
             panel1.Controls.Add(labelSecsEnd);
@@ -242,12 +247,26 @@
             panel1.Size = new Size(337, 181);
             panel1.TabIndex = 40;
             // 
-            // textBoxSreetName
+            // labelStreet
             // 
-            textBoxSreetName.Location = new Point(106, 137);
-            textBoxSreetName.Name = "textBoxSreetName";
-            textBoxSreetName.Size = new Size(207, 23);
-            textBoxSreetName.TabIndex = 52;
+            labelStreet.AutoSize = true;
+            labelStreet.BackColor = Color.Transparent;
+            labelStreet.Location = new Point(107, 142);
+            labelStreet.Margin = new Padding(3, 6, 3, 0);
+            labelStreet.Name = "labelStreet";
+            labelStreet.Size = new Size(25, 15);
+            labelStreet.TabIndex = 53;
+            labelStreet.Text = "xxx";
+            // 
+            // labelStreetName
+            // 
+            labelStreetName.AutoSize = true;
+            labelStreetName.BackColor = Color.Transparent;
+            labelStreetName.Location = new Point(107, 142);
+            labelStreetName.Margin = new Padding(3, 6, 3, 0);
+            labelStreetName.Name = "labelStreetName";
+            labelStreetName.Size = new Size(0, 15);
+            labelStreetName.TabIndex = 52;
             // 
             // label1
             // 
@@ -387,6 +406,7 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
+            panel2.Controls.Add(BtnGetStreet);
             panel2.Controls.Add(btnRotaTransito);
             panel2.Controls.Add(buttonRemoveOverlays);
             panel2.Controls.Add(labelCurrentFileName);
@@ -395,8 +415,21 @@
             panel2.Controls.Add(btnCarregarMapa);
             panel2.Location = new Point(663, 12);
             panel2.Name = "panel2";
-            panel2.Size = new Size(304, 146);
+            panel2.Size = new Size(304, 191);
             panel2.TabIndex = 41;
+            // 
+            // BtnGetStreet
+            // 
+            BtnGetStreet.BackColor = Color.Bisque;
+            BtnGetStreet.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            BtnGetStreet.ForeColor = SystemColors.ActiveCaptionText;
+            BtnGetStreet.Location = new Point(2, 153);
+            BtnGetStreet.Name = "BtnGetStreet";
+            BtnGetStreet.Size = new Size(147, 35);
+            BtnGetStreet.TabIndex = 24;
+            BtnGetStreet.Text = "Obter Rua";
+            BtnGetStreet.UseVisualStyleBackColor = false;
+            BtnGetStreet.Click += BtnGetStreet_Click;
             // 
             // btnRotaTransito
             // 
@@ -464,6 +497,17 @@
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
             // 
+            // labelSentidoCart
+            // 
+            labelSentidoCart.AutoSize = true;
+            labelSentidoCart.BackColor = Color.Transparent;
+            labelSentidoCart.Location = new Point(107, 163);
+            labelSentidoCart.Margin = new Padding(3, 6, 3, 0);
+            labelSentidoCart.Name = "labelSentidoCart";
+            labelSentidoCart.Size = new Size(25, 15);
+            labelSentidoCart.TabIndex = 54;
+            labelSentidoCart.Text = "xxx";
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -526,7 +570,10 @@
         private Button btnCarregarFicheiro;
         private Button btnCarregarMapa;
         private Label label1;
-        private TextBox textBoxSreetName;
         private Button btnRotaTransito;
+        private Button BtnGetStreet;
+        private Label labelStreetName;
+        private Label labelStreet;
+        private Label labelSentidoCart;
     }
 }

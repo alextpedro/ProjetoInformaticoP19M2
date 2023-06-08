@@ -14,6 +14,7 @@ namespace ProjetoFinalM2
         public int totalVeiculos = 0;
         public List<Vehicle> vehiclesList = new List<Vehicle>();
         public List<PointLatLng> pointLatLngsList = new List<PointLatLng>();
+        public List<PointLatLng> myList = new List<PointLatLng>();
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -37,12 +38,10 @@ namespace ProjetoFinalM2
             {
                 vehiclesList.AddRange(FileLoader.LoadPointsFromFile());
 
-                vehiclesList.ForEach(vehicle =>
-                {
+                vehiclesList.ForEach(vehicle => {
                     List<PointLatLng> tmpListCoords = new();
 
-                    vehicle.TimestampedCoords.ForEach(coord =>
-                    {
+                    vehicle.TimestampedCoords.ForEach(coord => {
                         tmpListCoords.Add(new PointLatLng(coord.Lat, coord.Lon));
                     });
 
@@ -65,15 +64,13 @@ namespace ProjetoFinalM2
                 if (vehiclesList.Count < (int)uiNVeiculosTransito.Value)
                 {
                     labelTrafficState.Text = "Normal";
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Com Transito";
                 }
                 #endregion
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -84,6 +81,7 @@ namespace ProjetoFinalM2
         {
             labelLatitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lat.ToString();
             labelLongitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lng.ToString();
+            myList.Add(new PointLatLng(mapa.FromLocalToLatLng(e.X, e.Y).Lat, mapa.FromLocalToLatLng(e.X, e.Y).Lng));
         }
 
         private void BtnCarregarFicheiro_Click(object sender, EventArgs e)
@@ -138,6 +136,7 @@ namespace ProjetoFinalM2
         private void ButtonRemoveOverlays_Click(object sender, EventArgs e)
         {
             OverlayHelper.ClearOverlays(mapa);
+            myList.Clear();
         }
 
         private void ButtonPesquisarTransito_Click(object sender, EventArgs e)
@@ -145,12 +144,12 @@ namespace ProjetoFinalM2
             //TODO: Refactor for Vehicles
             String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
             DateTime selectedTime = DateTime.Parse(timeWorkaround);
-            string streetName = textBoxSreetName.Text;
+            //string streetName = textBoxSreetName.Text;
 
             //Para debugging
             Console.WriteLine($"TS: {selectedTime}");
             Console.WriteLine($"There are {vehiclesList.Count} vehicles in vehiclesList.");
-            Console.WriteLine("O nome da rua é " + streetName);
+            //Console.WriteLine("O nome da rua é " + streetName);
 
             try
             {
@@ -189,14 +188,10 @@ namespace ProjetoFinalM2
                 GMapPolygon polygon = overlay.Polygons.FirstOrDefault(p => p.Name == "polygon");
                 if (timedVehicles != null)
                 {
-                    //OverlayHelper.ClearOverlays(mapa);
-
                     foreach (var v in timedVehicles)
                     {
                         foreach (var c in v.TimestampedCoords)
                         {
-                            //OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
-                            //OverlayHelper.DrawPolygon(mapa, points, Color.Red, 3);
                             bool isInside = polygon.IsInside(new PointLatLng(c.Lat, c.Lon));
                             if (isInside)
                             {
@@ -244,14 +239,12 @@ namespace ProjetoFinalM2
                     labelTrafficState.Text = "Com trânsito";
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
                     polygon.Stroke = new Pen(Color.Red, 1);
-                }
-                else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
                     polygon.Stroke = new Pen(Color.Yellow, 1);
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
@@ -259,8 +252,7 @@ namespace ProjetoFinalM2
                 }
                 #endregion
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);
@@ -283,12 +275,65 @@ namespace ProjetoFinalM2
 
                 OverlayHelper.DrawPolygon(mapa, coordsList, Color.Black);
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
             }
         }
+
+        private void BtnGetStreet_Click(object sender, EventArgs e)
+        {
+            #region Obter informação da Rua
+            // OS PONTOS SÃO ARMAZENADOS NUMA LISTA DE PONTOS (Tipo de cada elemento PointLatLng)
+            PointLatLng myPoint1 = myList[0];
+            PointLatLng myPoint2 = myList[1];
+            #endregion
+
+            #region Obtém Direções Cartesianas 2
+            if (myPoint2.Lat > myPoint1.Lng && myPoint2.Lat < myPoint1.Lat)
+            {
+                // Rota da esquerda para a direita
+                labelSentidoCart.Text = "Rota Noroeste";
+                Console.WriteLine("Rota Noroeste");
+            } else if (myPoint2.Lat < myPoint1.Lat && myPoint2.Lng < myPoint1.Lng)
+            {
+                labelSentidoCart.Text = "Rota Nordeste";
+                Console.WriteLine("Rota Nordeste");
+            } else if (myPoint2.Lng < myPoint1.Lng && myPoint2.Lat > myPoint1.Lat)
+            {
+                labelSentidoCart.Text = "Rota Sudeste";
+                Console.WriteLine("Rota Sudeste");
+            } else if (myPoint2.Lat > myPoint1.Lat && myPoint2.Lat > myPoint1.Lng)
+            {
+                labelSentidoCart.Text = "Rota Sudoeste";
+                Console.WriteLine("Rota Sudoeste");
+            }
+            #endregion
+
+            // Obter informação a Rua do sobre o primeiro ponto
+            List<Placemark> placemarks = null;
+            var statusCode = GMapProviders.OpenStreetMap.GetPlacemarks(myPoint1, out placemarks);
+
+            // Verificar se TUDO OK
+            if (statusCode == GeoCoderStatusCode.OK && placemarks != null)
+            {
+                List<String> addresses = new List<string>();
+                foreach (var placemark in placemarks)
+                {
+                    // Obter o nome da rua
+                    addresses.Add(placemark.ThoroughfareName);
+                    labelStreet.Text = placemark.ThoroughfareName;
+
+                    MapRoute route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint1, myPoint2, false, false, 15);
+                    GMapRoute r = new GMapRoute(route.Points, "My route");
+                    GMapOverlay routesOverlay = new GMapOverlay("routes");
+                    routesOverlay.Routes.Add(r);
+                    mapa.Overlays.Add(routesOverlay);
+
+                }
+            }
+        }
+        
     }
 }
