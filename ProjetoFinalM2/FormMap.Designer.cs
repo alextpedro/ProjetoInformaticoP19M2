@@ -43,6 +43,7 @@
             labelSaveFile = new Label();
             labelSaveFileName = new Label();
             panel1 = new Panel();
+            labelSentidoCart = new Label();
             labelStreet = new Label();
             labelStreetName = new Label();
             label1 = new Label();
@@ -67,7 +68,6 @@
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
-            labelSentidoCart = new Label();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -246,6 +246,17 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(337, 181);
             panel1.TabIndex = 40;
+            // 
+            // labelSentidoCart
+            // 
+            labelSentidoCart.AutoSize = true;
+            labelSentidoCart.BackColor = Color.Transparent;
+            labelSentidoCart.Location = new Point(107, 163);
+            labelSentidoCart.Margin = new Padding(3, 6, 3, 0);
+            labelSentidoCart.Name = "labelSentidoCart";
+            labelSentidoCart.Size = new Size(25, 15);
+            labelSentidoCart.TabIndex = 54;
+            labelSentidoCart.Text = "xxx";
             // 
             // labelStreet
             // 
@@ -497,17 +508,6 @@
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
             // 
-            // labelSentidoCart
-            // 
-            labelSentidoCart.AutoSize = true;
-            labelSentidoCart.BackColor = Color.Transparent;
-            labelSentidoCart.Location = new Point(107, 163);
-            labelSentidoCart.Margin = new Padding(3, 6, 3, 0);
-            labelSentidoCart.Name = "labelSentidoCart";
-            labelSentidoCart.Size = new Size(25, 15);
-            labelSentidoCart.TabIndex = 54;
-            labelSentidoCart.Text = "xxx";
-            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -521,6 +521,7 @@
             Controls.Add(mapa);
             Name = "FormMap";
             Text = "Projeto Informático M2";
+            Load += FormMap_Load;
             Shown += FormMap_Shown;
             KeyDown += Form1_KeyDown;
             panelCoordSaves.ResumeLayout(false);

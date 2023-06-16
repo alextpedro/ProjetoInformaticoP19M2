@@ -4,6 +4,7 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
+using System.Net;
 
 namespace ProjetoFinalM2
 {
@@ -291,24 +292,52 @@ namespace ProjetoFinalM2
             #endregion
 
             #region Obtém Direções Cartesianas 2
-            if (myPoint2.Lat > myPoint1.Lng && myPoint2.Lat < myPoint1.Lat)
+            double lat1 = myPoint1.Lat * Math.PI / 180;
+            double lon1 = myPoint1.Lng * Math.PI / 180;
+            double lat2 = myPoint2.Lat * Math.PI / 180;
+            double lon2 = myPoint2.Lng * Math.PI / 180;
+
+            double dLon = lon2 - lon1;
+
+            double y = Math.Sin(dLon) * Math.Cos(lat2);
+            double x = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(dLon);
+
+            double bearing = Math.Atan2(y, x) * 180 / Math.PI;
+
+            if (bearing < 0)
             {
-                // Rota da esquerda para a direita
-                labelSentidoCart.Text = "Rota Noroeste";
-                Console.WriteLine("Rota Noroeste");
-            } else if (myPoint2.Lat < myPoint1.Lat && myPoint2.Lng < myPoint1.Lng)
-            {
-                labelSentidoCart.Text = "Rota Nordeste";
-                Console.WriteLine("Rota Nordeste");
-            } else if (myPoint2.Lng < myPoint1.Lng && myPoint2.Lat > myPoint1.Lat)
-            {
-                labelSentidoCart.Text = "Rota Sudeste";
-                Console.WriteLine("Rota Sudeste");
-            } else if (myPoint2.Lat > myPoint1.Lat && myPoint2.Lat > myPoint1.Lng)
-            {
-                labelSentidoCart.Text = "Rota Sudoeste";
-                Console.WriteLine("Rota Sudoeste");
+                bearing += 360;
             }
+
+            // verificar em que sentido a rota vai
+            bool isGoingNorth = bearing > 315 && bearing < 45;
+            bool isGoingEast = bearing > 45 && bearing < 135;
+            bool isGoingSouth = bearing > 135 && bearing < 225;
+            bool isGoingWest = bearing > 225 && bearing < 315;
+
+            // Atribuir à label a direção
+            if (isGoingNorth)
+            {
+                labelSentidoCart.Text = "Rota para Norte";
+                Console.WriteLine("A rota está a ir para norte.");
+            } else if (isGoingEast)
+            {
+                labelSentidoCart.Text = "Rota para Este";
+                Console.WriteLine("A rota está a ir para este.");
+            } else if (isGoingSouth)
+            {
+                labelSentidoCart.Text = "Rota para Sul";
+                Console.WriteLine("A rota está a ir para sul.");
+            } else if (isGoingWest)
+            {
+                labelSentidoCart.Text = "Rota para Oeste";
+                Console.WriteLine("A rota está a ir para oeste.");
+            } else
+            {
+                labelSentidoCart.Text = "Rota para Norte";
+                Console.WriteLine("A rota está a ir para norte.");
+            }
+
             #endregion
 
             // Obter informação a Rua do sobre o primeiro ponto
@@ -334,6 +363,10 @@ namespace ProjetoFinalM2
                 }
             }
         }
-        
+
+        private void FormMap_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
