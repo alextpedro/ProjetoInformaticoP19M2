@@ -61,6 +61,8 @@
             labelTrafficStateText = new Label();
             labelTrafficState = new Label();
             panel2 = new Panel();
+            labelRouteLenght = new Label();
+            label2 = new Label();
             BtnGetStreet = new Button();
             btnRotaTransito = new Button();
             buttonRemoveOverlays = new Button();
@@ -68,6 +70,7 @@
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
+            btnPointsOnRoute = new Button();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -83,7 +86,7 @@
             mapa.GrayScaleMode = false;
             mapa.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapa.LevelsKeepInMemory = 5;
-            mapa.Location = new Point(12, 209);
+            mapa.Location = new Point(12, 231);
             mapa.MarkersEnabled = true;
             mapa.MaxZoom = 24;
             mapa.MinZoom = 0;
@@ -97,7 +100,7 @@
             mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapa.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapa.ShowTileGridLines = false;
-            mapa.Size = new Size(956, 602);
+            mapa.Size = new Size(956, 580);
             mapa.TabIndex = 1;
             mapa.Zoom = 0D;
             mapa.MouseClick += Mapa_MouseClick;
@@ -244,14 +247,14 @@
             panel1.Location = new Point(267, 12);
             panel1.Margin = new Padding(3, 3, 30, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(337, 181);
+            panel1.Size = new Size(337, 191);
             panel1.TabIndex = 40;
             // 
             // labelSentidoCart
             // 
             labelSentidoCart.AutoSize = true;
             labelSentidoCart.BackColor = Color.Transparent;
-            labelSentidoCart.Location = new Point(107, 163);
+            labelSentidoCart.Location = new Point(106, 159);
             labelSentidoCart.Margin = new Padding(3, 6, 3, 0);
             labelSentidoCart.Name = "labelSentidoCart";
             labelSentidoCart.Size = new Size(25, 15);
@@ -262,7 +265,7 @@
             // 
             labelStreet.AutoSize = true;
             labelStreet.BackColor = Color.Transparent;
-            labelStreet.Location = new Point(107, 142);
+            labelStreet.Location = new Point(106, 138);
             labelStreet.Margin = new Padding(3, 6, 3, 0);
             labelStreet.Name = "labelStreet";
             labelStreet.Size = new Size(25, 15);
@@ -417,6 +420,9 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
+            panel2.Controls.Add(btnPointsOnRoute);
+            panel2.Controls.Add(labelRouteLenght);
+            panel2.Controls.Add(label2);
             panel2.Controls.Add(BtnGetStreet);
             panel2.Controls.Add(btnRotaTransito);
             panel2.Controls.Add(buttonRemoveOverlays);
@@ -426,8 +432,31 @@
             panel2.Controls.Add(btnCarregarMapa);
             panel2.Location = new Point(663, 12);
             panel2.Name = "panel2";
-            panel2.Size = new Size(304, 191);
+            panel2.Size = new Size(304, 213);
             panel2.TabIndex = 41;
+            // 
+            // labelRouteLenght
+            // 
+            labelRouteLenght.AutoSize = true;
+            labelRouteLenght.BackColor = Color.Transparent;
+            labelRouteLenght.Location = new Point(118, 197);
+            labelRouteLenght.Margin = new Padding(3, 6, 3, 0);
+            labelRouteLenght.Name = "labelRouteLenght";
+            labelRouteLenght.Size = new Size(25, 15);
+            labelRouteLenght.TabIndex = 56;
+            labelRouteLenght.Text = "xxx";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Location = new Point(3, 197);
+            label2.Margin = new Padding(3, 6, 3, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(109, 15);
+            label2.TabIndex = 55;
+            label2.Text = "Comprimento Rota";
+            label2.Click += label2_Click;
             // 
             // BtnGetStreet
             // 
@@ -508,6 +537,22 @@
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
             // 
+            // btnPointsOnRoute
+            // 
+            btnPointsOnRoute.AccessibleDescription = "Consultar Transito";
+            btnPointsOnRoute.BackColor = Color.AliceBlue;
+            btnPointsOnRoute.BackgroundImage = (Image)resources.GetObject("btnPointsOnRoute.BackgroundImage");
+            btnPointsOnRoute.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnPointsOnRoute.ForeColor = SystemColors.ButtonFace;
+            btnPointsOnRoute.Location = new Point(155, 152);
+            btnPointsOnRoute.Name = "btnPointsOnRoute";
+            btnPointsOnRoute.Size = new Size(45, 36);
+            btnPointsOnRoute.TabIndex = 57;
+            toolTip1.SetToolTip(btnPointsOnRoute, "ConsultarTransito");
+            btnPointsOnRoute.UseVisualStyleBackColor = false;
+            btnPointsOnRoute.Click += btnPointsOnRoute_Click;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -576,5 +621,8 @@
         private Label labelStreetName;
         private Label labelStreet;
         private Label labelSentidoCart;
+        private Label label2;
+        private Label labelRouteLenght;
+        private Button btnPointsOnRoute;
     }
 }

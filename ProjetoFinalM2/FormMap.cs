@@ -357,6 +357,7 @@ namespace ProjetoFinalM2
                     MapRoute route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint1, myPoint2, false, false, 15);
                     GMapRoute r = new GMapRoute(route.Points, "My route");
                     GMapOverlay routesOverlay = new GMapOverlay("routes");
+                    labelRouteLenght.Text = route.Distance.ToString() + " km";
                     routesOverlay.Routes.Add(r);
                     mapa.Overlays.Add(routesOverlay);
 
@@ -368,5 +369,157 @@ namespace ProjetoFinalM2
         {
 
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPointsOnRoute_Click(object sender, EventArgs e)
+        {
+            String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
+            DateTime selectedTime = DateTime.Parse(timeWorkaround);
+
+            try
+            {
+                List<PointLatLng> points = new List<PointLatLng>();
+                List<Vehicle> timedVehicles = new();
+
+                #region Obter informação da Rua
+                PointLatLng myPoint1 = myList[0];
+                PointLatLng myPoint2 = myList[1];
+                #endregion
+
+                #region Adicionar Pontos na Lista e Filtrar
+                foreach (var v in vehiclesList)
+                {
+                    var coords = v.TimestampedCoords;
+                    var tmpCoords = new List<TimestampedCoords>();
+                    foreach (var c in coords)
+                    {
+                        string coordWorkaround = c.Timestamp.ToString();
+                        string selectedTimeWorkaround = selectedTime.ToString();
+
+                        if (coordWorkaround == selectedTimeWorkaround)
+                        {
+                            points.Add(new PointLatLng(c.Lat, c.Lon));
+                            tmpCoords.Add(new TimestampedCoords(c.Timestamp, c.Lat, c.Lon));
+                        }
+                    }
+
+                    if (!timedVehicles.Contains(v))
+                    {
+                        Vehicle tmpVehicle = new Vehicle(v.Id);
+                        tmpVehicle.TimestampedCoords.AddRange(tmpCoords);
+                        timedVehicles.Add(tmpVehicle);
+                    }
+                }
+                #endregion
+
+                #region Desenhar pins na rota e próximos da rota
+                GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
+                GMapRoute route = overlay.Routes.FirstOrDefault(rota => rota.Name == "My route");
+                if (timedVehicles != null)
+                {
+                    foreach (var v in timedVehicles)
+                    {
+                        foreach (var c in v.TimestampedCoords)
+                        {
+                            bool isInsideRoute = IsPointInsideRoute(new PointLatLng(c.Lat, c.Lon), points);
+                            //bool isInside = polygon.IsInside(new PointLatLng(c.Lat, c.Lon));
+                            if (isInsideRoute)
+                            {
+                                Console.WriteLine("Estou no isInside");
+                                OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
+                            }
+                            bool isNearRoute = IsPointNearRoute(new PointLatLng(c.Lat, c.Lon), points, 10);
+                            if (isNearRoute)
+                            {
+                                Console.WriteLine("Estou no isNearRoute");
+                                OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region Colorir a rota / "Está trânsito"
+                var nVeiculosMax = uiNVeiculosTransito.Value;
+                if (timedVehicles.Count > nVeiculosMax)
+                {
+                    labelTrafficState.Text = "Com trânsito";
+                    route.Stroke = new Pen(Color.Red, 1);
+                } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                {
+                    labelTrafficState.Text = "Trânsito normal";
+                    route.Stroke = new Pen(Color.Yellow, 1);
+                } else
+                {
+                    labelTrafficState.Text = "Sem trânsito";
+                    route.Stroke = new Pen(Color.Green, 1);
+                }
+                #endregion
+
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Algo correu mal!");
+                Console.WriteLine(ex.Message);
+
+            }
+        }
+
+        public static bool IsPointInsideRoute(PointLatLng point, List<PointLatLng> routePoints)
+        {
+            for (int i = 1; i < routePoints.Count; i++)
+            {
+                PointLatLng p1 = routePoints[i - 1];
+                PointLatLng p2 = routePoints[i];
+
+                //double distanceToSegment = CalculateDistanceToSegment(point, p1, p2);
+                //if (distanceToSegment <= 0)
+                    return true;
+            }
+
+            return false;
+        }
+
+        static bool IsPointNearRoute(PointLatLng point, List<PointLatLng> routePoints, double proximityRadius)
+        {
+            for (int i = 1; i < routePoints.Count; i++)
+            {
+                PointLatLng p1 = routePoints[i - 1];
+                PointLatLng p2 = routePoints[i];
+
+                //double distanceToSegment = CalculateDistanceToSegment(point, p1, p2);
+                //if (distanceToSegment <= proximityRadius)
+                    return true;
+            }
+
+            return false;
+        }
+
+        //static double CalculateDistanceToSegment(PointLatLng point, PointLatLng segmentStart, PointLatLng segmentEnd)
+        //{
+        //    double segmentLength = segmentStart.GetDistance(segmentEnd);
+        //    if (segmentLength == 0)
+        //    {
+        //        return point.GetDistance(segmentStart);
+        //    }
+
+        //    double t = ((point.Lng - segmentStart.Lng) * (segmentEnd.Lng - segmentStart.Lng) +
+        //                (point.Lat - segmentStart.Lat) * (segmentEnd.Lat - segmentStart.Lat)) / (segmentLength * segmentLength);
+
+        //    if (t < 0)
+        //        return point.GetDistance(segmentStart);
+        //    if (t > 1)
+        //        return point.GetDistance(segmentEnd);
+
+        //    double closestPointLng = segmentStart.Lng + t * (segmentEnd.Lng - segmentStart.Lng);
+        //    double closestPointLat = segmentStart.Lat + t * (segmentEnd.Lat - segmentStart.Lat);
+
+        //    PointLatLng closestPoint = new PointLatLng(closestPointLat, closestPointLng);
+
+        //    return point.GetDistance(closestPoint);
+        //}
     }
 }
