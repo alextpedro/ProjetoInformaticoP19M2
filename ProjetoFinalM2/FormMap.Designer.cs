@@ -34,6 +34,7 @@
             labelTestCoords = new Label();
             toolTip1 = new ToolTip(components);
             buttonPesquisarTransito = new Button();
+            btnPointsOnRoute = new Button();
             panelCoordSaves = new Panel();
             btnSaveCoord = new Button();
             labelMostrarLatitude = new Label();
@@ -70,7 +71,6 @@
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
-            btnPointsOnRoute = new Button();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -128,6 +128,22 @@
             toolTip1.SetToolTip(buttonPesquisarTransito, "ConsultarTransito");
             buttonPesquisarTransito.UseVisualStyleBackColor = false;
             buttonPesquisarTransito.Click += ButtonPesquisarTransito_Click;
+            // 
+            // btnPointsOnRoute
+            // 
+            btnPointsOnRoute.AccessibleDescription = "Consultar Transito";
+            btnPointsOnRoute.BackColor = Color.AliceBlue;
+            btnPointsOnRoute.BackgroundImage = (Image)resources.GetObject("btnPointsOnRoute.BackgroundImage");
+            btnPointsOnRoute.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnPointsOnRoute.ForeColor = SystemColors.ButtonFace;
+            btnPointsOnRoute.Location = new Point(155, 152);
+            btnPointsOnRoute.Name = "btnPointsOnRoute";
+            btnPointsOnRoute.Size = new Size(45, 36);
+            btnPointsOnRoute.TabIndex = 57;
+            toolTip1.SetToolTip(btnPointsOnRoute, "ConsultarTransito");
+            btnPointsOnRoute.UseVisualStyleBackColor = false;
+            btnPointsOnRoute.Click += btnPointsOnRoute_Click;
             // 
             // panelCoordSaves
             // 
@@ -536,22 +552,6 @@
             btnCarregarMapa.Text = "Carregar Mapa";
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
-            // 
-            // btnPointsOnRoute
-            // 
-            btnPointsOnRoute.AccessibleDescription = "Consultar Transito";
-            btnPointsOnRoute.BackColor = Color.AliceBlue;
-            btnPointsOnRoute.BackgroundImage = (Image)resources.GetObject("btnPointsOnRoute.BackgroundImage");
-            btnPointsOnRoute.BackgroundImageLayout = ImageLayout.Stretch;
-            btnPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            btnPointsOnRoute.ForeColor = SystemColors.ButtonFace;
-            btnPointsOnRoute.Location = new Point(155, 152);
-            btnPointsOnRoute.Name = "btnPointsOnRoute";
-            btnPointsOnRoute.Size = new Size(45, 36);
-            btnPointsOnRoute.TabIndex = 57;
-            toolTip1.SetToolTip(btnPointsOnRoute, "ConsultarTransito");
-            btnPointsOnRoute.UseVisualStyleBackColor = false;
-            btnPointsOnRoute.Click += btnPointsOnRoute_Click;
             // 
             // FormMap
             // 

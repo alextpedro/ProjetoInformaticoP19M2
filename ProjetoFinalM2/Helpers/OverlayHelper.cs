@@ -64,5 +64,13 @@ namespace ProjetoFinalM2.Helpers
             mapa.Overlays.Add(markersOverlay);
             mapa.ZoomAndCenterMarkers("MarkersOverlay");
         }
+
+        public static void ClearPins (GMapControl mapa)
+        {
+            foreach (var o in mapa.Overlays)
+            {
+                o.Markers.Clear();
+            }
+        }
     }
 }

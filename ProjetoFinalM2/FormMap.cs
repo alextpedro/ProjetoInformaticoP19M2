@@ -39,10 +39,12 @@ namespace ProjetoFinalM2
             {
                 vehiclesList.AddRange(FileLoader.LoadPointsFromFile());
 
-                vehiclesList.ForEach(vehicle => {
+                vehiclesList.ForEach(vehicle =>
+                {
                     List<PointLatLng> tmpListCoords = new();
 
-                    vehicle.TimestampedCoords.ForEach(coord => {
+                    vehicle.TimestampedCoords.ForEach(coord =>
+                    {
                         tmpListCoords.Add(new PointLatLng(coord.Lat, coord.Lon));
                     });
 
@@ -65,13 +67,15 @@ namespace ProjetoFinalM2
                 if (vehiclesList.Count < (int)uiNVeiculosTransito.Value)
                 {
                     labelTrafficState.Text = "Normal";
-                } else
+                }
+                else
                 {
                     labelTrafficState.Text = "Com Transito";
                 }
                 #endregion
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -240,12 +244,14 @@ namespace ProjetoFinalM2
                     labelTrafficState.Text = "Com trânsito";
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
                     polygon.Stroke = new Pen(Color.Red, 1);
-                } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                }
+                else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
                     polygon.Stroke = new Pen(Color.Yellow, 1);
-                } else
+                }
+                else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
@@ -253,7 +259,8 @@ namespace ProjetoFinalM2
                 }
                 #endregion
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);
@@ -276,7 +283,8 @@ namespace ProjetoFinalM2
 
                 OverlayHelper.DrawPolygon(mapa, coordsList, Color.Black);
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -320,19 +328,23 @@ namespace ProjetoFinalM2
             {
                 labelSentidoCart.Text = "Rota para Norte";
                 Console.WriteLine("A rota está a ir para norte.");
-            } else if (isGoingEast)
+            }
+            else if (isGoingEast)
             {
                 labelSentidoCart.Text = "Rota para Este";
                 Console.WriteLine("A rota está a ir para este.");
-            } else if (isGoingSouth)
+            }
+            else if (isGoingSouth)
             {
                 labelSentidoCart.Text = "Rota para Sul";
                 Console.WriteLine("A rota está a ir para sul.");
-            } else if (isGoingWest)
+            }
+            else if (isGoingWest)
             {
                 labelSentidoCart.Text = "Rota para Oeste";
                 Console.WriteLine("A rota está a ir para oeste.");
-            } else
+            }
+            else
             {
                 labelSentidoCart.Text = "Rota para Norte";
                 Console.WriteLine("A rota está a ir para norte.");
@@ -390,53 +402,25 @@ namespace ProjetoFinalM2
                 PointLatLng myPoint2 = myList[1];
                 #endregion
 
-                #region Adicionar Pontos na Lista e Filtrar
-                foreach (var v in vehiclesList)
-                {
-                    var coords = v.TimestampedCoords;
-                    var tmpCoords = new List<TimestampedCoords>();
-                    foreach (var c in coords)
-                    {
-                        string coordWorkaround = c.Timestamp.ToString();
-                        string selectedTimeWorkaround = selectedTime.ToString();
-
-                        if (coordWorkaround == selectedTimeWorkaround)
-                        {
-                            points.Add(new PointLatLng(c.Lat, c.Lon));
-                            tmpCoords.Add(new TimestampedCoords(c.Timestamp, c.Lat, c.Lon));
-                        }
-                    }
-
-                    if (!timedVehicles.Contains(v))
-                    {
-                        Vehicle tmpVehicle = new Vehicle(v.Id);
-                        tmpVehicle.TimestampedCoords.AddRange(tmpCoords);
-                        timedVehicles.Add(tmpVehicle);
-                    }
-                }
-                #endregion
-
                 #region Desenhar pins na rota e próximos da rota
                 GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
+                OverlayHelper.ClearPins(mapa);
                 GMapRoute route = overlay.Routes.FirstOrDefault(rota => rota.Name == "My route");
-                if (timedVehicles != null)
+                if (vehiclesList != null)
                 {
-                    foreach (var v in timedVehicles)
+                    foreach (var v in vehiclesList)
                     {
                         foreach (var c in v.TimestampedCoords)
                         {
-                            bool isInsideRoute = IsPointInsideRoute(new PointLatLng(c.Lat, c.Lon), points);
-                            //bool isInside = polygon.IsInside(new PointLatLng(c.Lat, c.Lon));
-                            if (isInsideRoute)
+                            PointLatLng point = new PointLatLng(c.Lat, c.Lon);
+                            double distance = (double)route.DistanceTo(point);
+
+                            Console.WriteLine($"Distancia entre pontos: {distance} Diferênça: {distance - Convert.ToDouble(3)}");
+
+                            if (distance < Convert.ToDouble(3)) //Se a distância fôr menor que 3 metros
                             {
-                                Console.WriteLine("Estou no isInside");
-                                OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
-                            }
-                            bool isNearRoute = IsPointNearRoute(new PointLatLng(c.Lat, c.Lon), points, 10);
-                            if (isNearRoute)
-                            {
-                                Console.WriteLine("Estou no isNearRoute");
-                                OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
+                                Console.WriteLine(distance);
+                                OverlayHelper.DrawPin(mapa, point, $"Veículo {v.Id}");
                             }
                         }
                     }
@@ -445,22 +429,25 @@ namespace ProjetoFinalM2
 
                 #region Colorir a rota / "Está trânsito"
                 var nVeiculosMax = uiNVeiculosTransito.Value;
-                if (timedVehicles.Count > nVeiculosMax)
+                if (vehiclesList.Count > nVeiculosMax)
                 {
                     labelTrafficState.Text = "Com trânsito";
                     route.Stroke = new Pen(Color.Red, 1);
-                } else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
+                }
+                else if (vehiclesList.Count < nVeiculosMax && vehiclesList.Count > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     route.Stroke = new Pen(Color.Yellow, 1);
-                } else
+                }
+                else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     route.Stroke = new Pen(Color.Green, 1);
                 }
                 #endregion
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);
@@ -477,7 +464,7 @@ namespace ProjetoFinalM2
 
                 //double distanceToSegment = CalculateDistanceToSegment(point, p1, p2);
                 //if (distanceToSegment <= 0)
-                    return true;
+                return true;
             }
 
             return false;
@@ -492,11 +479,12 @@ namespace ProjetoFinalM2
 
                 //double distanceToSegment = CalculateDistanceToSegment(point, p1, p2);
                 //if (distanceToSegment <= proximityRadius)
-                    return true;
+                return true;
             }
 
             return false;
         }
+
 
         //static double CalculateDistanceToSegment(PointLatLng point, PointLatLng segmentStart, PointLatLng segmentEnd)
         //{
