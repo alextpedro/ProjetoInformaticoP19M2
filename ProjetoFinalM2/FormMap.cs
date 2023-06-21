@@ -485,6 +485,23 @@ namespace ProjetoFinalM2
             return false;
         }
 
+        private void buttonGoToStreet_Click(object sender, EventArgs e)
+        {
+            string streetToGoTo = textBoxStreetToGoTo.Text;
+
+            if (!String.IsNullOrEmpty(streetToGoTo))
+            {
+                try
+                {
+                    mapa.SetPositionByKeywords(streetToGoTo);
+                }
+                catch
+                {
+                    MessageBox.Show("Rua não encontrada.");
+                }
+            }
+        }
+
 
         //static double CalculateDistanceToSegment(PointLatLng point, PointLatLng segmentStart, PointLatLng segmentEnd)
         //{

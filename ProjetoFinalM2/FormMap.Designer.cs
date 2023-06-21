@@ -71,11 +71,15 @@
             labelCurrentFile = new Label();
             btnCarregarFicheiro = new Button();
             btnCarregarMapa = new Button();
+            panel3 = new Panel();
+            buttonGoToStreet = new Button();
+            textBoxStreetToGoTo = new TextBox();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTime).BeginInit();
             panel2.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // mapa
@@ -553,12 +557,42 @@
             btnCarregarMapa.UseVisualStyleBackColor = false;
             btnCarregarMapa.Click += BtnCarregarMapa_Click;
             // 
+            // panel3
+            // 
+            panel3.BackColor = Color.White;
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(buttonGoToStreet);
+            panel3.Controls.Add(textBoxStreetToGoTo);
+            panel3.Location = new Point(12, 171);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(196, 54);
+            panel3.TabIndex = 42;
+            // 
+            // buttonGoToStreet
+            // 
+            buttonGoToStreet.Location = new Point(54, 30);
+            buttonGoToStreet.Name = "buttonGoToStreet";
+            buttonGoToStreet.Size = new Size(75, 23);
+            buttonGoToStreet.TabIndex = 1;
+            buttonGoToStreet.Text = "Ir";
+            buttonGoToStreet.UseVisualStyleBackColor = true;
+            buttonGoToStreet.Click += buttonGoToStreet_Click;
+            // 
+            // textBoxStreetToGoTo
+            // 
+            textBoxStreetToGoTo.Location = new Point(6, 6);
+            textBoxStreetToGoTo.Margin = new Padding(6);
+            textBoxStreetToGoTo.Name = "textBoxStreetToGoTo";
+            textBoxStreetToGoTo.Size = new Size(182, 23);
+            textBoxStreetToGoTo.TabIndex = 0;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(978, 823);
+            Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(panelCoordSaves);
@@ -577,6 +611,8 @@
             ((System.ComponentModel.ISupportInitialize)trackBarTime).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -624,5 +660,8 @@
         private Label label2;
         private Label labelRouteLenght;
         private Button btnPointsOnRoute;
+        private Panel panel3;
+        private Button buttonGoToStreet;
+        private TextBox textBoxStreetToGoTo;
     }
 }
