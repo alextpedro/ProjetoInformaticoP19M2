@@ -297,6 +297,8 @@ namespace ProjetoFinalM2
             // OS PONTOS SÃO ARMAZENADOS NUMA LISTA DE PONTOS (Tipo de cada elemento PointLatLng)
             PointLatLng myPoint1 = myList[0];
             PointLatLng myPoint2 = myList[1];
+            PointLatLng myPoint3 = myList[2];
+            PointLatLng myPoint4 = myList[3];
             #endregion
 
             #region Obtém Direções Cartesianas 2
@@ -367,10 +369,16 @@ namespace ProjetoFinalM2
                     labelStreet.Text = placemark.ThoroughfareName;
 
                     MapRoute route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint1, myPoint2, false, false, 15);
+
+                    //PointLatLng start = new PointLatLng(39.7398231162096, -8.80534887313843);
+                    //PointLatLng end = new PointLatLng(39.7395632408332, -8.808873295784);
+                    MapRoute routeOpposite = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint3, myPoint4, false, false, 15);
                     GMapRoute r = new GMapRoute(route.Points, "My route");
+                    GMapRoute ro = new GMapRoute(routeOpposite.Points, "My opposing route");
                     GMapOverlay routesOverlay = new GMapOverlay("routes");
                     labelRouteLenght.Text = route.Distance.ToString() + " km";
                     routesOverlay.Routes.Add(r);
+                    routesOverlay.Routes.Add(ro);
                     mapa.Overlays.Add(routesOverlay);
 
                 }
@@ -403,9 +411,10 @@ namespace ProjetoFinalM2
                 #endregion
 
                 #region Desenhar pins na rota e próximos da rota
-                GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
+                GMapOverlay overlay = mapa.Overlays.First(ov => ov.Id == "routes");
                 OverlayHelper.ClearPins(mapa);
-                GMapRoute route = overlay.Routes.FirstOrDefault(rota => rota.Name == "My route");
+                GMapRoute route = overlay.Routes.First(rota => rota.Name == "My route");
+                List<Vehicle> vehiclesOnRoute = new();
                 if (vehiclesList != null)
                 {
                     foreach (var v in vehiclesList)
@@ -417,9 +426,14 @@ namespace ProjetoFinalM2
 
                             Console.WriteLine($"Distancia entre pontos: {distance} Diferênça: {distance - Convert.ToDouble(3)}");
 
-                            if (distance < Convert.ToDouble(3)) //Se a distância fôr menor que 3 metros
+                            if (distance < Convert.ToDouble(3)) //Se a distância fôr menor que x metros
                             {
                                 Console.WriteLine(distance);
+                                bool vehicleExists = vehiclesOnRoute.Any(vehicle => vehicle.Id == v.Id);
+                                if (!vehicleExists)
+                                {
+                                    vehiclesOnRoute.Add(v);
+                                }
                                 OverlayHelper.DrawPin(mapa, point, $"Veículo {v.Id}");
                             }
                         }
@@ -429,20 +443,69 @@ namespace ProjetoFinalM2
 
                 #region Colorir a rota / "Está trânsito"
                 var nVeiculosMax = uiNVeiculosTransito.Value;
-                if (vehiclesList.Count > nVeiculosMax)
+                var nVeiculosNaRota = vehiclesOnRoute.Count;
+                if (nVeiculosNaRota > nVeiculosMax)
                 {
                     labelTrafficState.Text = "Com trânsito";
-                    route.Stroke = new Pen(Color.Red, 1);
+                    route.Stroke = new Pen(Color.Red, 3);
                 }
-                else if (vehiclesList.Count < nVeiculosMax && vehiclesList.Count > nVeiculosMax / 2)
+                else if (nVeiculosNaRota < nVeiculosMax && nVeiculosNaRota > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
-                    route.Stroke = new Pen(Color.Yellow, 1);
+                    route.Stroke = new Pen(Color.Yellow, 3);
                 }
                 else
                 {
                     labelTrafficState.Text = "Sem trânsito";
-                    route.Stroke = new Pen(Color.Green, 1);
+                    route.Stroke = new Pen(Color.Green, 3);
+                }
+                #endregion
+
+                #region Desenhar pins na rota oposta
+                GMapRoute oppositeRoute = overlay.Routes.First(rota => rota.Name == "My opposing route");
+                List<Vehicle> vehiclesOnOppositeRoute = new();
+                if (vehiclesList != null)
+                {
+                    foreach (var v in vehiclesList)
+                    {
+                        foreach (var c in v.TimestampedCoords)
+                        {
+                            PointLatLng point = new PointLatLng(c.Lat, c.Lon);
+                            double distance = (double)oppositeRoute.DistanceTo(point);
+
+                            Console.WriteLine($"Distancia entre pontos: {distance} Diferênça: {distance - Convert.ToDouble(3)}");
+
+                            if (distance < Convert.ToDouble(3)) //Se a distância fôr menor que x metros
+                            {
+                                Console.WriteLine(distance);
+                                bool vehicleExists = vehiclesOnOppositeRoute.Any(vehicle => vehicle.Id == v.Id);
+                                if (!vehicleExists)
+                                {
+                                    vehiclesOnOppositeRoute.Add(v);
+                                }
+                                OverlayHelper.DrawPin(mapa, point, $"Veículo {v.Id}");
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region Colorir a rota / "Está trânsito"
+                var nVeiculosNaRotaOposta = vehiclesOnOppositeRoute.Count;
+                if (nVeiculosNaRotaOposta > nVeiculosMax)
+                {
+                    labelTrafficState.Text = "Com trânsito";
+                    oppositeRoute.Stroke = new Pen(Color.Red, 3);
+                }
+                else if (nVeiculosNaRotaOposta < nVeiculosMax && nVeiculosNaRotaOposta > nVeiculosMax / 2)
+                {
+                    labelTrafficState.Text = "Trânsito normal";
+                    oppositeRoute.Stroke = new Pen(Color.Yellow, 3);
+                }
+                else
+                {
+                    labelTrafficState.Text = "Sem trânsito";
+                    oppositeRoute.Stroke = new Pen(Color.Green, 3);
                 }
                 #endregion
 
