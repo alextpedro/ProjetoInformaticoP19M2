@@ -600,7 +600,6 @@
             Controls.Add(mapa);
             Name = "FormMap";
             Text = "Projeto Informático M2";
-            Load += FormMap_Load;
             Shown += FormMap_Shown;
             KeyDown += Form1_KeyDown;
             panelCoordSaves.ResumeLayout(false);

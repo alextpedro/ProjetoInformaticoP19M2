@@ -118,7 +118,7 @@ namespace ProjetoFinalM2
             //Codigo corre assim que o formulario acabar de carregar tudo
 
             #region Configurar o mapa:
-            mapa.DragButton = MouseButtons.Left;
+            mapa.DragButton = MouseButtons.Right;
             mapa.CanDragMap = true;
             mapa.MapProvider = GMapProviders.OpenStreetMap;
             mapa.Position = new PointLatLng(39.739790, -8.805316);
@@ -299,6 +299,7 @@ namespace ProjetoFinalM2
             PointLatLng myPoint2 = myList[1];
             PointLatLng myPoint3 = myList[2];
             PointLatLng myPoint4 = myList[3];
+            myList.Clear();
             #endregion
 
             #region Obtém Direções Cartesianas 2
@@ -373,6 +374,7 @@ namespace ProjetoFinalM2
                     //PointLatLng start = new PointLatLng(39.7398231162096, -8.80534887313843);
                     //PointLatLng end = new PointLatLng(39.7395632408332, -8.808873295784);
                     MapRoute routeOpposite = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint3, myPoint4, false, false, 15);
+
                     GMapRoute r = new GMapRoute(route.Points, "My route");
                     GMapRoute ro = new GMapRoute(routeOpposite.Points, "My opposing route");
                     GMapOverlay routesOverlay = new GMapOverlay("routes");
@@ -380,14 +382,9 @@ namespace ProjetoFinalM2
                     routesOverlay.Routes.Add(r);
                     routesOverlay.Routes.Add(ro);
                     mapa.Overlays.Add(routesOverlay);
-
+                    
                 }
             }
-        }
-
-        private void FormMap_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -405,10 +402,10 @@ namespace ProjetoFinalM2
                 List<PointLatLng> points = new List<PointLatLng>();
                 List<Vehicle> timedVehicles = new();
 
-                #region Obter informação da Rua
-                PointLatLng myPoint1 = myList[0];
-                PointLatLng myPoint2 = myList[1];
-                #endregion
+                //#region Obter informação da Rua
+                //PointLatLng myPoint1 = myList[0];
+                //PointLatLng myPoint2 = myList[1];
+                //#endregion
 
                 #region Desenhar pins na rota e próximos da rota
                 GMapOverlay overlay = mapa.Overlays.First(ov => ov.Id == "routes");
@@ -449,7 +446,7 @@ namespace ProjetoFinalM2
                     labelTrafficState.Text = "Com trânsito";
                     route.Stroke = new Pen(Color.Red, 3);
                 }
-                else if (nVeiculosNaRota < nVeiculosMax && nVeiculosNaRota > nVeiculosMax / 2)
+                else if (nVeiculosNaRota <= nVeiculosMax && nVeiculosNaRota > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     route.Stroke = new Pen(Color.Yellow, 3);
@@ -497,7 +494,7 @@ namespace ProjetoFinalM2
                     labelTrafficState.Text = "Com trânsito";
                     oppositeRoute.Stroke = new Pen(Color.Red, 3);
                 }
-                else if (nVeiculosNaRotaOposta < nVeiculosMax && nVeiculosNaRotaOposta > nVeiculosMax / 2)
+                else if (nVeiculosNaRotaOposta <= nVeiculosMax && nVeiculosNaRotaOposta > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     oppositeRoute.Stroke = new Pen(Color.Yellow, 3);
