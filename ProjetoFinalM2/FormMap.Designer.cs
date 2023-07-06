@@ -62,7 +62,7 @@
             labelTrafficStateText = new Label();
             labelTrafficState = new Label();
             panel2 = new Panel();
-            labelRouteLenght = new Label();
+            labelRouteLength = new Label();
             label2 = new Label();
             BtnGetStreet = new Button();
             btnRotaTransito = new Button();
@@ -147,7 +147,7 @@
             btnPointsOnRoute.TabIndex = 57;
             toolTip1.SetToolTip(btnPointsOnRoute, "ConsultarTransito");
             btnPointsOnRoute.UseVisualStyleBackColor = false;
-            btnPointsOnRoute.Click += btnPointsOnRoute_Click;
+            btnPointsOnRoute.Click += BtnPointsOnRoute_Click;
             // 
             // panelCoordSaves
             // 
@@ -208,7 +208,6 @@
             labelLatitude.Size = new Size(30, 15);
             labelLatitude.TabIndex = 18;
             labelLatitude.Text = "xxxº";
-            labelLatitude.Click += LabelLatitude_Click;
             // 
             // labelLongitude
             // 
@@ -220,7 +219,6 @@
             labelLongitude.Size = new Size(30, 15);
             labelLongitude.TabIndex = 19;
             labelLongitude.Text = "xxxº";
-            labelLongitude.Click += LabelLongitude_Click;
             // 
             // labelSaveFile
             // 
@@ -441,7 +439,7 @@
             // 
             panel2.BackColor = Color.White;
             panel2.Controls.Add(btnPointsOnRoute);
-            panel2.Controls.Add(labelRouteLenght);
+            panel2.Controls.Add(labelRouteLength);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(BtnGetStreet);
             panel2.Controls.Add(btnRotaTransito);
@@ -457,14 +455,14 @@
             // 
             // labelRouteLenght
             // 
-            labelRouteLenght.AutoSize = true;
-            labelRouteLenght.BackColor = Color.Transparent;
-            labelRouteLenght.Location = new Point(118, 197);
-            labelRouteLenght.Margin = new Padding(3, 6, 3, 0);
-            labelRouteLenght.Name = "labelRouteLenght";
-            labelRouteLenght.Size = new Size(25, 15);
-            labelRouteLenght.TabIndex = 56;
-            labelRouteLenght.Text = "xxx";
+            labelRouteLength.AutoSize = true;
+            labelRouteLength.BackColor = Color.Transparent;
+            labelRouteLength.Location = new Point(118, 197);
+            labelRouteLength.Margin = new Padding(3, 6, 3, 0);
+            labelRouteLength.Name = "labelRouteLenght";
+            labelRouteLength.Size = new Size(25, 15);
+            labelRouteLength.TabIndex = 56;
+            labelRouteLength.Text = "xxx";
             // 
             // label2
             // 
@@ -476,7 +474,6 @@
             label2.Size = new Size(109, 15);
             label2.TabIndex = 55;
             label2.Text = "Comprimento Rota";
-            label2.Click += label2_Click;
             // 
             // BtnGetStreet
             // 
@@ -576,7 +573,7 @@
             buttonGoToStreet.TabIndex = 1;
             buttonGoToStreet.Text = "Ir";
             buttonGoToStreet.UseVisualStyleBackColor = true;
-            buttonGoToStreet.Click += buttonGoToStreet_Click;
+            buttonGoToStreet.Click += BtnGoToStreet_Click;
             // 
             // textBoxStreetToGoTo
             // 
@@ -601,7 +598,6 @@
             Name = "FormMap";
             Text = "Projeto Informático M2";
             Shown += FormMap_Shown;
-            KeyDown += Form1_KeyDown;
             panelCoordSaves.ResumeLayout(false);
             panelCoordSaves.PerformLayout();
             panel1.ResumeLayout(false);
@@ -657,7 +653,7 @@
         private Label labelStreet;
         private Label labelSentidoCart;
         private Label label2;
-        private Label labelRouteLenght;
+        private Label labelRouteLength;
         private Button btnPointsOnRoute;
         private Panel panel3;
         private Button buttonGoToStreet;

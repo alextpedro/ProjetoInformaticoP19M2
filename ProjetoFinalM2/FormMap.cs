@@ -15,7 +15,7 @@ namespace ProjetoFinalM2
         public int totalVeiculos = 0;
         public List<Vehicle> vehiclesList = new List<Vehicle>();
         public List<PointLatLng> pointLatLngsList = new List<PointLatLng>();
-        public List<PointLatLng> myList = new List<PointLatLng>();
+        public List<PointLatLng> clickedPoints = new List<PointLatLng>();
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -86,31 +86,12 @@ namespace ProjetoFinalM2
         {
             labelLatitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lat.ToString();
             labelLongitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lng.ToString();
-            myList.Add(new PointLatLng(mapa.FromLocalToLatLng(e.X, e.Y).Lat, mapa.FromLocalToLatLng(e.X, e.Y).Lng));
+            clickedPoints.Add(new PointLatLng(mapa.FromLocalToLatLng(e.X, e.Y).Lat, mapa.FromLocalToLatLng(e.X, e.Y).Lng));
         }
 
         private void BtnCarregarFicheiro_Click(object sender, EventArgs e)
         {
             labelCurrentFileName.Text = FileLoader.LoadFile(false) ?? labelCurrentFileName.Text;
-        }
-
-        private void LabelLatitude_Click(object sender, EventArgs e)
-        {
-            labelLatitude.Focus();
-        }
-
-        private void LabelLongitude_Click(object sender, EventArgs e)
-        {
-            labelLongitude.Focus();
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (labelLatitude.ContainsFocus && e.Control && e.KeyCode == Keys.C)
-                Clipboard.SetText(labelLatitude.Text);
-
-            if (labelLongitude.ContainsFocus && e.Control && e.KeyCode == Keys.C)
-                Clipboard.SetText(labelLongitude.Text);
         }
 
         private void FormMap_Shown(object sender, EventArgs e)
@@ -141,12 +122,11 @@ namespace ProjetoFinalM2
         private void ButtonRemoveOverlays_Click(object sender, EventArgs e)
         {
             OverlayHelper.ClearOverlays(mapa);
-            myList.Clear();
+            clickedPoints.Clear();
         }
 
         private void ButtonPesquisarTransito_Click(object sender, EventArgs e)
         {
-            //TODO: Refactor for Vehicles
             String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
             DateTime selectedTime = DateTime.Parse(timeWorkaround);
             //string streetName = textBoxSreetName.Text;
@@ -204,35 +184,6 @@ namespace ProjetoFinalM2
                                 OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
                             }
                         }
-
-                        #region Sentido Cartesiano
-                        //for (int i = 1; i < 2; i++)
-                        //{
-                        //    TimestampedCoords pontoAtual = v.TimestampedCoords[i];
-                        //    TimestampedCoords pontoAnterior = v.TimestampedCoords[i - 1];
-                        //    if (pontoAtual.Lon > pontoAnterior.Lon)
-                        //    {
-                        //        // Rota da esquerda para a direita
-                        //        Console.WriteLine("Veículo " + v.Id + " circula de Este para Oeste");
-                        //    } else if (pontoAtual.Lon < pontoAnterior.Lon)
-                        //    {
-                        //        // Rota da direita para a esquerda
-                        //        Console.WriteLine("Veículo " + v.Id + " circula de Oeste para Este");
-                        //    }
-                        //    if (pontoAtual.Lat > pontoAnterior.Lat)
-                        //    {
-                        //        // Rota de cima para baixo
-                        //        Console.WriteLine("Veículo " + v.Id + " circula de Norte para Sul");
-                        //    } else if (pontoAtual.Lat < pontoAnterior.Lat)
-                        //    {
-                        //        // Rota de baixo para cima
-                        //        Console.WriteLine("Veículo " + v.Id + " circula deSul para Norte");
-                        //    } else
-                        //    {
-                        //        Console.WriteLine("Estou no else do FOR i do timedVehicles");
-                        //    }
-                        //}
-                        #endregion
                     }
                 }
                 #endregion
@@ -295,18 +246,18 @@ namespace ProjetoFinalM2
         {
             #region Obter informação da Rua
             // OS PONTOS SÃO ARMAZENADOS NUMA LISTA DE PONTOS (Tipo de cada elemento PointLatLng)
-            PointLatLng myPoint1 = myList[0];
-            PointLatLng myPoint2 = myList[1];
-            PointLatLng myPoint3 = myList[2];
-            PointLatLng myPoint4 = myList[3];
-            myList.Clear();
+            PointLatLng clickedPoint1 = clickedPoints[0];
+            PointLatLng clickedPoint2 = clickedPoints[1];
+            PointLatLng clickedPoint3 = clickedPoints[2];
+            PointLatLng clickedPoint4 = clickedPoints[3];
+            clickedPoints.Clear();
             #endregion
 
-            #region Obtém Direções Cartesianas 2
-            double lat1 = myPoint1.Lat * Math.PI / 180;
-            double lon1 = myPoint1.Lng * Math.PI / 180;
-            double lat2 = myPoint2.Lat * Math.PI / 180;
-            double lon2 = myPoint2.Lng * Math.PI / 180;
+            #region Obtém Direções Cartesianas
+            double lat1 = clickedPoint1.Lat * Math.PI / 180;
+            double lon1 = clickedPoint1.Lng * Math.PI / 180;
+            double lat2 = clickedPoint2.Lat * Math.PI / 180;
+            double lon2 = clickedPoint2.Lng * Math.PI / 180;
 
             double dLon = lon2 - lon1;
 
@@ -357,7 +308,7 @@ namespace ProjetoFinalM2
 
             // Obter informação a Rua do sobre o primeiro ponto
             List<Placemark> placemarks = null;
-            var statusCode = GMapProviders.OpenStreetMap.GetPlacemarks(myPoint1, out placemarks);
+            var statusCode = GMapProviders.OpenStreetMap.GetPlacemarks(clickedPoint1, out placemarks);
 
             // Verificar se TUDO OK
             if (statusCode == GeoCoderStatusCode.OK && placemarks != null)
@@ -369,16 +320,13 @@ namespace ProjetoFinalM2
                     addresses.Add(placemark.ThoroughfareName);
                     labelStreet.Text = placemark.ThoroughfareName;
 
-                    MapRoute route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint1, myPoint2, false, false, 15);
-
-                    //PointLatLng start = new PointLatLng(39.7398231162096, -8.80534887313843);
-                    //PointLatLng end = new PointLatLng(39.7395632408332, -8.808873295784);
-                    MapRoute routeOpposite = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(myPoint3, myPoint4, false, false, 15);
-
+                    MapRoute route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(clickedPoint1, clickedPoint2, false, false, 15);
+                    MapRoute routeOpposite = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(clickedPoint3, clickedPoint4, false, false, 15);
                     GMapRoute r = new GMapRoute(route.Points, "My route");
                     GMapRoute ro = new GMapRoute(routeOpposite.Points, "My opposing route");
+
                     GMapOverlay routesOverlay = new GMapOverlay("routes");
-                    labelRouteLenght.Text = route.Distance.ToString() + " km";
+                    labelRouteLength.Text = route.Distance.ToString() + " km";
                     routesOverlay.Routes.Add(r);
                     routesOverlay.Routes.Add(ro);
                     mapa.Overlays.Add(routesOverlay);
@@ -387,12 +335,7 @@ namespace ProjetoFinalM2
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnPointsOnRoute_Click(object sender, EventArgs e)
+        private void BtnPointsOnRoute_Click(object sender, EventArgs e)
         {
             String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
             DateTime selectedTime = DateTime.Parse(timeWorkaround);
@@ -401,11 +344,6 @@ namespace ProjetoFinalM2
             {
                 List<PointLatLng> points = new List<PointLatLng>();
                 List<Vehicle> timedVehicles = new();
-
-                //#region Obter informação da Rua
-                //PointLatLng myPoint1 = myList[0];
-                //PointLatLng myPoint2 = myList[1];
-                //#endregion
 
                 #region Desenhar pins na rota e próximos da rota
                 GMapOverlay overlay = mapa.Overlays.First(ov => ov.Id == "routes");
@@ -423,7 +361,7 @@ namespace ProjetoFinalM2
 
                             Console.WriteLine($"Distancia entre pontos: {distance} Diferênça: {distance - Convert.ToDouble(3)}");
 
-                            if (distance < Convert.ToDouble(3)) //Se a distância fôr menor que x metros
+                            if (distance <= Convert.ToDouble(3)) //Se a distância fôr menor que x metros
                             {
                                 Console.WriteLine(distance);
                                 bool vehicleExists = vehiclesOnRoute.Any(vehicle => vehicle.Id == v.Id);
@@ -472,7 +410,7 @@ namespace ProjetoFinalM2
 
                             Console.WriteLine($"Distancia entre pontos: {distance} Diferênça: {distance - Convert.ToDouble(3)}");
 
-                            if (distance < Convert.ToDouble(3)) //Se a distância fôr menor que x metros
+                            if (distance <= Convert.ToDouble(3)) //Se a distância fôr menor que x metros
                             {
                                 Console.WriteLine(distance);
                                 bool vehicleExists = vehiclesOnOppositeRoute.Any(vehicle => vehicle.Id == v.Id);
@@ -515,37 +453,7 @@ namespace ProjetoFinalM2
             }
         }
 
-        public static bool IsPointInsideRoute(PointLatLng point, List<PointLatLng> routePoints)
-        {
-            for (int i = 1; i < routePoints.Count; i++)
-            {
-                PointLatLng p1 = routePoints[i - 1];
-                PointLatLng p2 = routePoints[i];
-
-                //double distanceToSegment = CalculateDistanceToSegment(point, p1, p2);
-                //if (distanceToSegment <= 0)
-                return true;
-            }
-
-            return false;
-        }
-
-        static bool IsPointNearRoute(PointLatLng point, List<PointLatLng> routePoints, double proximityRadius)
-        {
-            for (int i = 1; i < routePoints.Count; i++)
-            {
-                PointLatLng p1 = routePoints[i - 1];
-                PointLatLng p2 = routePoints[i];
-
-                //double distanceToSegment = CalculateDistanceToSegment(point, p1, p2);
-                //if (distanceToSegment <= proximityRadius)
-                return true;
-            }
-
-            return false;
-        }
-
-        private void buttonGoToStreet_Click(object sender, EventArgs e)
+        private void BtnGoToStreet_Click(object sender, EventArgs e)
         {
             string streetToGoTo = textBoxStreetToGoTo.Text;
 
@@ -561,30 +469,5 @@ namespace ProjetoFinalM2
                 }
             }
         }
-
-
-        //static double CalculateDistanceToSegment(PointLatLng point, PointLatLng segmentStart, PointLatLng segmentEnd)
-        //{
-        //    double segmentLength = segmentStart.GetDistance(segmentEnd);
-        //    if (segmentLength == 0)
-        //    {
-        //        return point.GetDistance(segmentStart);
-        //    }
-
-        //    double t = ((point.Lng - segmentStart.Lng) * (segmentEnd.Lng - segmentStart.Lng) +
-        //                (point.Lat - segmentStart.Lat) * (segmentEnd.Lat - segmentStart.Lat)) / (segmentLength * segmentLength);
-
-        //    if (t < 0)
-        //        return point.GetDistance(segmentStart);
-        //    if (t > 1)
-        //        return point.GetDistance(segmentEnd);
-
-        //    double closestPointLng = segmentStart.Lng + t * (segmentEnd.Lng - segmentStart.Lng);
-        //    double closestPointLat = segmentStart.Lat + t * (segmentEnd.Lat - segmentStart.Lat);
-
-        //    PointLatLng closestPoint = new PointLatLng(closestPointLat, closestPointLng);
-
-        //    return point.GetDistance(closestPoint);
-        //}
     }
 }
