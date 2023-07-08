@@ -34,7 +34,7 @@
             labelTestCoords = new Label();
             toolTip1 = new ToolTip(components);
             buttonPesquisarTransito = new Button();
-            btnPointsOnRoute = new Button();
+            btnFilterPointsOnRoute = new Button();
             panelCoordSaves = new Panel();
             btnSaveCoord = new Button();
             labelMostrarLatitude = new Label();
@@ -74,6 +74,7 @@
             panel3 = new Panel();
             buttonGoToStreet = new Button();
             textBoxStreetToGoTo = new TextBox();
+            button1 = new Button();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -133,21 +134,21 @@
             buttonPesquisarTransito.UseVisualStyleBackColor = false;
             buttonPesquisarTransito.Click += ButtonPesquisarTransito_Click;
             // 
-            // btnPointsOnRoute
+            // btnFilterPointsOnRoute
             // 
-            btnPointsOnRoute.AccessibleDescription = "Consultar Transito";
-            btnPointsOnRoute.BackColor = Color.AliceBlue;
-            btnPointsOnRoute.BackgroundImage = (Image)resources.GetObject("btnPointsOnRoute.BackgroundImage");
-            btnPointsOnRoute.BackgroundImageLayout = ImageLayout.Stretch;
-            btnPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            btnPointsOnRoute.ForeColor = SystemColors.ButtonFace;
-            btnPointsOnRoute.Location = new Point(155, 152);
-            btnPointsOnRoute.Name = "btnPointsOnRoute";
-            btnPointsOnRoute.Size = new Size(45, 36);
-            btnPointsOnRoute.TabIndex = 57;
-            toolTip1.SetToolTip(btnPointsOnRoute, "ConsultarTransito");
-            btnPointsOnRoute.UseVisualStyleBackColor = false;
-            btnPointsOnRoute.Click += BtnPointsOnRoute_Click;
+            btnFilterPointsOnRoute.AccessibleDescription = "Consultar Transito";
+            btnFilterPointsOnRoute.BackColor = Color.AliceBlue;
+            btnFilterPointsOnRoute.BackgroundImage = (Image)resources.GetObject("btnFilterPointsOnRoute.BackgroundImage");
+            btnFilterPointsOnRoute.BackgroundImageLayout = ImageLayout.Stretch;
+            btnFilterPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnFilterPointsOnRoute.ForeColor = SystemColors.ButtonFace;
+            btnFilterPointsOnRoute.Location = new Point(155, 152);
+            btnFilterPointsOnRoute.Name = "btnFilterPointsOnRoute";
+            btnFilterPointsOnRoute.Size = new Size(45, 36);
+            btnFilterPointsOnRoute.TabIndex = 57;
+            toolTip1.SetToolTip(btnFilterPointsOnRoute, "ConsultarTransito");
+            btnFilterPointsOnRoute.UseVisualStyleBackColor = false;
+            btnFilterPointsOnRoute.Click += BtnFilterPointsOnRoute_Click;
             // 
             // panelCoordSaves
             // 
@@ -438,7 +439,8 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
-            panel2.Controls.Add(btnPointsOnRoute);
+            panel2.Controls.Add(button1);
+            panel2.Controls.Add(btnFilterPointsOnRoute);
             panel2.Controls.Add(labelRouteLength);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(BtnGetStreet);
@@ -453,13 +455,13 @@
             panel2.Size = new Size(304, 213);
             panel2.TabIndex = 41;
             // 
-            // labelRouteLenght
+            // labelRouteLength
             // 
             labelRouteLength.AutoSize = true;
             labelRouteLength.BackColor = Color.Transparent;
             labelRouteLength.Location = new Point(118, 197);
             labelRouteLength.Margin = new Padding(3, 6, 3, 0);
-            labelRouteLength.Name = "labelRouteLenght";
+            labelRouteLength.Name = "labelRouteLength";
             labelRouteLength.Size = new Size(25, 15);
             labelRouteLength.TabIndex = 56;
             labelRouteLength.Text = "xxx";
@@ -583,6 +585,16 @@
             textBoxStreetToGoTo.Size = new Size(182, 23);
             textBoxStreetToGoTo.TabIndex = 0;
             // 
+            // button1
+            // 
+            button1.Location = new Point(206, 168);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 58;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -654,9 +666,10 @@
         private Label labelSentidoCart;
         private Label label2;
         private Label labelRouteLength;
-        private Button btnPointsOnRoute;
+        private Button btnFilterPointsOnRoute;
         private Panel panel3;
         private Button buttonGoToStreet;
         private TextBox textBoxStreetToGoTo;
+        private Button button1;
     }
 }

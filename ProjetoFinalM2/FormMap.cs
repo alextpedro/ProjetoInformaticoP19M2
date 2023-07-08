@@ -272,37 +272,60 @@ namespace ProjetoFinalM2
             }
 
             // verificar em que sentido a rota vai
-            bool isGoingNorth = bearing > 315 && bearing < 45;
-            bool isGoingEast = bearing > 45 && bearing < 135;
-            bool isGoingSouth = bearing > 135 && bearing < 225;
-            bool isGoingWest = bearing > 225 && bearing < 315;
+            switch (GetSimplifiedBearing(bearing))
+            {
+                case 0:
+                    labelSentidoCart.Text = "Rota para Norte";
+                    Console.WriteLine("A rota está a ir para norte.");
+                    break;
+                case 1:
+                    labelSentidoCart.Text = "rota para este";
+                    Console.WriteLine("a rota está a ir para este.");
+                    break;
+                case 2:
+                    labelSentidoCart.Text = "Rota para Sul";
+                    Console.WriteLine("A rota está a ir para sul.");
+                    break;
+                case 3:
+                    labelSentidoCart.Text = "Rota para Oeste";
+                    Console.WriteLine("A rota está a ir para oeste.");
+                    break;
+                default:
+                    labelSentidoCart.Text = "Rota para Norte";
+                    Console.WriteLine("A rota está a ir para norte.");
+                    break;
+            }
+            //bool isGoingNorth = bearing > 315 && bearing < 45;
+            //bool isGoingEast = bearing > 45 && bearing < 135;
+            //bool isGoingSouth = bearing > 135 && bearing < 225;
+            //bool isGoingWest = bearing > 225 && bearing < 315;
 
-            // Atribuir à label a direção
-            if (isGoingNorth)
-            {
-                labelSentidoCart.Text = "Rota para Norte";
-                Console.WriteLine("A rota está a ir para norte.");
-            }
-            else if (isGoingEast)
-            {
-                labelSentidoCart.Text = "Rota para Este";
-                Console.WriteLine("A rota está a ir para este.");
-            }
-            else if (isGoingSouth)
-            {
-                labelSentidoCart.Text = "Rota para Sul";
-                Console.WriteLine("A rota está a ir para sul.");
-            }
-            else if (isGoingWest)
-            {
-                labelSentidoCart.Text = "Rota para Oeste";
-                Console.WriteLine("A rota está a ir para oeste.");
-            }
-            else
-            {
-                labelSentidoCart.Text = "Rota para Norte";
-                Console.WriteLine("A rota está a ir para norte.");
-            }
+            //// Atribuir à label a direção
+            //if (isGoingNorth)
+            //{
+            //    labelSentidoCart.Text = "Rota para Norte";
+            //    Console.WriteLine("A rota está a ir para norte.");
+            //}
+            //else if (isGoingEast)
+            //{
+            //    labelSentidoCart.Text = "Rota para Este";
+            //    Console.WriteLine("A rota está a ir para este.");
+            //}
+            //else if (isGoingSouth)
+            //{
+            //    labelSentidoCart.Text = "Rota para Sul";
+            //    Console.WriteLine("A rota está a ir para sul.");
+            //}
+            //else if (isGoingWest)
+            //{
+            //    labelSentidoCart.Text = "Rota para Oeste";
+            //    Console.WriteLine("A rota está a ir para oeste.");
+            //}
+            //else
+            //{
+            //    labelSentidoCart.Text = "Rota para Norte";
+            //    Console.WriteLine("A rota está a ir para norte.");
+            //}
 
             #endregion
 
@@ -330,12 +353,16 @@ namespace ProjetoFinalM2
                     routesOverlay.Routes.Add(r);
                     routesOverlay.Routes.Add(ro);
                     mapa.Overlays.Add(routesOverlay);
-                    
+<<<<<<< Updated upstream
+                    mapa.ZoomAndCenterRoute(r);
+=======
+
+>>>>>>> Stashed changes
                 }
             }
         }
 
-        private void BtnPointsOnRoute_Click(object sender, EventArgs e)
+        private void BtnFilterPointsOnRoute_Click(object sender, EventArgs e)
         {
             try
             {
@@ -349,6 +376,13 @@ namespace ProjetoFinalM2
                 GMapOverlay overlay = mapa.Overlays.First(overlay => overlay.Id == "routes");
                 GMapRoute route = overlay.Routes.First(route => route.Name == "My route");
                 GMapRoute oppositeRoute = overlay.Routes.First(route => route.Name == "My opposing route");
+<<<<<<< Updated upstream
+                int routeBearing = GetSimplifiedBearing(mapa.GetBearing(route.Points.First(), route.Points.Last()));
+                int oppositeRouteBearing = GetSimplifiedBearing(mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last()));
+=======
+                double routeBearing = mapa.GetBearing(route.Points.First(), route.Points.Last());
+                double oppositeRouteBearing = mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last());
+>>>>>>> Stashed changes
 
                 OverlayHelper.ClearPins(mapa);
 
@@ -363,11 +397,16 @@ namespace ProjetoFinalM2
                         {
                             pointCount++;
                             PointLatLng point = new PointLatLng(c.Lat, c.Lon);
-                            double distance = (double)route.DistanceTo(point);
-                            double roadWidth = Convert.ToDouble(3);
+                            //double distance = (double)route.DistanceTo(point);
+                            //double roadWidth = Convert.ToDouble(3);
+                            int cBearing = GetSimplifiedBearing(c.Bearing);
 
                             //Points for route
-                            if (distance <= roadWidth) 
+<<<<<<< Updated upstream
+                            if (routeBearing == cBearing)
+=======
+                            if (distance <= roadWidth)
+>>>>>>> Stashed changes
                             {
                                 bool vehicleExists = vehiclesOnRoute.Any(vehicle => vehicle.Id == v.Id);
                                 if (!vehicleExists)
@@ -377,25 +416,22 @@ namespace ProjetoFinalM2
                                 OverlayHelper.DrawPin(mapa, point, $"Rota Veículo {v.Id} Ponto {pointCount}");
                             }
                             //Points for opposite route
-                            else
+                            if (oppositeRouteBearing == cBearing)
                             {
-                                distance = (double)oppositeRoute.DistanceTo(point);
+                                //distance = (double)oppositeRoute.DistanceTo(point);
 
-                                if (distance <= roadWidth)
-                                {
+                                //if (distance <= roadWidth)
+                                //{
                                     bool vehicleExists = vehiclesOnOppositeRoute.Any(vehicle => vehicle.Id == v.Id);
                                     if (!vehicleExists)
                                     {
                                         vehiclesOnOppositeRoute.Add(v);
                                     }
                                     OverlayHelper.DrawPin(mapa, point, $"Rota Oposta Veículo {v.Id} Ponto {pointCount}");
-                                }
+                                //}
                             }
                         }
                     }
-
-                    Console.WriteLine(vehiclesOnRoute.ToString);
-                    Console.WriteLine(vehiclesOnOppositeRoute.ToString);
                 }
 
                 //Color routes
@@ -458,5 +494,50 @@ namespace ProjetoFinalM2
                 }
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GMapOverlay overlay = mapa.Overlays.First(overlay => overlay.Id == "routes");
+            GMapRoute route = overlay.Routes.First(route => route.Name == "My route");
+            GMapRoute oppositeRoute = overlay.Routes.First(route => route.Name == "My opposing route");
+            double routeBearing = mapa.GetBearing(route.Points.First(), route.Points.Last());
+            double oppositeRouteBearing = mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last());
+
+            Console.WriteLine($"Route bearing {routeBearing} Opposite route bearing {oppositeRouteBearing}");
+        }
+<<<<<<< Updated upstream
+
+        private int GetSimplifiedBearing (double bearing)
+        {
+            // verificar em que sentido a rota vai
+            bool isGoingNorth = bearing > 315 && bearing < 45;
+            bool isGoingEast = bearing > 45 && bearing < 135;
+            bool isGoingSouth = bearing > 135 && bearing < 225;
+            bool isGoingWest = bearing > 225 && bearing < 315;
+
+            // Atribuir à label a direção
+            if (isGoingNorth)
+            {
+                return 0;
+            }
+            else if (isGoingEast)
+            {
+                return 1;
+            }
+            else if (isGoingSouth)
+            {
+                return 2;
+            }
+            else if (isGoingWest)
+            {
+                return 3;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+=======
+>>>>>>> Stashed changes
     }
 }
