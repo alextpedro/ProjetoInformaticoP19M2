@@ -21,7 +21,7 @@ namespace ProjetoFinalM2.Helpers
         public static int numPoints = 0;
         public static int nOverlays = 0;
 
-        public static string SaveCoordToFile(DateTime time, string lat, string lon, int id)
+        public static string SaveCoordToFile(DateTime time, string lat, string lon, double bearing, int id)
         {
             if (String.IsNullOrEmpty(savedCoordsFile))
             {
@@ -45,10 +45,10 @@ namespace ProjetoFinalM2.Helpers
                 {
                     if (new FileInfo(savedCoordsFile).Length == 0)
                     {
-                        fileStream.WriteLine("Timestamp,Latitude,Longitude,Vehicle ID");
+                        fileStream.WriteLine("Timestamp,Latitude,Longitude,Bearing,Vehicle ID");
                     }
 
-                    fileStream.WriteLine($"{time}, {lat}, {lon}, {id}");
+                    fileStream.WriteLine($"{time}, {lat}, {lon}, {bearing}, {id}");
                 }
             }
 
@@ -78,23 +78,22 @@ namespace ProjetoFinalM2.Helpers
 
                     try
                     {
+                        var timestamp = DateTime.Parse(fields[0]);
                         var lat = Convert.ToDouble(fields[1]);
                         var lon = Convert.ToDouble(fields[2]);
-
-                        var timestamp = DateTime.Parse(fields[0]);
-
-                        var id = Convert.ToInt32(fields[3]);
+                        var bearing = Convert.ToDouble(fields[3]);
+                        var id = Convert.ToInt32(fields[4]);
 
                         Vehicle tmpVehicle = new Vehicle(id);
 
                         bool vehicleExists = tmpVehiclesList.Any(vehicle => vehicle.Id == tmpVehicle.Id);
                         if (vehicleExists)
                         {
-                            tmpVehiclesList.Find(vehicle => vehicle.Id == tmpVehicle.Id).TimestampedCoords.Add(new TimestampedCoords(timestamp, lat, lon));
+                            tmpVehiclesList.Find(vehicle => vehicle.Id == tmpVehicle.Id).TimestampedCoords.Add(new TimestampedCoords(timestamp, lat, lon, bearing));
                         }
                         else
                         {
-                            tmpVehicle.TimestampedCoords.Add(new TimestampedCoords(timestamp, lat, lon));
+                            tmpVehicle.TimestampedCoords.Add(new TimestampedCoords(timestamp, lat, lon, bearing));
                             tmpVehiclesList.Add(tmpVehicle);
                         }
                     }

@@ -116,7 +116,7 @@ namespace ProjetoFinalM2
 
         private void BtnSaveCoord_Click(object sender, EventArgs e)
         {
-            labelSaveFileName.Text = FileLoader.SaveCoordToFile(DateTime.Now, labelLatitude.Text, labelLongitude.Text, 1) ?? labelSaveFileName.Text;
+            labelSaveFileName.Text = FileLoader.SaveCoordToFile(DateTime.Now, labelLatitude.Text, labelLongitude.Text, 0, 1) ?? labelSaveFileName.Text;
         }
 
         private void ButtonRemoveOverlays_Click(object sender, EventArgs e)
@@ -154,7 +154,7 @@ namespace ProjetoFinalM2
                         if (coordWorkaround == selectedTimeWorkaround)
                         {
                             points.Add(new PointLatLng(c.Lat, c.Lon));
-                            tmpCoords.Add(new TimestampedCoords(c.Timestamp, c.Lat, c.Lon));
+                            tmpCoords.Add(new TimestampedCoords(c.Timestamp, c.Lat, c.Lon, c.Bearing));
                         }
                     }
 
