@@ -57,6 +57,9 @@ namespace ProjetoFinalM2.Helpers
 
         public static List<Vehicle>? LoadPointsFromFile()
         {
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+
             if (!String.IsNullOrEmpty(loadedFileName))
             {
                 using TextFieldParser parser = new TextFieldParser(loadedFileName);
@@ -101,10 +104,14 @@ namespace ProjetoFinalM2.Helpers
                 }
                 
                 tmpVehiclesList.ForEach(v => Console.WriteLine(v.ToString()));
+                watch.Stop();
+                Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
                 return tmpVehiclesList;
             }
             else
             {
+                watch.Stop();
+                Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
                 return null;
             }
         }

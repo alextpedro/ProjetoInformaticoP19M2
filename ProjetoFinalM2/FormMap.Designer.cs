@@ -74,7 +74,6 @@
             panel3 = new Panel();
             buttonGoToStreet = new Button();
             textBoxStreetToGoTo = new TextBox();
-            button1 = new Button();
             panelCoordSaves.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uiNVeiculosTransito).BeginInit();
@@ -126,7 +125,7 @@
             buttonPesquisarTransito.BackgroundImageLayout = ImageLayout.Stretch;
             buttonPesquisarTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonPesquisarTransito.ForeColor = SystemColors.ButtonFace;
-            buttonPesquisarTransito.Location = new Point(268, 87);
+            buttonPesquisarTransito.Location = new Point(281, 129);
             buttonPesquisarTransito.Name = "buttonPesquisarTransito";
             buttonPesquisarTransito.Size = new Size(45, 45);
             buttonPesquisarTransito.TabIndex = 39;
@@ -137,15 +136,15 @@
             // btnFilterPointsOnRoute
             // 
             btnFilterPointsOnRoute.AccessibleDescription = "Consultar Transito";
-            btnFilterPointsOnRoute.BackColor = Color.AliceBlue;
-            btnFilterPointsOnRoute.BackgroundImage = (Image)resources.GetObject("btnFilterPointsOnRoute.BackgroundImage");
+            btnFilterPointsOnRoute.BackColor = Color.DarkOrange;
             btnFilterPointsOnRoute.BackgroundImageLayout = ImageLayout.Stretch;
-            btnFilterPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            btnFilterPointsOnRoute.ForeColor = SystemColors.ButtonFace;
+            btnFilterPointsOnRoute.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnFilterPointsOnRoute.ForeColor = Color.Black;
             btnFilterPointsOnRoute.Location = new Point(155, 152);
             btnFilterPointsOnRoute.Name = "btnFilterPointsOnRoute";
-            btnFilterPointsOnRoute.Size = new Size(45, 36);
+            btnFilterPointsOnRoute.Size = new Size(146, 36);
             btnFilterPointsOnRoute.TabIndex = 57;
+            btnFilterPointsOnRoute.Text = "Filtrar Rua";
             toolTip1.SetToolTip(btnFilterPointsOnRoute, "ConsultarTransito");
             btnFilterPointsOnRoute.UseVisualStyleBackColor = false;
             btnFilterPointsOnRoute.Click += BtnFilterPointsOnRoute_Click;
@@ -439,7 +438,6 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
-            panel2.Controls.Add(button1);
             panel2.Controls.Add(btnFilterPointsOnRoute);
             panel2.Controls.Add(labelRouteLength);
             panel2.Controls.Add(label2);
@@ -492,7 +490,7 @@
             // 
             // btnRotaTransito
             // 
-            btnRotaTransito.BackColor = Color.Orange;
+            btnRotaTransito.BackColor = Color.PaleGreen;
             btnRotaTransito.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnRotaTransito.ForeColor = SystemColors.ActiveCaptionText;
             btnRotaTransito.Location = new Point(154, 89);
@@ -547,7 +545,7 @@
             // 
             // btnCarregarMapa
             // 
-            btnCarregarMapa.BackColor = Color.FromArgb(128, 255, 128);
+            btnCarregarMapa.BackColor = Color.DeepSkyBlue;
             btnCarregarMapa.Location = new Point(155, 0);
             btnCarregarMapa.Name = "btnCarregarMapa";
             btnCarregarMapa.Size = new Size(147, 56);
@@ -584,16 +582,6 @@
             textBoxStreetToGoTo.Name = "textBoxStreetToGoTo";
             textBoxStreetToGoTo.Size = new Size(182, 23);
             textBoxStreetToGoTo.TabIndex = 0;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(206, 168);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 58;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // FormMap
             // 
@@ -670,6 +658,5 @@
         private Panel panel3;
         private Button buttonGoToStreet;
         private TextBox textBoxStreetToGoTo;
-        private Button button1;
     }
 }

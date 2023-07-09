@@ -353,11 +353,7 @@ namespace ProjetoFinalM2
                     routesOverlay.Routes.Add(r);
                     routesOverlay.Routes.Add(ro);
                     mapa.Overlays.Add(routesOverlay);
-<<<<<<< Updated upstream
                     mapa.ZoomAndCenterRoute(r);
-=======
-
->>>>>>> Stashed changes
                 }
             }
         }
@@ -376,13 +372,9 @@ namespace ProjetoFinalM2
                 GMapOverlay overlay = mapa.Overlays.First(overlay => overlay.Id == "routes");
                 GMapRoute route = overlay.Routes.First(route => route.Name == "My route");
                 GMapRoute oppositeRoute = overlay.Routes.First(route => route.Name == "My opposing route");
-<<<<<<< Updated upstream
+
                 int routeBearing = GetSimplifiedBearing(mapa.GetBearing(route.Points.First(), route.Points.Last()));
                 int oppositeRouteBearing = GetSimplifiedBearing(mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last()));
-=======
-                double routeBearing = mapa.GetBearing(route.Points.First(), route.Points.Last());
-                double oppositeRouteBearing = mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last());
->>>>>>> Stashed changes
 
                 OverlayHelper.ClearPins(mapa);
 
@@ -402,11 +394,8 @@ namespace ProjetoFinalM2
                             int cBearing = GetSimplifiedBearing(c.Bearing);
 
                             //Points for route
-<<<<<<< Updated upstream
                             if (routeBearing == cBearing)
-=======
-                            if (distance <= roadWidth)
->>>>>>> Stashed changes
+
                             {
                                 bool vehicleExists = vehiclesOnRoute.Any(vehicle => vehicle.Id == v.Id);
                                 if (!vehicleExists)
@@ -422,12 +411,12 @@ namespace ProjetoFinalM2
 
                                 //if (distance <= roadWidth)
                                 //{
-                                    bool vehicleExists = vehiclesOnOppositeRoute.Any(vehicle => vehicle.Id == v.Id);
-                                    if (!vehicleExists)
-                                    {
-                                        vehiclesOnOppositeRoute.Add(v);
-                                    }
-                                    OverlayHelper.DrawPin(mapa, point, $"Rota Oposta Veículo {v.Id} Ponto {pointCount}");
+                                bool vehicleExists = vehiclesOnOppositeRoute.Any(vehicle => vehicle.Id == v.Id);
+                                if (!vehicleExists)
+                                {
+                                    vehiclesOnOppositeRoute.Add(v);
+                                }
+                                OverlayHelper.DrawPin(mapa, point, $"Rota Oposta Veículo {v.Id} Ponto {pointCount}");
                                 //}
                             }
                         }
@@ -503,11 +492,10 @@ namespace ProjetoFinalM2
             double routeBearing = mapa.GetBearing(route.Points.First(), route.Points.Last());
             double oppositeRouteBearing = mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last());
 
-            Console.WriteLine($"Route bearing {routeBearing} Opposite route bearing {oppositeRouteBearing}");
+            Console.WriteLine($"Route bearing {routeBearing} simplified to {routeBearing} Opposite route bearing {oppositeRouteBearing} simplified to {routeBearing}");
         }
-<<<<<<< Updated upstream
 
-        private int GetSimplifiedBearing (double bearing)
+        private int GetSimplifiedBearing(double bearing)
         {
             // verificar em que sentido a rota vai
             bool isGoingNorth = bearing > 315 && bearing < 45;
@@ -537,7 +525,5 @@ namespace ProjetoFinalM2
                 return -1;
             }
         }
-=======
->>>>>>> Stashed changes
     }
 }
