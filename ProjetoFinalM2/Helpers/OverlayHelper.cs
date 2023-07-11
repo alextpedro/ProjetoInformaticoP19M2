@@ -22,8 +22,6 @@ namespace ProjetoFinalM2.Helpers
 
         public static void DrawPolygon(GMapControl mapa, List<PointLatLng> pointsToDraw, Color? color)
         {
-            ClearOverlays(mapa);
-
             GMapOverlay polygons = new GMapOverlay("polygons");
             GMapPolygon polygon = new GMapPolygon(pointsToDraw, "polygon");
 
@@ -35,7 +33,8 @@ namespace ProjetoFinalM2.Helpers
 
             polygons.Polygons.Add(polygon);
             mapa.Overlays.Add(polygons);
-            mapa.ZoomAndCenterRoutes("polygon");
+            mapa.Position = pointsToDraw[0];
+            RefreshMap(mapa);
         }
 
         public static void ClearOverlays(GMapControl mapa)
@@ -63,6 +62,20 @@ namespace ProjetoFinalM2.Helpers
             foreach (var o in mapa.Overlays)
             {
                 o.Markers.Clear();
+            }
+        }
+
+        public static void RefreshMap(GMapControl mapa)
+        {
+            mapa.Zoom -= 5;
+            mapa.Zoom += 5;
+        }
+
+        internal static void ClearRoutes(GMapControl mapa)
+        {
+            foreach (var o in mapa.Overlays)
+            {
+                o.Routes.Clear();
             }
         }
     }

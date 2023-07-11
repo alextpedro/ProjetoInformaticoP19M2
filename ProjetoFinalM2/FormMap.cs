@@ -1,7 +1,6 @@
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
-using GMap.NET.WindowsForms.Markers;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
 
@@ -50,16 +49,9 @@ namespace ProjetoFinalM2
                     #region Colocar Marcador no mapa de cada veículo
                     foreach (var item in tmpListCoords)
                     {
-                        GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
-                        PointLatLng markerPosition = new PointLatLng(item.Lat, item.Lng);
-                        GMarkerGoogle marker = new GMarkerGoogle(markerPosition, GMarkerGoogleType.red_pushpin);
-                        marker.ToolTipText = "Veiculo " + vehicle.Id.ToString();
-                        markersOverlay.Markers.Add(marker);
-                        mapa.Overlays.Add(markersOverlay);
+                        OverlayHelper.DrawPin(mapa, new PointLatLng(item.Lat, item.Lng), "Veiculo " + vehicle.Id.ToString());
                     }
                     #endregion
-
-                    //OverlayHelper.DrawRoute(mapa, tmpListCoords, randomColor, 3);
                 });
 
                 #region Colocar Estado do Trânsito
@@ -73,6 +65,7 @@ namespace ProjetoFinalM2
                 }
                 #endregion
 
+                OverlayHelper.RefreshMap(mapa);
             }
             catch (Exception ex)
             {
@@ -85,6 +78,10 @@ namespace ProjetoFinalM2
         {
             labelLatitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lat.ToString();
             labelLongitude.Text = mapa.FromLocalToLatLng(e.X, e.Y).Lng.ToString();
+            if (clickedPoints.Count > 4)
+            {
+                clickedPoints.Clear();
+            }
             clickedPoints.Add(new PointLatLng(mapa.FromLocalToLatLng(e.X, e.Y).Lat, mapa.FromLocalToLatLng(e.X, e.Y).Lng));
         }
 
@@ -128,12 +125,10 @@ namespace ProjetoFinalM2
         {
             String timeWorkaround = $"{dateTimePickerDate.Value.ToShortDateString()} {dateTimePickerTime.Value.ToShortTimeString()}:{trackBarTime.Value}";
             DateTime selectedTime = DateTime.Parse(timeWorkaround);
-            //string streetName = textBoxSreetName.Text;
 
             //Para debugging
             Console.WriteLine($"TS: {selectedTime}");
             Console.WriteLine($"There are {vehiclesList.Count} vehicles in vehiclesList.");
-            //Console.WriteLine("O nome da rua é " + streetName);
 
             try
             {
@@ -167,9 +162,12 @@ namespace ProjetoFinalM2
                 #endregion
 
                 #region Desenhar pins
-                //GMapOverlay overlay = mapa.Overlays["polygon"];
-                GMapOverlay overlay = mapa.Overlays.FirstOrDefault();
-                GMapPolygon polygon = overlay.Polygons.FirstOrDefault(p => p.Name == "polygon");
+                GMapOverlay overlay = mapa.Overlays.First(overlay => overlay.Id == "polygons");
+                GMapPolygon polygon = overlay.Polygons.First(p => p.Name == "polygon");
+                GMapOverlay markersOverlay = mapa.Overlays.First(overlay => overlay.Id == "MarkersOverlay");
+                OverlayHelper.ClearPins(mapa);
+
+                List<Vehicle> polygonVehicles = new();
                 if (timedVehicles != null)
                 {
                     foreach (var v in timedVehicles)
@@ -179,7 +177,11 @@ namespace ProjetoFinalM2
                             bool isInside = polygon.IsInside(new PointLatLng(c.Lat, c.Lon));
                             if (isInside)
                             {
-                                Console.WriteLine("Estou no isInside");
+                                bool vehicleExists = polygonVehicles.Any(vehicle => vehicle.Id == v.Id);
+                                if (!vehicleExists)
+                                {
+                                    polygonVehicles.Add(v);
+                                }
                                 OverlayHelper.DrawPin(mapa, new PointLatLng(c.Lat, c.Lon), $"Veículo {v.Id}");
                             }
                         }
@@ -189,26 +191,29 @@ namespace ProjetoFinalM2
 
                 #region Colorir o polígono / "Está trânsito"
                 var nVeiculosMax = uiNVeiculosTransito.Value;
-                if (timedVehicles.Count > nVeiculosMax)
+                int nVeiculos = polygonVehicles.Count;
+                if (nVeiculos > 0)
                 {
-                    labelTrafficState.Text = "Com trânsito";
-                    polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
-                    polygon.Stroke = new Pen(Color.Red, 1);
-                }
-                else if (timedVehicles.Count < nVeiculosMax && timedVehicles.Count > nVeiculosMax / 2)
-                {
-                    labelTrafficState.Text = "Trânsito normal";
-                    polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
-                    polygon.Stroke = new Pen(Color.Yellow, 1);
-                }
-                else
-                {
-                    labelTrafficState.Text = "Sem trânsito";
-                    polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
-                    polygon.Stroke = new Pen(Color.Green, 1);
+                    if (nVeiculos > nVeiculosMax)
+                    {
+                        labelTrafficState.Text = "Com trânsito";
+                        polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
+                        polygon.Stroke = new Pen(Color.Red, 1);
+                    }
+                    else if (nVeiculos < nVeiculosMax && nVeiculos > nVeiculosMax / 2)
+                    {
+                        labelTrafficState.Text = "Trânsito normal";
+                        polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
+                        polygon.Stroke = new Pen(Color.Yellow, 1);
+                    }
+                    else
+                    {
+                        labelTrafficState.Text = "Sem trânsito";
+                        polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
+                        polygon.Stroke = new Pen(Color.Green, 1);
+                    }
                 }
                 #endregion
-
             }
             catch (Exception ex)
             {
@@ -243,6 +248,7 @@ namespace ProjetoFinalM2
 
         private void BtnGetStreet_Click(object sender, EventArgs e)
         {
+            OverlayHelper.ClearRoutes(mapa);
             #region Obter informação da Rua
             // OS PONTOS SÃO ARMAZENADOS NUMA LISTA DE PONTOS (Tipo de cada elemento PointLatLng)
             PointLatLng clickedPoint1 = clickedPoints[0];
@@ -294,38 +300,6 @@ namespace ProjetoFinalM2
                     Console.WriteLine("A rota está a ir para norte.");
                     break;
             }
-            //bool isGoingNorth = bearing > 315 && bearing < 45;
-            //bool isGoingEast = bearing > 45 && bearing < 135;
-            //bool isGoingSouth = bearing > 135 && bearing < 225;
-            //bool isGoingWest = bearing > 225 && bearing < 315;
-
-            //// Atribuir à label a direção
-            //if (isGoingNorth)
-            //{
-            //    labelSentidoCart.Text = "Rota para Norte";
-            //    Console.WriteLine("A rota está a ir para norte.");
-            //}
-            //else if (isGoingEast)
-            //{
-            //    labelSentidoCart.Text = "Rota para Este";
-            //    Console.WriteLine("A rota está a ir para este.");
-            //}
-            //else if (isGoingSouth)
-            //{
-            //    labelSentidoCart.Text = "Rota para Sul";
-            //    Console.WriteLine("A rota está a ir para sul.");
-            //}
-            //else if (isGoingWest)
-            //{
-            //    labelSentidoCart.Text = "Rota para Oeste";
-            //    Console.WriteLine("A rota está a ir para oeste.");
-            //}
-            //else
-            //{
-            //    labelSentidoCart.Text = "Rota para Norte";
-            //    Console.WriteLine("A rota está a ir para norte.");
-            //}
-
             #endregion
 
             // Obter informação a Rua do sobre o primeiro ponto
@@ -372,8 +346,8 @@ namespace ProjetoFinalM2
                 GMapRoute route = overlay.Routes.First(route => route.Name == "My route");
                 GMapRoute oppositeRoute = overlay.Routes.First(route => route.Name == "My opposing route");
 
-                int routeBearing = GetSimplifiedBearing(mapa.GetBearing(route.Points.First(), route.Points.Last()));
-                int oppositeRouteBearing = GetSimplifiedBearing(mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last()));
+                //int routeBearing = GetSimplifiedBearing(mapa.GetBearing(route.Points.First(), route.Points.Last()));
+                //int oppositeRouteBearing = GetSimplifiedBearing(mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last()));
 
                 OverlayHelper.ClearPins(mapa);
 
@@ -388,13 +362,14 @@ namespace ProjetoFinalM2
                         {
                             pointCount++;
                             PointLatLng point = new PointLatLng(c.Lat, c.Lon);
-                            //double distance = (double)route.DistanceTo(point);
-                            //double roadWidth = Convert.ToDouble(3);
-                            int cBearing = GetSimplifiedBearing(c.Bearing);
+                            double distance = (double)route.DistanceTo(point);
+                            double roadWidth = Convert.ToDouble(3);
+                            //int cBearing = GetSimplifiedBearing(c.Bearing);
+                            //Console.WriteLine($"Street Bearing {routeBearing} Coordinate Bearing {c.Bearing} {cBearing}");
 
                             //Points for route
-                            if (routeBearing == cBearing)
-
+                            //if (routeBearing == cBearing)
+                            if (distance <= roadWidth)
                             {
                                 bool vehicleExists = vehiclesOnRoute.Any(vehicle => vehicle.Id == v.Id);
                                 if (!vehicleExists)
@@ -404,23 +379,23 @@ namespace ProjetoFinalM2
                                 OverlayHelper.DrawPin(mapa, point, $"Rota Veículo {v.Id} Ponto {pointCount}");
                             }
                             //Points for opposite route
-                            if (oppositeRouteBearing == cBearing)
-                            {
-                                //distance = (double)oppositeRoute.DistanceTo(point);
+                            //if (oppositeRouteBearing == cBearing)
+                            //{
+                            distance = (double)oppositeRoute.DistanceTo(point);
 
-                                //if (distance <= roadWidth)
-                                //{
+                            if (distance <= roadWidth)
+                            {
                                 bool vehicleExists = vehiclesOnOppositeRoute.Any(vehicle => vehicle.Id == v.Id);
                                 if (!vehicleExists)
                                 {
                                     vehiclesOnOppositeRoute.Add(v);
                                 }
                                 OverlayHelper.DrawPin(mapa, point, $"Rota Oposta Veículo {v.Id} Ponto {pointCount}");
-                                //}
                             }
                         }
                     }
                 }
+
 
                 //Color routes
                 var nVeiculosMax = uiNVeiculosTransito.Value;
@@ -483,13 +458,18 @@ namespace ProjetoFinalM2
             }
         }
 
-        private int GetSimplifiedBearing(double bearing)
+        private int GetSimplifiedBearing(double dBearing)
         {
+            int bearing = Convert.ToInt32(dBearing);
+            Console.WriteLine($"Bearing {dBearing} converted to {bearing}");
             // verificar em que sentido a rota vai
-            bool isGoingNorth = bearing > 315 && bearing < 45;
-            bool isGoingEast = bearing > 45 && bearing < 135;
-            bool isGoingSouth = bearing > 135 && bearing < 225;
-            bool isGoingWest = bearing > 225 && bearing < 315;
+            bool isGoingNorth = (bearing >= 0 && bearing < 45) || (bearing >= 315 && bearing <= 360);
+            bool isGoingEast = bearing >= 45 && bearing < 135;
+            bool isGoingSouth = bearing >= 135 && bearing < 225;
+            bool isGoingWest = bearing >= 225 && bearing < 315;
+
+
+            Console.WriteLine($"North {isGoingNorth} East {isGoingEast} South {isGoingSouth} West {isGoingWest}");
 
             // Atribuir à label a direção
             if (isGoingNorth)
