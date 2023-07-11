@@ -1,13 +1,6 @@
-﻿using Avalonia;
-using GMap.NET;
+﻿using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using ProjetoFinalM2.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjetoFinalM2.Helpers
 {
@@ -34,7 +27,7 @@ namespace ProjetoFinalM2.Helpers
             GMapOverlay polygons = new GMapOverlay("polygons");
             GMapPolygon polygon = new GMapPolygon(pointsToDraw, "polygon");
 
-            if(color != null)
+            if (color != null)
             {
                 polygon.Fill = new SolidBrush(Color.FromArgb(50, (Color)color));
                 polygon.Stroke = new Pen((Color)color, 1);
@@ -54,7 +47,7 @@ namespace ProjetoFinalM2.Helpers
             }
         }
 
-        public static void DrawPin (GMapControl mapa, PointLatLng pinPoint, string tooltip)
+        public static void DrawPin(GMapControl mapa, PointLatLng pinPoint, string tooltip)
         {
             GMapOverlay markersOverlay = new GMapOverlay("MarkersOverlay");
             PointLatLng markerPosition = pinPoint;
@@ -65,7 +58,7 @@ namespace ProjetoFinalM2.Helpers
             mapa.ZoomAndCenterMarkers("MarkersOverlay");
         }
 
-        public static void ClearPins (GMapControl mapa)
+        public static void ClearPins(GMapControl mapa)
         {
             foreach (var o in mapa.Overlays)
             {

@@ -1,14 +1,6 @@
-﻿using Avalonia;
-using GMap.NET.WindowsForms;
-using GMap.NET;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GMap.NET;
 using Microsoft.VisualBasic.FileIO;
 using ProjetoFinalM2.Data;
-using System.Globalization;
 
 namespace ProjetoFinalM2.Helpers
 {
@@ -102,7 +94,7 @@ namespace ProjetoFinalM2.Helpers
                     }
                     catch { continue; } // Caso a linha esteja vazia e nao consiga produzir um double continua para a proxima
                 }
-                
+
                 tmpVehiclesList.ForEach(v => Console.WriteLine(v.ToString()));
                 watch.Stop();
                 Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
@@ -169,7 +161,7 @@ namespace ProjetoFinalM2.Helpers
                     loadedFileName = selectFileDialog.FileName;
                     Console.WriteLine($"Filename: {loadedFileName}");
 
-                    if(fullPath)
+                    if (fullPath)
                     {
                         return loadedFileName;
                     }

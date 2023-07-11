@@ -4,7 +4,6 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using ProjetoFinalM2.Data;
 using ProjetoFinalM2.Helpers;
-using System.Net;
 
 namespace ProjetoFinalM2
 {
@@ -482,17 +481,6 @@ namespace ProjetoFinalM2
                     MessageBox.Show("Rua não encontrada.");
                 }
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            GMapOverlay overlay = mapa.Overlays.First(overlay => overlay.Id == "routes");
-            GMapRoute route = overlay.Routes.First(route => route.Name == "My route");
-            GMapRoute oppositeRoute = overlay.Routes.First(route => route.Name == "My opposing route");
-            double routeBearing = mapa.GetBearing(route.Points.First(), route.Points.Last());
-            double oppositeRouteBearing = mapa.GetBearing(oppositeRoute.Points.First(), oppositeRoute.Points.Last());
-
-            Console.WriteLine($"Route bearing {routeBearing} simplified to {routeBearing} Opposite route bearing {oppositeRouteBearing} simplified to {routeBearing}");
         }
 
         private int GetSimplifiedBearing(double bearing)

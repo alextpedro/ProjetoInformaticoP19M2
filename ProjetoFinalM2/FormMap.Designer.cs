@@ -169,7 +169,7 @@
             // btnSaveCoord
             // 
             btnSaveCoord.BackgroundImageLayout = ImageLayout.Stretch;
-            btnSaveCoord.Location = new Point(64, 61);
+            btnSaveCoord.Location = new Point(36, 61);
             btnSaveCoord.Name = "btnSaveCoord";
             btnSaveCoord.Size = new Size(106, 23);
             btnSaveCoord.TabIndex = 20;
