@@ -226,7 +226,7 @@ namespace ProjetoFinalM2
         private void TrackBarTime_ValueChanged(object sender, EventArgs e)
         {
             labelSelectedSeconds.Text = trackBarTime.Value.ToString();
-            //TODO: Filtrar veiculos quando isto muda
+            ButtonPesquisarTransito_Click(sender, e);
         }
 
         private void BtnDrawPolygon_Click(object sender, EventArgs e)
