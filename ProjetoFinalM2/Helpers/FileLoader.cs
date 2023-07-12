@@ -156,8 +156,15 @@ namespace ProjetoFinalM2.Helpers
         {
             using (var selectFileDialog = new OpenFileDialog())
             {
+                selectFileDialog.Filter = "Ficheiros CSV |*.csv|Todos os ficheiros|*.*";
                 if (selectFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    if (Path.GetExtension(selectFileDialog.FileName).ToUpper() != ".CSV")
+                    {
+                        MessageBox.Show("Por favor selecione um ficheiro CSV.");
+                        LoadFile(fullPath);
+                    }
+
                     loadedFileName = selectFileDialog.FileName;
                     Console.WriteLine($"Filename: {loadedFileName}");
 
