@@ -37,12 +37,10 @@ namespace ProjetoFinalM2
             {
                 vehiclesList.AddRange(FileLoader.LoadPointsFromFile());
 
-                vehiclesList.ForEach(vehicle =>
-                {
+                vehiclesList.ForEach(vehicle => {
                     List<PointLatLng> tmpListCoords = new();
 
-                    vehicle.TimestampedCoords.ForEach(coord =>
-                    {
+                    vehicle.TimestampedCoords.ForEach(coord => {
                         tmpListCoords.Add(new PointLatLng(coord.Lat, coord.Lon));
                     });
 
@@ -58,16 +56,14 @@ namespace ProjetoFinalM2
                 if (vehiclesList.Count < (int)uiNVeiculosTransito.Value)
                 {
                     labelTrafficState.Text = "Normal";
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Com Transito";
                 }
                 #endregion
 
                 OverlayHelper.RefreshMap(mapa);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -199,14 +195,12 @@ namespace ProjetoFinalM2
                         labelTrafficState.Text = "Com trânsito";
                         polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
                         polygon.Stroke = new Pen(Color.Red, 1);
-                    }
-                    else if (nVeiculos < nVeiculosMax && nVeiculos > nVeiculosMax / 2)
+                    } else if (nVeiculos < nVeiculosMax && nVeiculos > nVeiculosMax / 2)
                     {
                         labelTrafficState.Text = "Trânsito normal";
                         polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Yellow));
                         polygon.Stroke = new Pen(Color.Yellow, 1);
-                    }
-                    else
+                    } else
                     {
                         labelTrafficState.Text = "Sem trânsito";
                         polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Green));
@@ -214,8 +208,7 @@ namespace ProjetoFinalM2
                     }
                 }
                 #endregion
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);
@@ -238,8 +231,7 @@ namespace ProjetoFinalM2
 
                 OverlayHelper.DrawPolygon(mapa, coordsList, Color.Black);
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Nenhum ficheiro carregado.");
                 Console.WriteLine(ex.Message);
@@ -406,13 +398,11 @@ namespace ProjetoFinalM2
                 {
                     labelTrafficState.Text = "Com trânsito";
                     route.Stroke = new Pen(Color.Red, 3);
-                }
-                else if (nVeiculosNaRota <= nVeiculosMax && nVeiculosNaRota > nVeiculosMax / 2)
+                } else if (nVeiculosNaRota <= nVeiculosMax && nVeiculosNaRota > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     route.Stroke = new Pen(Color.Yellow, 3);
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     route.Stroke = new Pen(Color.Green, 3);
@@ -422,19 +412,16 @@ namespace ProjetoFinalM2
                 {
                     labelTrafficState.Text = "Com trânsito";
                     oppositeRoute.Stroke = new Pen(Color.Red, 3);
-                }
-                else if (nVeiculosNaRotaOposta <= nVeiculosMax && nVeiculosNaRotaOposta > nVeiculosMax / 2)
+                } else if (nVeiculosNaRotaOposta <= nVeiculosMax && nVeiculosNaRotaOposta > nVeiculosMax / 2)
                 {
                     labelTrafficState.Text = "Trânsito normal";
                     oppositeRoute.Stroke = new Pen(Color.Yellow, 3);
-                }
-                else
+                } else
                 {
                     labelTrafficState.Text = "Sem trânsito";
                     oppositeRoute.Stroke = new Pen(Color.Green, 3);
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MessageBox.Show("Algo correu mal!");
                 Console.WriteLine(ex.Message);
@@ -450,8 +437,7 @@ namespace ProjetoFinalM2
                 try
                 {
                     mapa.SetPositionByKeywords(streetToGoTo);
-                }
-                catch
+                } catch
                 {
                     MessageBox.Show("Rua não encontrada.");
                 }
@@ -475,23 +461,24 @@ namespace ProjetoFinalM2
             if (isGoingNorth)
             {
                 return 0;
-            }
-            else if (isGoingEast)
+            } else if (isGoingEast)
             {
                 return 1;
-            }
-            else if (isGoingSouth)
+            } else if (isGoingSouth)
             {
                 return 2;
-            }
-            else if (isGoingWest)
+            } else if (isGoingWest)
             {
                 return 3;
-            }
-            else
+            } else
             {
                 return -1;
             }
+        }
+
+        private void labelStartDate_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

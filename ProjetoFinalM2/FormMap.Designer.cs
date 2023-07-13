@@ -125,7 +125,7 @@
             buttonPesquisarTransito.BackgroundImageLayout = ImageLayout.Stretch;
             buttonPesquisarTransito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonPesquisarTransito.ForeColor = SystemColors.ButtonFace;
-            buttonPesquisarTransito.Location = new Point(281, 129);
+            buttonPesquisarTransito.Location = new Point(281, 153);
             buttonPesquisarTransito.Name = "buttonPesquisarTransito";
             buttonPesquisarTransito.Size = new Size(45, 45);
             buttonPesquisarTransito.TabIndex = 39;
@@ -265,14 +265,14 @@
             panel1.Location = new Point(267, 12);
             panel1.Margin = new Padding(3, 3, 30, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(337, 191);
+            panel1.Size = new Size(337, 212);
             panel1.TabIndex = 40;
             // 
             // labelSentidoCart
             // 
             labelSentidoCart.AutoSize = true;
             labelSentidoCart.BackColor = Color.Transparent;
-            labelSentidoCart.Location = new Point(106, 159);
+            labelSentidoCart.Location = new Point(106, 186);
             labelSentidoCart.Margin = new Padding(3, 6, 3, 0);
             labelSentidoCart.Name = "labelSentidoCart";
             labelSentidoCart.Size = new Size(25, 15);
@@ -283,7 +283,7 @@
             // 
             labelStreet.AutoSize = true;
             labelStreet.BackColor = Color.Transparent;
-            labelStreet.Location = new Point(106, 138);
+            labelStreet.Location = new Point(106, 165);
             labelStreet.Margin = new Padding(3, 6, 3, 0);
             labelStreet.Name = "labelStreet";
             labelStreet.Size = new Size(25, 15);
@@ -303,7 +303,7 @@
             // label1
             // 
             label1.BackColor = SystemColors.ControlLightLight;
-            label1.Location = new Point(14, 138);
+            label1.Location = new Point(14, 165);
             label1.Name = "label1";
             label1.Size = new Size(103, 23);
             label1.TabIndex = 51;
@@ -352,7 +352,7 @@
             // 
             // uiNVeiculosTransito
             // 
-            uiNVeiculosTransito.Location = new Point(106, 90);
+            uiNVeiculosTransito.Location = new Point(132, 105);
             uiNVeiculosTransito.Name = "uiNVeiculosTransito";
             uiNVeiculosTransito.Size = new Size(120, 23);
             uiNVeiculosTransito.TabIndex = 44;
@@ -360,7 +360,7 @@
             // labelNVehicles
             // 
             labelNVehicles.BackColor = SystemColors.ControlLightLight;
-            labelNVehicles.Location = new Point(25, 88);
+            labelNVehicles.Location = new Point(63, 103);
             labelNVehicles.Name = "labelNVehicles";
             labelNVehicles.Size = new Size(68, 23);
             labelNVehicles.TabIndex = 43;
@@ -392,7 +392,7 @@
             // 
             dateTimePickerTime.CustomFormat = "HH:mm";
             dateTimePickerTime.Format = DateTimePickerFormat.Custom;
-            dateTimePickerTime.Location = new Point(233, 7);
+            dateTimePickerTime.Location = new Point(258, 6);
             dateTimePickerTime.Name = "dateTimePickerTime";
             dateTimePickerTime.ShowUpDown = true;
             dateTimePickerTime.Size = new Size(74, 23);
@@ -401,24 +401,25 @@
             // labelStartDate
             // 
             labelStartDate.BackColor = SystemColors.ControlLightLight;
-            labelStartDate.Location = new Point(14, 7);
+            labelStartDate.Location = new Point(5, 9);
             labelStartDate.Name = "labelStartDate";
             labelStartDate.Size = new Size(79, 23);
             labelStartDate.TabIndex = 38;
             labelStartDate.Text = "Data de Início";
             labelStartDate.TextAlign = ContentAlignment.MiddleCenter;
+            labelStartDate.Click += labelStartDate_Click;
             // 
             // dateTimePickerDate
             // 
-            dateTimePickerDate.Location = new Point(107, 7);
+            dateTimePickerDate.Location = new Point(96, 7);
             dateTimePickerDate.Name = "dateTimePickerDate";
-            dateTimePickerDate.Size = new Size(120, 23);
+            dateTimePickerDate.Size = new Size(156, 23);
             dateTimePickerDate.TabIndex = 37;
             // 
             // labelTrafficStateText
             // 
             labelTrafficStateText.BackColor = SystemColors.ControlLightLight;
-            labelTrafficStateText.Location = new Point(5, 115);
+            labelTrafficStateText.Location = new Point(5, 142);
             labelTrafficStateText.Name = "labelTrafficStateText";
             labelTrafficStateText.Size = new Size(103, 23);
             labelTrafficStateText.TabIndex = 49;
@@ -429,7 +430,7 @@
             // 
             labelTrafficState.AutoSize = true;
             labelTrafficState.BackColor = SystemColors.ControlLightLight;
-            labelTrafficState.Location = new Point(114, 119);
+            labelTrafficState.Location = new Point(114, 146);
             labelTrafficState.Name = "labelTrafficState";
             labelTrafficState.Size = new Size(17, 15);
             labelTrafficState.TabIndex = 48;
